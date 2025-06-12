@@ -10,9 +10,9 @@ export default function ScrollSection() {
     const sectionRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
-        if (!sectionRef.current) return;
-
         const el = sectionRef.current;
+        if (!el) return;
+
         gsap.fromTo(
             el.querySelectorAll('.fade-in'),
             { opacity: 0, y: 50 },

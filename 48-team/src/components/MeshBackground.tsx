@@ -2,11 +2,9 @@
 
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 function AnimatedLines() {
-    const materialRef = React.useRef<THREE.LineBasicMaterial>(null!);
     const groupRef = React.useRef<THREE.Group>(null!);
 
     React.useEffect(() => {
@@ -27,8 +25,13 @@ function AnimatedLines() {
             points.push(new THREE.Vector3(j - 5, Math.sin(j + i), 0));
         }
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const material = new THREE.LineBasicMaterial({ color: 'white' });
+
         return (
-            <primitive object={new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: 'white' }))} />
+            <primitive
+                key={i}
+                object={new THREE.Line(geometry, material)}
+            />
         );
     });
 
