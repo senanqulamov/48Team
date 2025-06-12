@@ -28,9 +28,7 @@ function AnimatedLines() {
         }
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         return (
-            <line key={i} geometry={geometry}>
-                <lineBasicMaterial attach="material" color="white" linewidth={1} ref={materialRef} />
-            </line>
+            <primitive object={new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: 'white' }))} />
         );
     });
 

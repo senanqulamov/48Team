@@ -7,7 +7,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollSection() {
-    const sectionRef = useRef(null);
+    const sectionRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         if (!sectionRef.current) return;
