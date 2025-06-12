@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 
 function AnimatedLines() {
-    const groupRef = React.useRef<THREE.Group>(null!);
+    const groupRef = React.useRef<THREE.Group>(null);
 
     React.useEffect(() => {
         let frameId: number;
@@ -26,13 +26,8 @@ function AnimatedLines() {
         }
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const material = new THREE.LineBasicMaterial({ color: 'white' });
-
-        return (
-            <primitive
-                key={i}
-                object={new THREE.Line(geometry, material)}
-            />
-        );
+        const line = new THREE.Line(geometry, material);
+        return <primitive key={i} object={line} />;
     });
 
     return <group ref={groupRef}>{lines}</group>;

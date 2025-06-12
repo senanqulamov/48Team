@@ -7,14 +7,17 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollSection() {
-    const sectionRef = useRef<HTMLElement | null>(null);
+    const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const el = sectionRef.current;
         if (!el) return;
 
+        const targets = el.querySelectorAll('.fade-in');
+        if (!targets) return;
+
         gsap.fromTo(
-            el.querySelectorAll('.fade-in'),
+            targets,
             { opacity: 0, y: 50 },
             {
                 opacity: 1,
