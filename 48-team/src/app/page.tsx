@@ -1,17 +1,18 @@
-import HeroIntro from '@/components/HeroIntro';
-import MeshBackground from '@/components/MeshBackground';
-import ScrollSection from '@/components/ScrollSection';
+'use client';
 
-export default function Home() {
+import React from 'react';
+import AnimatedMeshBackground from '@/components/AnimatedMeshBackground';
+import HeroIntro from '@/components/HeroIntro';
+import SmoothScrollSection from '@/components/SmoothScrollSection';
+
+export default function MainPage() {
     return (
-        <main className="relative z-10 space-y-32 overflow-hidden">
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <MeshBackground />
-            </div>
-            <section className="relative z-10 flex items-center justify-center h-screen">
+        <div className="relative overflow-hidden text-white">
+            <AnimatedMeshBackground />
+            <div className="bg-transparent relative z-10">
                 <HeroIntro />
-            </section>
-            <ScrollSection />
-        </main>
+                <SmoothScrollSection />
+            </div>
+        </div>
     );
 }
