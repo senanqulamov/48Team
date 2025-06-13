@@ -18,7 +18,7 @@ export default function HeroIntro() {
 
         // Animation for heading
         if (headingRef.current) {
-            const finalText = "Welcome to 48Team";
+            const finalText = "Welcome! I'm Senan :D";
             let i = 0;
             const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
             const colors = ['#ff2e2e', '#42ff58', '#2e9cff']; // Tympanus demo colors
@@ -52,7 +52,7 @@ export default function HeroIntro() {
         const startSubheading = () => {
             setTimeout(() => {
                 if (subheadingRef.current) {
-                    const finalText = "Build. Connect. Create.";
+                    const finalText = "Wanna know me better ?";
                     let i = 0;
                     const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
                     const colors = ['#ff2e2e', '#42ff58', '#2e9cff'];

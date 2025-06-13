@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [intensity, setIntensity] = useState(20); // Start with strong blur
 
     useEffect(() => {
         if (!show) return;
@@ -22,12 +21,14 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
 
         let frame = 0;
         const maxFrames = 60;
+        const initialIntensity = 20; // Start with strong blur
 
         const draw = () => {
             if (!ctx) return;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Create noise texture
             const imageData = ctx.createImageData(canvas.width, canvas.height);
             for (let i = 0; i < imageData.data.length; i += 4) {
                 const val = Math.random() * 255;
@@ -38,24 +39,23 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
             }
             ctx.putImageData(imageData, 0, 0);
 
-            ctx.filter = `blur(${intensity}px)`;
-
-            // Gradually reduce blur
-            setIntensity(prev => {
-                const next = Math.max(0, prev - 0.5);
-                ctx.filter = `blur(${next}px)`;
-                return next;
-            });
+            // Calculate current intensity based on frame count
+            const currentIntensity = Math.max(0, initialIntensity - (frame * (initialIntensity / maxFrames)));
+            ctx.filter = `blur(${currentIntensity}px)`;
 
             if (frame < maxFrames) {
                 frame++;
                 requestAnimationFrame(draw);
+            } else {
+                ctx.filter = 'blur(0px)'; // Ensure final state is clear
             }
         };
 
         draw();
 
-        return () => window.removeEventListener('resize', resize);
+        return () => {
+            window.removeEventListener('resize', resize);
+        };
     }, [show]);
 
     return (
