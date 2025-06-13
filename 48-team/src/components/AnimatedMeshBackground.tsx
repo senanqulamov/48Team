@@ -278,6 +278,7 @@ export default function NeonStarfieldBackground() {
 
     return (
         <canvas
+            className="fixed inset-0 -z-10"
             ref={canvasRef}
             style={{
                 position: 'fixed',

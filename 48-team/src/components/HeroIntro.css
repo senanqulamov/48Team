@@ -1,0 +1,48 @@
+/* Font from Tympanus demo */
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+.terminal-text {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 700;
+    font-size: 5vw;
+    color: #fff;
+    position: relative;
+    line-height: 1.2;
+    text-transform: uppercase;
+    margin-bottom: 0.5em;
+}
+
+.terminal-subtext {
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 400;
+    font-size: 1.5vw;
+    color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    line-height: 1.4;
+}
+
+/* Cursor styling */
+.terminal-text::after,
+.terminal-subtext::after {
+    content: '▋';
+    position: absolute;
+    animation: blink-caret 0.7s step-end infinite;
+    color: #42ff58; /* Green cursor like the demo */
+    font-weight: 400;
+}
+
+.done::after {
+    display: none;
+}
+
+@keyframes blink-caret {
+    from, to { opacity: 0 }
+    50% { opacity: 1 }
+}
+
+/* Glitch character styling */
+.glitch-char {
+    display: inline-block;
+    min-width: 1ch;
+    position: relative;
+}
