@@ -9,112 +9,134 @@ import Image from 'next/image';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScrollSection() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const tunnelRef = useRef<HTMLDivElement>(null);
-    const lenisRef = useRef<any>(null);
-    const progressRef = useRef<number>(0);
+    type LenisInstance = {
+        raf: (time: number) => void;
+        destroy: () => void;
+    };
+
+    const sectionRef = useRef<HTMLElement>(null);
+    const lenisRef = useRef<LenisInstance | null>(null);
 
     useEffect(() => {
         lenisRef.current = new Lenis({
             lerp: 0.1,
-            smoothWheel: true,
+            duration: 1.2,
+            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
         });
 
-        const raf = (time: number) => {
-            lenisRef.current?.raf(time);
-            requestAnimationFrame(raf);
-        };
+        function raf(time: number) {
+            if (lenisRef.current) {
+                lenisRef.current.raf(time);
+                requestAnimationFrame(raf);
+            }
+        }
+
+
         requestAnimationFrame(raf);
 
         return () => lenisRef.current?.destroy();
     }, []);
 
     useEffect(() => {
-        if (!containerRef.current || !tunnelRef.current) return;
+        if (!sectionRef.current) return;
 
-        // Set up 3D scene
-        gsap.set(containerRef.current, {
-            perspective: 1000,
-            transformStyle: 'preserve-3d',
+        const fadeInElems = sectionRef.current.querySelectorAll('.fade-in');
+
+        fadeInElems.forEach((el) => {
+            gsap.fromTo(
+                el,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse',
+                    },
+                }
+            );
         });
 
-        const panels = gsap.utils.toArray<HTMLElement>('.tunnel-panel');
-        const panelHeight = window.innerHeight;
-        const totalPanels = panels.length;
-        const totalScroll = panelHeight * totalPanels * 2; // Extra scroll space
+        const images = sectionRef.current.querySelectorAll('.skew-img');
 
-        // Position panels in 3D space
-        panels.forEach((panel, i) => {
-            gsap.set(panel, {
-                z: -i * panelHeight, // Stack panels along Z-axis
-                position: 'absolute',
-                width: '100%',
-                height: '100vh',
-                transformOrigin: 'center center',
+        images.forEach((img) => {
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: img,
+                    scrub: true,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    onUpdate: (self) => {
+                        const velocity = self.getVelocity();
+                        gsap.to(img, {
+                            skewY: velocity / -300,
+                            duration: 0.3,
+                            ease: 'power3.out',
+                        });
+                    },
+                },
             });
         });
-
-        // Create scroll animation
-        ScrollTrigger.create({
-            trigger: containerRef.current,
-            start: 'top top',
-            end: `+=${totalScroll}`,
-            pin: true,
-            scrub: 1,
-            onUpdate: (self) => {
-                progressRef.current = self.progress;
-
-                // Animate panels to create tunnel effect
-                panels.forEach((panel, i) => {
-                    const zProgress = (progressRef.current - i/totalPanels) * totalPanels;
-                    const scale = 1 - Math.min(Math.max(zProgress, 0), 0.8) * 0.5;
-
-                    gsap.to(panel, {
-                        z: -i * panelHeight + progressRef.current * totalPanels * panelHeight,
-                        scale: scale,
-                        opacity: 1 - Math.min(Math.max(zProgress, 0), 1),
-                        ease: 'power1.out'
-                    });
-                });
-            },
-        });
-
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
     }, []);
 
     const content = [
-        { text: 'Section 1', image: '/images/demo1/1.jpg' },
-        { text: 'Section 2', image: '/images/demo1/2.jpg' },
-        { text: 'Section 3', image: '/images/demo1/3.jpg' },
-        { text: 'Section 4', image: '/images/demo1/4.jpg' },
-        { text: 'Section 5', image: '/images/demo1/5.jpg' },
-        { text: 'Section 6', image: '/images/demo1/6.jpg' },
+        {
+            text: 'Scroll-Triggered Text 1',
+            image: '/images/demo1/1.jpg',
+        },
+        {
+            text: 'Scroll-Triggered Text 2',
+            image: '/images/demo1/2.jpg',
+        },
+        {
+            text: 'Scroll-Triggered Text 3',
+            image: '/images/demo1/3.jpg',
+        },
+        {
+            text: 'Scroll-Triggered Text 4',
+            image: '/images/demo1/4.jpg',
+        },
+        {
+            text: 'Scroll-Triggered Text 5',
+            image: '/images/demo1/5.jpg',
+        },
+        {
+            text: 'Scroll-Triggered Text 6',
+            image: '/images/demo1/6.jpg',
+        },
     ];
 
     return (
-        <div ref={containerRef} className="w-full h-screen overflow-hidden">
-            <div ref={tunnelRef} className="relative w-full h-screen">
-                {content.map((item, i) => (
-                    <div
-                        key={i}
-                        className="tunnel-panel w-full h-screen flex items-center justify-center"
-                    >
-                        <div className="w-full max-w-4xl mx-auto p-8 bg-black bg-opacity-70 rounded-xl">
-                            <h2 className="text-4xl font-bold mb-6">{item.text}</h2>
-                            <div className="relative aspect-video w-full">
-                                <Image
-                                    src={item.image}
-                                    alt={item.text}
-                                    fill
-                                    className="object-cover rounded-lg"
-                                />
-                            </div>
-                        </div>
+        <section ref={sectionRef} className="min-h-screen bg-transparent text-white px-8 py-24 space-y-32">
+            {content.map((item, idx) => (
+                <div
+                    key={idx}
+                    className={`flex flex-col md:flex-row items-center justify-between gap-12 fade-in ${
+                        idx % 2 === 1 ? 'md:flex-row-reverse' : ''
+                    }`}
+                >
+                    <div className="md:w-1/2 space-y-4">
+                        <h2 className="text-4xl font-bold">{item.text}</h2>
+                        <p className="text-lg text-gray-300">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint cumque placeat
+                            reiciendis, veniam explicabo dolore.
+                        </p>
                     </div>
-                ))}
-            </div>
-        </div>
+                    <div className="md:w-1/2">
+                        <Image
+                            className="rounded-lg shadow-xl skew-img w-full max-w-lg mx-auto"
+                            src={item.image}
+                            alt={item.text}
+                            width={400}
+                            height={400}
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+            ))}
+        </section>
     );
 }
