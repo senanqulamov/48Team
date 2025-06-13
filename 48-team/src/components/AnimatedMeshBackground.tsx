@@ -28,7 +28,7 @@ export default function NeonStarfieldBackground() {
 
         const circleTexture = createCircleTexture();
 
-        // Initialize Three.js
+        // Setup renderer
         const renderer = new THREE.WebGLRenderer({
             canvas: canvasRef.current,
             antialias: true,
@@ -38,10 +38,10 @@ export default function NeonStarfieldBackground() {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 30;
 
-        // Mouse movement tracking
+        // Mouse-based parallax
         const mouse = new THREE.Vector2();
         const target = new THREE.Vector2();
         const handleMouseMove = (e: MouseEvent) => {
@@ -50,6 +50,18 @@ export default function NeonStarfieldBackground() {
         };
         document.addEventListener('mousemove', handleMouseMove);
 
+        // Scroll-based velocity tracking
+        let lastScrollY = window.scrollY;
+        let scrollSpeed = 0;
+        let smoothedScrollSpeed = 0;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            scrollSpeed = currentScrollY - lastScrollY;
+            lastScrollY = currentScrollY;
+        };
+        window.addEventListener('scroll', handleScroll);
+
         // Starfield
         const starsCount = 800;
         const starsGeometry = new THREE.BufferGeometry();
@@ -57,13 +69,12 @@ export default function NeonStarfieldBackground() {
         const colors = new Float32Array(starsCount * 3);
         const sizes = new Float32Array(starsCount);
 
-        // Create some colored "planets" (5% of stars)
         const planetColors = [
-            new THREE.Color(0x00ffff), // Cyan
-            new THREE.Color(0xff00ff), // Magenta
-            new THREE.Color(0xffff00), // Yellow
-            new THREE.Color(0x00ff00), // Green
-            new THREE.Color(0xff6600), // Orange
+            new THREE.Color(0x00ffff),
+            new THREE.Color(0xff00ff),
+            new THREE.Color(0xffff00),
+            new THREE.Color(0x00ff00),
+            new THREE.Color(0xff6600),
         ];
         const planetIndices = new Set<number>();
         while (planetIndices.size < starsCount * 0.05) {
@@ -71,7 +82,6 @@ export default function NeonStarfieldBackground() {
         }
 
         for (let i = 0; i < starsCount; i++) {
-            // Random spherical distribution
             const radius = 50 * Math.random();
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
@@ -91,7 +101,7 @@ export default function NeonStarfieldBackground() {
                 const intensity = 0.5 + Math.random() * 0.5;
                 colors[i * 3] = intensity;
                 colors[i * 3 + 1] = intensity;
-                colors[i * 3 + 2] = 1.0; // Blue tint
+                colors[i * 3 + 2] = 1.0;
             }
         }
 
@@ -113,7 +123,7 @@ export default function NeonStarfieldBackground() {
         const starfield = new THREE.Points(starsGeometry, starsMaterial);
         scene.add(starfield);
 
-        // ========== GLOWING VECTOR SHOOTING STARS ==========
+        // Shooting stars
         class ShootingStar {
             line: THREE.Line;
             positions: Float32Array;
@@ -126,20 +136,15 @@ export default function NeonStarfieldBackground() {
             currentPosition: THREE.Vector3;
 
             constructor() {
-                this.length = 15; // Number of segments in the streak
+                this.length = 15;
                 this.positions = new Float32Array(this.length * 3);
-
-                // Create the line geometry
                 const geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
-
-                // Create color gradient
                 const lineColors = new Float32Array(this.length * 3);
                 this.color = new THREE.Color().setHSL(Math.random(), 1, 0.7);
 
                 for (let i = 0; i < this.length; i++) {
                     const ratio = i / this.length;
-                    // Bright head fading to dim tail
                     const intensity = Math.pow(1 - ratio, 2);
                     lineColors[i * 3] = this.color.r * intensity;
                     lineColors[i * 3 + 1] = this.color.g * intensity;
@@ -166,26 +171,22 @@ export default function NeonStarfieldBackground() {
             }
 
             reset() {
-                // Start from random edge of view
                 const angle = Math.random() * Math.PI * 2;
                 const radius = 50;
                 const startX = Math.cos(angle) * radius;
                 const startY = Math.sin(angle) * radius;
                 const startZ = (Math.random() - 0.5) * radius;
 
-                // Direction with slight curve
                 this.direction.set(
                     -startX * 0.01 + (Math.random() - 0.5) * 0.05,
                     -startY * 0.01 + (Math.random() - 0.5) * 0.05,
                     (Math.random() - 0.5) * 0.05
                 ).normalize();
 
-                // Slower speed
                 this.speed = 0.2 + Math.random() * 0.1;
                 this.age = 0;
                 this.maxAge = 250 + Math.random() * 100;
 
-                // Initialize positions
                 this.currentPosition.set(startX, startY, startZ);
                 for (let i = 0; i < this.length; i++) {
                     const offset = i * 0.5;
@@ -199,26 +200,21 @@ export default function NeonStarfieldBackground() {
 
             update() {
                 this.age++;
-
-                // Move current position
                 const movement = this.direction.clone().multiplyScalar(this.speed);
                 this.currentPosition.add(movement);
 
-                // Update positions (shift array)
                 for (let i = this.length - 1; i > 0; i--) {
                     this.positions[i * 3] = this.positions[(i - 1) * 3];
                     this.positions[i * 3 + 1] = this.positions[(i - 1) * 3 + 1];
                     this.positions[i * 3 + 2] = this.positions[(i - 1) * 3 + 2];
                 }
 
-                // Add new position at head
                 this.positions[0] = this.currentPosition.x;
                 this.positions[1] = this.currentPosition.y;
                 this.positions[2] = this.currentPosition.z;
 
                 this.line.geometry.attributes.position.needsUpdate = true;
 
-                // Reset if expired or out of bounds
                 if (this.age > this.maxAge ||
                     Math.abs(this.currentPosition.x) > 70 ||
                     Math.abs(this.currentPosition.y) > 70 ||
@@ -228,7 +224,6 @@ export default function NeonStarfieldBackground() {
             }
         }
 
-        // Create and manage shooting stars
         const shootingStars: ShootingStar[] = [];
         for (let i = 0; i < 8; i++) {
             const star = new ShootingStar();
@@ -236,23 +231,27 @@ export default function NeonStarfieldBackground() {
             shootingStars.push(star);
         }
 
-        // Animation loop
         const clock = new THREE.Clock();
         const animate = () => {
             const time = clock.getElapsedTime();
 
-            // Smooth camera follow
+            // Mouse-based parallax
             target.x += (mouse.x * 10 - target.x) * 0.05;
             target.y += (mouse.y * 10 - target.y) * 0.05;
             camera.position.x = target.x;
             camera.position.y = target.y;
+
+            // Scroll-driven forward/backward motion
+            smoothedScrollSpeed += (scrollSpeed - smoothedScrollSpeed) * 0.1;
+            camera.position.z -= smoothedScrollSpeed * 0.05;
+            camera.position.z = THREE.MathUtils.clamp(camera.position.z, 5, 100);
+
             camera.lookAt(scene.position);
 
-            // Slow starfield rotation
+            // Animate elements
             starfield.rotation.x = time * 0.02;
             starfield.rotation.y = time * 0.01;
 
-            // Update shooting stars
             shootingStars.forEach(star => star.update());
 
             renderer.render(scene, camera);
@@ -261,7 +260,6 @@ export default function NeonStarfieldBackground() {
 
         req.current = requestAnimationFrame(animate);
 
-        // Cleanup
         const handleResize = () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -272,6 +270,7 @@ export default function NeonStarfieldBackground() {
         return () => {
             if (req.current) cancelAnimationFrame(req.current);
             document.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', handleResize);
             renderer.dispose();
         };
