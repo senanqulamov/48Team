@@ -20,36 +20,42 @@ export default function ZAxisScroll() {
             text: "Scroll into the unknown",
             image: "/images/demo1/1.jpg",
             position: { x: 0, y: 0, z: 0 },
+            bgColor: 'wheat',
         },
         {
             title: "Explore",
             text: "Each step reveals more",
             image: "/images/demo1/2.jpg",
             position: { x: -300, y: 200, z: -1000 },
+            bgColor: 'wheat',
         },
         {
             title: "Discover",
             text: "Dynamic camera flythrough",
             image: "/images/demo1/3.jpg",
             position: { x: 300, y: -150, z: -2000 },
+            bgColor: 'wheat',
         },
         {
             title: "Arrive",
             text: "The journey ends, or begins?",
             image: "/images/demo1/4.jpg",
             position: { x: 0, y: 100, z: -3000 },
+            bgColor: 'wheat',
         },
         {
             title: "Arrive",
             text: "The journey ends, or begins?",
             image: "/images/demo1/5.jpg",
             position: { x: 0, y: 100, z: -4000 },
+            bgColor: 'wheat',
         },
         {
             title: "Arrive",
             text: "The journey ends, or begins?",
             image: "/images/demo1/6.jpg",
             position: { x: 0, y: 100, z: -5000 },
+            bgColor: 'wheat',
         },
     ];
 
