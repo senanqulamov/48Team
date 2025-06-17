@@ -8,135 +8,164 @@ import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SmoothScrollSection() {
-    type LenisInstance = {
-        raf: (time: number) => void;
-        destroy: () => void;
-    };
-
-    const sectionRef = useRef<HTMLElement>(null);
-    const lenisRef = useRef<LenisInstance | null>(null);
-
-    useEffect(() => {
-        lenisRef.current = new Lenis({
-            lerp: 0.1,
-            duration: 1.2,
-            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-        });
-
-        function raf(time: number) {
-            if (lenisRef.current) {
-                lenisRef.current.raf(time);
-                requestAnimationFrame(raf);
-            }
-        }
-
-
-        requestAnimationFrame(raf);
-
-        return () => lenisRef.current?.destroy();
-    }, []);
-
-    useEffect(() => {
-        if (!sectionRef.current) return;
-
-        const fadeInElems = sectionRef.current.querySelectorAll('.fade-in');
-
-        fadeInElems.forEach((el) => {
-            gsap.fromTo(
-                el,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse',
-                    },
-                }
-            );
-        });
-
-        const images = sectionRef.current.querySelectorAll('.skew-img');
-
-        images.forEach((img) => {
-            gsap.to(img, {
-                scrollTrigger: {
-                    trigger: img,
-                    scrub: true,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    onUpdate: (self) => {
-                        const velocity = self.getVelocity();
-                        gsap.to(img, {
-                            skewY: velocity / -300,
-                            duration: 0.3,
-                            ease: 'power3.out',
-                        });
-                    },
-                },
-            });
-        });
-    }, []);
+export default function ZAxisScroll() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const viewportRef = useRef<HTMLDivElement>(null);
+    const sceneRef = useRef<HTMLDivElement>(null);
+    const lenisRef = useRef<Lenis | null>(null);
 
     const content = [
         {
-            text: 'Scroll-Triggered Text 1',
-            image: '/images/demo1/1.jpg',
+            title: "Welcome",
+            text: "Scroll into the unknown",
+            image: "/images/demo1/1.jpg",
+            position: { x: 0, y: 0, z: 0 },
         },
         {
-            text: 'Scroll-Triggered Text 2',
-            image: '/images/demo1/2.jpg',
+            title: "Explore",
+            text: "Each step reveals more",
+            image: "/images/demo1/2.jpg",
+            position: { x: -300, y: 200, z: -1000 },
         },
         {
-            text: 'Scroll-Triggered Text 3',
-            image: '/images/demo1/3.jpg',
+            title: "Discover",
+            text: "Dynamic camera flythrough",
+            image: "/images/demo1/3.jpg",
+            position: { x: 300, y: -150, z: -2000 },
         },
         {
-            text: 'Scroll-Triggered Text 4',
-            image: '/images/demo1/4.jpg',
+            title: "Arrive",
+            text: "The journey ends, or begins?",
+            image: "/images/demo1/4.jpg",
+            position: { x: 0, y: 100, z: -3000 },
         },
         {
-            text: 'Scroll-Triggered Text 5',
-            image: '/images/demo1/5.jpg',
+            title: "Arrive",
+            text: "The journey ends, or begins?",
+            image: "/images/demo1/5.jpg",
+            position: { x: 0, y: 100, z: -4000 },
         },
         {
-            text: 'Scroll-Triggered Text 6',
-            image: '/images/demo1/6.jpg',
+            title: "Arrive",
+            text: "The journey ends, or begins?",
+            image: "/images/demo1/6.jpg",
+            position: { x: 0, y: 100, z: -5000 },
         },
     ];
 
+
+    useEffect(() => {
+        // ✅ Init Lenis
+        lenisRef.current = new Lenis({
+            lerp: 0.07,
+            smoothWheel: true,
+            syncTouch: true,
+        });
+
+        const raf = (time: number) => {
+            lenisRef.current?.raf(time);
+            requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+
+        // ✅ Setup 3D Scroll
+        if (!containerRef.current || !viewportRef.current || !sceneRef.current) return;
+
+        gsap.set(viewportRef.current, {
+            perspective: 1200,
+            transformStyle: 'preserve-3d',
+        });
+
+        const sections = gsap.utils.toArray<HTMLElement>('.z-section');
+        const sectionDepth = 1000;
+        const totalDepth = sections.length * sectionDepth;
+
+        sections.forEach((section, index) => {
+            gsap.set(section, {
+                z: -index * sectionDepth,
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                width: '90%',
+                maxWidth: '1000px',
+                height: '70vh',
+                transform: 'translate(-50%, -50%)',
+                transformStyle: 'preserve-3d',
+                opacity: index === 0 ? 1 : 0.3,
+                scale: index === 0 ? 1 : 0.8,
+            });
+        });
+
+        ScrollTrigger.create({
+            trigger: containerRef.current,
+            start: 'top top',
+            end: `+=${totalDepth}`,
+            scrub: 0.5,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const zPosition = progress * totalDepth;
+
+                gsap.to(viewportRef.current, {
+                    z: -zPosition,
+                    ease: 'power2.out',
+                });
+
+                sections.forEach((section, index) => {
+                    const targetZ = index * sectionDepth;
+                    const distance = Math.abs(zPosition - targetZ);
+                    const visibility = 1 - Math.min(distance / (sectionDepth * 0.8), 1);
+
+                    gsap.to(section, {
+                        opacity: visibility,
+                        scale: 0.8 + visibility * 0.4,
+                        ease: 'power2.out',
+                    });
+                });
+            },
+        });
+
+        return () => {
+            lenisRef.current?.destroy();
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, []);
+
     return (
-        <section ref={sectionRef} className="min-h-screen bg-transparent text-white px-8 py-24 space-y-32">
-            {content.map((item, idx) => (
-                <div
-                    key={idx}
-                    className={`flex flex-col md:flex-row items-center justify-between gap-12 fade-in ${
-                        idx % 2 === 1 ? 'md:flex-row-reverse' : ''
-                    }`}
-                >
-                    <div className="md:w-1/2 space-y-4">
-                        <h2 className="text-4xl font-bold">{item.text}</h2>
-                        <p className="text-lg text-gray-300">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint cumque placeat
-                            reiciendis, veniam explicabo dolore.
-                        </p>
-                    </div>
-                    <div className="md:w-1/2">
-                        <Image
-                            className="rounded-lg shadow-xl skew-img w-full max-w-lg mx-auto"
-                            src={item.image}
-                            alt={item.text}
-                            width={400}
-                            height={400}
-                            loading="lazy"
-                        />
-                    </div>
+        <div ref={containerRef} className="relative w-full" style={{ height: `${content.length * 100}vh` }}>
+            <div
+                ref={viewportRef}
+                className="sticky top-0 h-screen w-full"
+                style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+            >
+                <div ref={sceneRef} className="w-full h-full relative">
+                    {content.map((section, index) => (
+                        <div
+                            key={index}
+                            className="z-section flex flex-col md:flex-row items-center justify-center gap-6 p-6"
+                            style={{ backfaceVisibility: 'hidden' }}
+                        >
+                            <div className={`${section.bgColor} rounded-xl p-6 backdrop-blur-md w-full max-w-md`}>
+                                <h2 className="text-3xl font-bold mb-3 text-center md:text-left">
+                                    {section.title}
+                                </h2>
+                                <p className="text-lg mb-4 text-center md:text-left">
+                                    {section.text}
+                                </p>
+                            </div>
+                            <div className="relative w-full h-64 md:h-80">
+                                <Image
+                                    src={section.image}
+                                    alt={section.title}
+                                    fill
+                                    className="object-cover rounded-xl shadow-2xl"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority={index === 0}
+                                />
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </section>
+            </div>
+        </div>
     );
 }

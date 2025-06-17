@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 
-export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
+export default function ProgressiveBlurNoise({show}: { show: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationFrameId = useRef<number | null>(null);
+
+    const blurIntensity = useRef<number>(20);
 
     useEffect(() => {
-        if (!show) return;
-
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d');
         if (!canvas || !ctx) return;
@@ -19,14 +20,12 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
         resize();
         window.addEventListener('resize', resize);
 
-        let frame = 0;
-        const maxFrames = 60;
-        const initialIntensity = 20; // Start with strong blur
-
-        const draw = () => {
+        const drawNoise = () => {
             if (!ctx) return;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear canvas with appropriate background color
+            ctx.fillStyle = show ? 'gray' : 'transparent';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Create noise texture
             const imageData = ctx.createImageData(canvas.width, canvas.height);
@@ -37,36 +36,44 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
                 imageData.data[i + 2] = val;
                 imageData.data[i + 3] = 25; // transparency (0-255)
             }
+
+            // Apply blur filter if show is true
+            if (show) {
+                ctx.filter = `blur(${blurIntensity.current}px)`;
+                // Gradually reduce blur intensity
+                blurIntensity.current = Math.max(0, blurIntensity.current - 0.2);
+            } else {
+                ctx.filter = 'none';
+                // Reset blur intensity when show becomes true again
+                blurIntensity.current = 20;
+            }
+
             ctx.putImageData(imageData, 0, 0);
 
-            // Calculate current intensity based on frame count
-            const currentIntensity = Math.max(0, initialIntensity - (frame * (initialIntensity / maxFrames)));
-            ctx.filter = `blur(${currentIntensity}px)`;
-
-            if (frame < maxFrames) {
-                frame++;
-                requestAnimationFrame(draw);
-            } else {
-                ctx.filter = 'blur(0px)'; // Ensure final state is clear
-            }
+            // Continue animation loop
+            animationFrameId.current = requestAnimationFrame(drawNoise);
         };
 
-        draw();
+        // Start animation
+        drawNoise();
 
         return () => {
             window.removeEventListener('resize', resize);
+            if (animationFrameId.current) {
+                cancelAnimationFrame(animationFrameId.current);
+            }
         };
     }, [show]);
 
     return (
         <canvas
             ref={canvasRef}
-            className={`fixed top-0 left-0 w-full h-full z-[1000] pointer-events-none transition-opacity duration-1000 ease-out ${
-                show ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`fixed top-0 left-0 w-full h-full z-[1000] pointer-events-none transition-opacity duration-1000 ease-out`}
             style={{
                 mixBlendMode: 'screen',
-                backgroundColor: 'transparent',
+                backgroundColor: show ? '#f5deb329' : 'dimgray',
+                transition: 'background-color 1.5s ease-in-out',
+                zIndex: show ? 100 : -1,
             }}
         />
     );

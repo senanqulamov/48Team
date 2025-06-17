@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState } from 'react'; // ← FIXED: useState added here
-import AnimatedMeshBackground from '@/components/AnimatedMeshBackground';
+import React, { useState } from 'react';
 import HeroIntro from '@/components/HeroIntro';
 import SmoothScrollSection from '@/components/SmoothScrollSection';
 import PageWrapper from '@/components/PageWrapper';
 import PageLoader from '@/components/PageLoader';
 import ProgressiveBlurNoise from '@/components/ProgressiveBlurNoise';
-
 
 export default function MainPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -17,16 +15,20 @@ export default function MainPage() {
     };
 
     return (
-        <div className="relative overflow-hidden text-white">
-            {isLoading && <PageLoader onComplete={handleComplete}/>}
+        <div className="relative text-white">
+            {isLoading && <PageLoader onComplete={handleComplete} />}
 
-            <AnimatedMeshBackground/>
             <ProgressiveBlurNoise show={isLoading} />
             {!isLoading && (
                 <PageWrapper>
-                    <div className="bg-transparent relative z-10">
-                        <HeroIntro/>
-                        <SmoothScrollSection/>
+                    {/* Hero Section (normal scroll) */}
+                    <div className="relative z-20 h-screen">
+                        <HeroIntro />
+                    </div>
+
+                    {/* Z-Axis Scroll Section (takes full viewport after hero) */}
+                    <div className="relative z-10 h-screen">
+                        <SmoothScrollSection />
                     </div>
                 </PageWrapper>
             )}
