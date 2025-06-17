@@ -1,175 +1,151 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
 import Image from 'next/image';
 
+
 gsap.registerPlugin(ScrollTrigger);
 
+const content = [
+    { title: "Item A", text: "Welcome", image: "/images/demo1/1.jpg", side: "left" },
+    { title: "Item B", text: "Explore", image: "/images/demo1/2.jpg", side: "right" },
+    { title: "Item C", text: "Discover", image: "/images/demo1/3.jpg", side: "left" },
+    { title: "Item D", text: "Arrive", image: "/images/demo1/4.jpg", side: "right" },
+    { title: "Item E", text: "Evolve", image: "/images/demo1/5.jpg", side: "left" },
+    { title: "Item F", text: "Ascend", image: "/images/demo1/6.jpg", side: "center" },
+];
+
+
 export default function ZAxisScroll() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const viewportRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const sceneRef = useRef<HTMLDivElement>(null);
-    const lenisRef = useRef<Lenis | null>(null);
-
-    const content = [
-        {
-            title: "Welcome",
-            text: "Scroll into the unknown",
-            image: "/images/demo1/1.jpg",
-            position: { x: 0, y: 0, z: 0 },
-            bgColor: 'wheat',
-        },
-        {
-            title: "Explore",
-            text: "Each step reveals more",
-            image: "/images/demo1/2.jpg",
-            position: { x: -300, y: 200, z: -1000 },
-            bgColor: 'wheat',
-        },
-        {
-            title: "Discover",
-            text: "Dynamic camera flythrough",
-            image: "/images/demo1/3.jpg",
-            position: { x: 300, y: -150, z: -2000 },
-            bgColor: 'wheat',
-        },
-        {
-            title: "Arrive",
-            text: "The journey ends, or begins?",
-            image: "/images/demo1/4.jpg",
-            position: { x: 0, y: 100, z: -3000 },
-            bgColor: 'wheat',
-        },
-        {
-            title: "Arrive",
-            text: "The journey ends, or begins?",
-            image: "/images/demo1/5.jpg",
-            position: { x: 0, y: 100, z: -4000 },
-            bgColor: 'wheat',
-        },
-        {
-            title: "Arrive",
-            text: "The journey ends, or begins?",
-            image: "/images/demo1/6.jpg",
-            position: { x: 0, y: 100, z: -5000 },
-            bgColor: 'wheat',
-        },
-    ];
-
+    const lenis = useRef<Lenis>(null);
 
     useEffect(() => {
-        // ✅ Init Lenis
-        lenisRef.current = new Lenis({
-            lerp: 0.07,
-            smoothWheel: true,
-            syncTouch: true,
-        });
-
-        const raf = (time: number) => {
-            lenisRef.current?.raf(time);
+        lenis.current = new Lenis({lerp: 0.1});
+        const raf = (t: number) => {
+            lenis.current?.raf(t);
             requestAnimationFrame(raf);
         };
         requestAnimationFrame(raf);
 
-        // ✅ Setup 3D Scroll
-        if (!containerRef.current || !viewportRef.current || !sceneRef.current) return;
+        const items = gsap.utils.toArray<HTMLElement>('.z-section');
+        const spacing = 600;
+        const totalDepth = items.length * spacing;
 
-        gsap.set(viewportRef.current, {
-            perspective: 1200,
-            transformStyle: 'preserve-3d',
-        });
+        gsap.set(sceneRef.current, {transformStyle: 'preserve-3d'});
 
-        const sections = gsap.utils.toArray<HTMLElement>('.z-section');
-        const sectionDepth = 1000;
-        const totalDepth = sections.length * sectionDepth;
+        items.forEach((item, i) => {
+            const side = content[i].side;
+            const x = side === "left" ? -300 : side === "right" ? 300 : 0;
+            const y = gsap.utils.random(-100, 100);
 
-        sections.forEach((section, index) => {
-            gsap.set(section, {
-                z: -index * sectionDepth,
-                position: 'fixed',
+            const z = i * spacing;
+
+            gsap.set(item, {
+                x: x,
+                y: y,
+                z: -z,
+                position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '90%',
-                maxWidth: '1000px',
-                height: '70vh',
                 transform: 'translate(-50%, -50%)',
-                transformStyle: 'preserve-3d',
-                opacity: index === 0 ? 1 : 0.3,
-                scale: index === 0 ? 1 : 0.8,
+                filter: 'blur(20px)',
+                opacity: 0,
+                scale: 0.7,
             });
         });
 
         ScrollTrigger.create({
-            trigger: containerRef.current,
+            trigger: wrapperRef.current!,
             start: 'top top',
-            end: `+=${totalDepth}`,
-            scrub: 0.5,
+            end: `+=${totalDepth + 1700}`,
+            scrub: true,
             onUpdate: (self) => {
-                const progress = self.progress;
-                const zPosition = progress * totalDepth;
+                const zMove = -self.progress * totalDepth; // Moves scene toward camera
 
-                gsap.to(viewportRef.current, {
-                    z: -zPosition,
-                    ease: 'power2.out',
+                gsap.set(sceneRef.current, {
+                    z: -zMove,
                 });
 
-                sections.forEach((section, index) => {
-                    const targetZ = index * sectionDepth;
-                    const distance = Math.abs(zPosition - targetZ);
-                    const visibility = 1 - Math.min(distance / (sectionDepth * 0.8), 1);
+                items.forEach((item, i) => {
+                    const itemZ = i * spacing;
+                    const distance = Math.abs(zMove + itemZ);
+                    const threshold = 600;
 
-                    gsap.to(section, {
-                        opacity: visibility,
-                        scale: 0.8 + visibility * 0.4,
-                        ease: 'power2.out',
+                    const visible = 1 - Math.min(distance / threshold, 1);
+
+                    gsap.set(item, {
+                        opacity: visible,
+                        scale: 0.3 + visible * 0.1,
+                        filter: `blur(${20 * (1 - visible)}px)`,
                     });
                 });
             },
         });
 
         return () => {
-            lenisRef.current?.destroy();
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            lenis.current?.destroy();
+            ScrollTrigger.getAll().forEach((t) => t.kill());
         };
     }, []);
 
     return (
-        <div ref={containerRef} className="relative w-full" style={{ height: `${content.length * 100}vh` }}>
+        <div ref={wrapperRef} style={{height: `${content.length * 120}vh`}}>
             <div
-                ref={viewportRef}
-                className="sticky top-0 h-screen w-full"
-                style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+                className="sticky top-0 w-full h-screen overflow-hidden"
+                style={{perspective: '1500px', transformStyle: 'preserve-3d'}}
             >
-                <div ref={sceneRef} className="w-full h-full relative">
-                    {content.map((section, index) => (
-                        <div
-                            key={index}
-                            className="z-section flex flex-col md:flex-row items-center justify-center gap-6 p-6"
-                            style={{ backfaceVisibility: 'hidden' }}
-                        >
-                            <div className={`${section.bgColor} rounded-xl p-6 backdrop-blur-md w-full max-w-md`}>
-                                <h2 className="text-3xl font-bold mb-3 text-center md:text-left">
-                                    {section.title}
-                                </h2>
-                                <p className="text-lg mb-4 text-center md:text-left">
-                                    {section.text}
-                                </p>
+                <div ref={sceneRef} className="relative w-full h-full">
+                    {content.map((section, index) => {
+                        const side = section.side || 'center';
+                        const alignClass =
+                            side === 'left'
+                                ? 'items-end text-right'
+                                : side === 'right'
+                                    ? 'items-start text-left'
+                                    : 'items-center text-center';
+
+                        const textAlign = side === 'left' ? 'right-0' : side === 'right' ? 'left-0' : 'left-1/2 -translate-x-1/2';
+
+                        return (
+                            <div
+                                key={index}
+                                className={`z-section w-100 lg:w-300 h-auto relative flex flex-col gap-2 ${alignClass}`}
+                            >
+                                {/* Text Container */}
+                                <div className={`absolute top-0 ${textAlign} px-4 py-2 z-10`}>
+                                    <h2 className="text-xl font-bold text-white drop-shadow-lg">
+                                        {section.title}
+                                    </h2>
+                                    <p className="text-base text-white drop-shadow">
+                                        {section.text}
+                                    </p>
+                                </div>
+
+                                {/* Image Container */}
+                                <div className="relative w-full h-100 lg:h-300 mt-16">
+                                    <Image
+                                        src={section.image}
+                                        alt={section.title}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 320px"
+                                        className="object-cover rounded-xl shadow-xl"
+                                    />
+                                </div>
+
+                                {/* Button */}
+                                <button
+                                    className="mt-4 px-4 py-2 bg-white text-black rounded-md shadow hover:bg-gray-200 transition"
+                                >
+                                    View More
+                                </button>
                             </div>
-                            <div className="relative w-full h-64 md:h-80">
-                                <Image
-                                    src={section.image}
-                                    alt={section.title}
-                                    fill
-                                    className="object-cover rounded-xl shadow-2xl"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    priority={index === 0}
-                                />
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
