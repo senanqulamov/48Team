@@ -71,9 +71,10 @@ export default function ProgressiveBlurNoise({show}: { show: boolean }) {
             className={`fixed top-0 left-0 w-full h-full z-[1000] pointer-events-none transition-opacity duration-1000 ease-out`}
             style={{
                 mixBlendMode: 'screen',
-                backgroundColor: show ? '#f5deb329' : 'dimgray',
+                backgroundColor: show ? '#f5deb329' : 'transparent',
                 transition: 'background-color 1.5s ease-in-out',
                 zIndex: show ? 100 : -1,
+                // opacity: show ? 1 : 0.5,
             }}
         />
     );

@@ -71,7 +71,7 @@ export default function HeroIntro() {
                                 subheadingRef.current!.innerHTML = finalText.substring(0, i);
                             }
 
-                            setTimeout(animate, 20); // Even faster animation
+                            setTimeout(animate, 10); // Even faster animation
                         } else {
                             subheadingRef.current!.classList.add('done');
                         }

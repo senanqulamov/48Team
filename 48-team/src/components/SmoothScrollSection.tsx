@@ -10,12 +10,12 @@ import Image from 'next/image';
 gsap.registerPlugin(ScrollTrigger);
 
 const content = [
-    { title: "Item A", text: "Welcome", image: "/images/demo1/1.jpg", side: "left" },
-    { title: "Item B", text: "Explore", image: "/images/demo1/2.jpg", side: "right" },
-    { title: "Item C", text: "Discover", image: "/images/demo1/3.jpg", side: "left" },
-    { title: "Item D", text: "Arrive", image: "/images/demo1/4.jpg", side: "right" },
-    { title: "Item E", text: "Evolve", image: "/images/demo1/5.jpg", side: "left" },
-    { title: "Item F", text: "Ascend", image: "/images/demo1/6.jpg", side: "center" },
+    {title: "Me, myself and I", text: "Who am I ?", image: "/images/mine/me1.webp", side: "left"},
+    {title: "Developer", text: "Explore my WORK", image: "/images/demo1/2.jpg", side: "right"},
+    {title: "Founder", text: "Discover my Startups", image: "/images/demo1/3.jpg", side: "left"},
+    {title: "Study", text: "Find out what I know", image: "/images/demo1/4.jpg", side: "right"},
+    {title: "Hobbies", text: "Evolve", image: "/images/demo1/5.jpg", side: "left"},
+    {title: "Let's Start", text: "just click", image: "/images/demo1/6.jpg", side: "center"},
 ];
 
 
@@ -41,7 +41,7 @@ export default function ZAxisScroll() {
         items.forEach((item, i) => {
             const side = content[i].side;
             const x = side === "left" ? -300 : side === "right" ? 300 : 0;
-            const y = gsap.utils.random(-100, 100);
+            const y = gsap.utils.random(-50, 50);
 
             const z = i * spacing;
 
@@ -117,11 +117,11 @@ export default function ZAxisScroll() {
                                 className={`z-section w-100 lg:w-300 h-auto relative flex flex-col gap-2 ${alignClass}`}
                             >
                                 {/* Text Container */}
-                                <div className={`absolute top-0 ${textAlign} px-4 py-2 z-10`}>
-                                    <h2 className="text-xl font-bold text-white drop-shadow-lg">
+                                <div className={`absolute top-[-5%] w-[100%] ${textAlign} px-4 py-2 z-10`}>
+                                    <p className="text-xl font-bold text-white drop-shadow-lg cst-big-text">
                                         {section.title}
-                                    </h2>
-                                    <p className="text-base text-white drop-shadow">
+                                    </p>
+                                    <p className="text-base text-white drop-shadow cst-mid-text">
                                         {section.text}
                                     </p>
                                 </div>
@@ -138,11 +138,11 @@ export default function ZAxisScroll() {
                                 </div>
 
                                 {/* Button */}
-                                <button
-                                    className="mt-4 px-4 py-2 bg-white text-black rounded-md shadow hover:bg-gray-200 transition"
+                                <a
+                                    className="mt-4 px-4 py-2 cst-bottom-overlay cst-mid-text bg-white text-black rounded-md shadow hover:bg-gray-200 transition"
                                 >
                                     View More
-                                </button>
+                                </a>
                             </div>
                         );
                     })}

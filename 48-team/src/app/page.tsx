@@ -6,6 +6,7 @@ import SmoothScrollSection from '@/components/SmoothScrollSection';
 import PageWrapper from '@/components/PageWrapper';
 import PageLoader from '@/components/PageLoader';
 import ProgressiveBlurNoise from '@/components/ProgressiveBlurNoise';
+import AnimatedMeshBackground from '@/components/AnimatedMeshBackground';
 
 export default function MainPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +19,7 @@ export default function MainPage() {
         <div className="relative text-white">
             {isLoading && <PageLoader onComplete={handleComplete} />}
 
+            <AnimatedMeshBackground/>
             <ProgressiveBlurNoise show={isLoading} />
             {!isLoading && (
                 <PageWrapper>

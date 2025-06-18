@@ -288,6 +288,7 @@ export default function NeonStarfieldBackground() {
                 height: '100vh',
                 backgroundColor: 'black',
                 display: 'block',
+                opacity: 0.6,
             }}
         />
     );

@@ -25,44 +25,14 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/*.z-container {*/
-/*    perspective: 1500px;*/
-/*    height: 100vh;*/
-/*    overflow-x: hidden;*/
-/*    overflow-y: scroll;*/
-/*    scroll-snap-type: y mandatory;*/
-/*    position: relative;*/
-/*}*/
-
-/*.z-section {*/
-/*    position: absolute;*/
-/*    width: 100vw;*/
-/*    height: 100vh;*/
-/*    background-size: cover;*/
-/*    background-position: center;*/
-/*    will-change: transform, opacity, filter;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    scroll-snap-align: start;*/
-/*    z-index: 1;*/
-/*}*/
-
-/*.z-content {*/
-/*    text-align: center;*/
-/*    color: white;*/
-/*    text-shadow: 0 0 20px rgba(0,0,0,0.8);*/
-/*    background-color: rgba(0, 0, 0, 0.3);*/
-/*    padding: 2rem 3rem;*/
-/*    border-radius: 12px;*/
-/*}*/
-
-/*.z-content h1 {*/
-/*    font-size: 3rem;*/
-/*    margin: 0;*/
-/*}*/
-
-/*.z-content p {*/
-/*    font-size: 1.2rem;*/
-/*    margin-top: 0.5rem;*/
-/*}*/
+.cst-big-text{
+    font-size: 10rem;
+}
+.cst-mid-text{
+    font-size: 3rem;
+}
+.cst-bottom-overlay{
+    position: absolute;
+    bottom: 0;
+    margin: 2%;
+}
