@@ -16,6 +16,21 @@ export default function PageLoader({
                                    }: PageLoaderProps) {
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // Detect if user is on a mobile-sized screen
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+        };
+    }, []);
 
     useEffect(() => {
         if (loadingComplete) {
@@ -30,7 +45,6 @@ export default function PageLoader({
         const animate = () => {
             const elapsed = Date.now() - startTime;
             const newProgress = Math.min(elapsed / duration, 1);
-
             setProgress(newProgress);
 
             if (newProgress < 1) {
@@ -71,9 +85,11 @@ export default function PageLoader({
                         </svg>
 
                         {/* Animated Blue Circle Fill */}
-                        <svg className="absolute inset-0" viewBox="0 0 100 100" style={{
-                            clipPath: `inset(${100 - progress * 100}% 0 0 0)`
-                        }}>
+                        <svg
+                            className="absolute inset-0"
+                            viewBox="0 0 100 100"
+                            style={{ clipPath: `inset(${100 - progress * 100}% 0 0 0)` }}
+                        >
                             <circle
                                 cx="50"
                                 cy="50"
@@ -81,16 +97,14 @@ export default function PageLoader({
                                 fill="none"
                                 stroke="#3b82f6"
                                 strokeWidth="4"
-                                strokeDasharray="295.31" // 2πr (2 * 3.1416 * 47)
+                                strokeDasharray="295.31"
                                 strokeDashoffset="0"
                             />
                         </svg>
 
                         {/* Number Fill Animation */}
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div style={{
-                                clipPath: `inset(${100 - progress * 100}% 0 0 0)`
-                            }}>
+                            <div style={{ clipPath: `inset(${100 - progress * 100}% 0 0 0)` }}>
                                 <svg viewBox="0 0 100 100" className="w-24 h-24">
                                     <defs>
                                         <pattern id="wavePattern" patternUnits="userSpaceOnUse" width="100" height="20">
@@ -130,6 +144,13 @@ export default function PageLoader({
                                 </svg>
                             </div>
                         </div>
+
+                        {/* Mobile notice */}
+                        {isMobile && (
+                            <p className="absolute bottom-[-2.5rem] left-1/2 -translate-x-1/2 text-sm text-gray-400 text-center whitespace-nowrap">
+                                (Better on desktop)
+                            </p>
+                        )}
                     </div>
                 </motion.div>
             )}

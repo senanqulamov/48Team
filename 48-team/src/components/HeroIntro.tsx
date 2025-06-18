@@ -21,7 +21,7 @@ export default function HeroIntro() {
             const finalText = "Welcome! I'm Senan :D";
             let i = 0;
             const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
-            const colors = ['#ff2e2e', '#42ff58', '#2e9cff']; // Tympanus demo colors
+            const colors = ['#D4A373', '#FDF6E3', '#4ADE80'];
 
             const animate = () => {
                 if (i < finalText.length) {
@@ -55,7 +55,7 @@ export default function HeroIntro() {
                     const finalText = "Wanna know me better ?";
                     let i = 0;
                     const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
-                    const colors = ['#ff2e2e', '#42ff58', '#2e9cff'];
+                    const colors = ['#D4A373', '#FDF6E3', '#4ADE80'];
 
                     const animate = () => {
                         if (i < finalText.length) {

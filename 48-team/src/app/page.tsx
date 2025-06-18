@@ -7,6 +7,7 @@ import PageWrapper from '@/components/PageWrapper';
 import PageLoader from '@/components/PageLoader';
 import ProgressiveBlurNoise from '@/components/ProgressiveBlurNoise';
 import AnimatedMeshBackground from '@/components/AnimatedMeshBackground';
+import ScrollDownIndicator from '@/components/ScrollDownIndicator';
 
 export default function MainPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +35,7 @@ export default function MainPage() {
                     </div>
                 </PageWrapper>
             )}
+            <ScrollDownIndicator />
         </div>
     );
 }
