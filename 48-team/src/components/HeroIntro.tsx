@@ -1,109 +1,160 @@
-'use client';
+"use client"
 
-import React, { useEffect, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import './HeroIntro.css';
+import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
 
-export default function HeroIntro() {
-    const controls = useAnimation();
-    const headingRef = useRef<HTMLHeadingElement>(null);
-    const subheadingRef = useRef<HTMLParagraphElement>(null);
+const HeroIntro = () => {
+  const [mounted, setMounted] = useState(false)
 
-    useEffect(() => {
-        controls.start({
-            opacity: 1,
-            y: 0,
-            transition: { duration: 1.2, ease: 'easeOut' },
-        });
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-        // Animation for heading
-        if (headingRef.current) {
-            const finalText = "Welcome! I'm Senan :D";
-            let i = 0;
-            const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
-            const colors = ['#D4A373', '#FDF6E3', '#4ADE80'];
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
-            const animate = () => {
-                if (i < finalText.length) {
-                    // Create glitch effect for current character
-                    const glitchChar = symbols[Math.floor(Math.random() * symbols.length)];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
+  if (!mounted) return null
 
-                    headingRef.current!.innerHTML =
-                        finalText.substring(0, i) +
-                        `<span class="glitch-char" style="color:${color}">${glitchChar}</span>`;
-
-                    // Randomly decide when to lock the final character
-                    if (Math.random() > 0.7) {
-                        i++;
-                        headingRef.current!.innerHTML = finalText.substring(0, i);
-                    }
-
-                    setTimeout(animate, 10); // Fast animation speed
-                } else {
-                    headingRef.current!.classList.add('done');
-                    startSubheading();
-                }
-            };
-
-            animate();
-        }
-
-        const startSubheading = () => {
-            setTimeout(() => {
-                if (subheadingRef.current) {
-                    const finalText = "Wanna know me better ?";
-                    let i = 0;
-                    const symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?/~";
-                    const colors = ['#D4A373', '#FDF6E3', '#4ADE80'];
-
-                    const animate = () => {
-                        if (i < finalText.length) {
-                            const glitchChar = symbols[Math.floor(Math.random() * symbols.length)];
-                            const color = colors[Math.floor(Math.random() * colors.length)];
-
-                            subheadingRef.current!.innerHTML =
-                                finalText.substring(0, i) +
-                                `<span class="glitch-char" style="color:${color}">${glitchChar}</span>`;
-
-                            if (Math.random() > 0.6) { // Faster progression for subheading
-                                i++;
-                                subheadingRef.current!.innerHTML = finalText.substring(0, i);
-                            }
-
-                            setTimeout(animate, 10); // Even faster animation
-                        } else {
-                            subheadingRef.current!.classList.add('done');
-                        }
-                    };
-
-                    animate();
-                }
-            }, 500); // Short delay before subheading starts
-        };
-
-    }, [controls]);
-
-    return (
+  return (
+    <div className="relative z-20 h-screen flex items-center justify-center px-4">
+      <div className="text-center max-w-6xl mx-auto">
+        {/* Animated greeting */}
         <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={controls}
-            className="w-full min-h-[calc(100vh-30px)] flex flex-col items-center justify-center text-center text-white bg-transparent"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-6"
         >
-            <motion.h1
-                ref={headingRef}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="terminal-text text-6xl md:text-7xl font-bold mb-6"
-            />
-            <motion.p
-                ref={subheadingRef}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 0.5 }}
-                className="terminal-subtext text-2xl"
-            />
+          <span className="text-lg md:text-xl text-primary font-medium tracking-wide">Hello, I'm</span>
         </motion.div>
-    );
+
+        {/* Main name with gradient animation */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight"
+        >
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient">
+            Senan The 48
+          </span>
+        </motion.h1>
+
+        {/* Role tags */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="flex flex-wrap justify-center gap-4 mb-8"
+        >
+          {["Programmer", "Therapist", "Founder"].map((role, index) => (
+            <motion.span
+              key={role}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+              className="px-4 py-2 bg-card border border-primary/20 rounded-full text-sm md:text-base font-medium text-primary backdrop-blur-sm"
+            >
+              {role}
+            </motion.span>
+          ))}
+        </motion.div>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.0 }}
+          className="text-lg md:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
+        >
+          Building innovative solutions at the intersection of{" "}
+          <span className="text-primary font-medium">technology</span> and{" "}
+          <span className="text-accent font-medium">human connection</span>. Founder of NeoSphere startup, creating the
+          future one line of code at a time.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+        >
+          <Button
+            onClick={() => scrollToSection("projects")}
+            size="lg"
+            className="btn-hover bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-medium group"
+          >
+            View Projects
+            <ArrowDown className="ml-2 w-4 h-4 icon-hover" />
+          </Button>
+          <Button
+            onClick={() => scrollToSection("contact")}
+            variant="outline"
+            size="lg"
+            className="btn-hover border-primary text-primary hover:bg-primary/10 px-8 py-3 text-lg font-medium group"
+          >
+            Contact Me
+            <Mail className="ml-2 w-4 h-4 icon-hover" />
+          </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="flex justify-center gap-6"
+        >
+          {[
+            { icon: Github, href: "#", label: "GitHub" },
+            { icon: Linkedin, href: "#", label: "LinkedIn" },
+            { icon: Mail, href: "mailto:senan@example.com", label: "Email" },
+          ].map(({ icon: Icon, href, label }) => (
+            <motion.a
+              key={label}
+              href={href}
+              className="interactive-element p-3 bg-card/50 border border-primary/20 rounded-full text-primary hover:text-accent hover:border-accent/40 backdrop-blur-sm group"
+              aria-label={label}
+            >
+              <Icon className="w-5 h-5 icon-hover" />
+            </motion.a>
+          ))}
+        </motion.div>
+
+        {/* Floating elements for visual interest */}
+        <motion.div
+          animate={{
+            y: [0, -10, 0],
+            rotate: [0, 5, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+          className="absolute top-20 left-10 w-20 h-20 bg-primary/10 rounded-full blur-xl"
+        />
+        <motion.div
+          animate={{
+            y: [0, 15, 0],
+            rotate: [0, -8, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+          className="absolute bottom-32 right-16 w-32 h-32 bg-accent/10 rounded-full blur-2xl"
+        />
+      </div>
+    </div>
+  )
 }
+
+export default HeroIntro

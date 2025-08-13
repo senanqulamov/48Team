@@ -1,21 +1,38 @@
-import './globals.css';
-import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
-import SmoothScrollProvider from '@/providers/SmoothScrollProvider';
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter, Space_Grotesk } from "next/font/google"
+import "./globals.css"
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+})
 
 export const metadata: Metadata = {
-    title: '48Team',
-    description: 'Build. Connect. Create.',
-};
+  title: "Senan The 48 - Programmer, Therapist & Founder",
+  description:
+    "Portfolio of Senan The 48 - Programmer, Therapist, and Founder of NeoSphere startup. Build. Connect. Create.",
+  keywords: ["programmer", "therapist", "founder", "neosphere", "portfolio", "web development"],
+  authors: [{ name: "Senan The 48" }],
+  creator: "Senan The 48",
+    generator: 'v0.app'
+}
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
-    return (
-        <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        </body>
-        </html>
-    );
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
+      <body className="font-sans antialiased">{children}</body>
+    </html>
+  )
 }

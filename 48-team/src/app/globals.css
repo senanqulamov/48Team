@@ -1,38 +1,268 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
+  --background: oklch(0.05 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.08 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.7 0.15 160);
+  --primary-foreground: oklch(0.05 0 0);
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.12 0 0);
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.6 0.2 200);
+  --accent-foreground: oklch(0.05 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.2 0 0);
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.7 0.15 160);
+  --chart-1: oklch(0.7 0.15 160);
+  --chart-2: oklch(0.6 0.2 200);
+  --chart-3: oklch(0.5 0.25 180);
+  --chart-4: oklch(0.8 0.1 140);
+  --chart-5: oklch(0.65 0.18 220);
+  --radius: 0.5rem;
+  --sidebar: oklch(0.08 0 0);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.7 0.15 160);
+  --sidebar-primary-foreground: oklch(0.05 0 0);
+  --sidebar-accent: oklch(0.15 0 0);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.7 0.15 160);
+}
+
+.dark {
+  --background: oklch(0.05 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.08 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.7 0.15 160);
+  --primary-foreground: oklch(0.05 0 0);
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.12 0 0);
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.6 0.2 200);
+  --accent-foreground: oklch(0.05 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.2 0 0);
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.7 0.15 160);
+  --chart-1: oklch(0.7 0.15 160);
+  --chart-2: oklch(0.6 0.2 200);
+  --chart-3: oklch(0.5 0.25 180);
+  --chart-4: oklch(0.8 0.1 140);
+  --chart-5: oklch(0.65 0.18 220);
+  --sidebar: oklch(0.08 0 0);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.7 0.15 160);
+  --sidebar-primary-foreground: oklch(0.05 0 0);
+  --sidebar-accent: oklch(0.15 0 0);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.2 0 0);
+  --sidebar-ring: oklch(0.7 0.15 160);
 }
 
 @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    /*--font-sans: var(--font-geist-sans);*/
-    /*--font-mono: var(--font-geist-mono);*/
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+/* Optimized animations with hardware acceleration and reduced complexity */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.cst-big-text{
-    font-size: 10rem;
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+  will-change: background-position;
 }
-.cst-mid-text{
-    font-size: 3rem;
+
+/* Background size utilities for gradient animation */
+.bg-300 {
+  background-size: 300% 300%;
 }
-.cst-bottom-overlay{
-    position: absolute;
-    bottom: 0;
-    margin: 2%;
+
+/* Performance-optimized hover effects with hardware acceleration */
+@layer components {
+  .hero-button {
+    @apply transition-transform duration-200 ease-out;
+    will-change: transform;
+  }
+
+  .hero-button:hover {
+    @apply transform scale-105;
+    transform: scale3d(1.05, 1.05, 1);
+  }
+
+  /* Optimized interactive elements with will-change and transform3d */
+  .interactive-element {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.2s ease-out;
+  }
+
+  .interactive-element:hover {
+    transform: translate3d(0, -2px, 0) scale3d(1.02, 1.02, 1);
+  }
+
+  /* Optimized card hover effects */
+  .hover-card {
+    will-change: transform, box-shadow;
+    transition: all 0.4s ease-in-out;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hover-card:hover {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Optimized button hover states */
+  .btn-hover {
+    will-change: transform, background-color;
+    transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .btn-hover:hover {
+    transform: translate3d(0, -1px, 0) scale3d(1.02, 1.02, 1);
+  }
+
+  /* Optimized icon hover animations */
+  .icon-hover {
+    will-change: transform;
+    transition: transform 0.15s ease-out;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .icon-hover:hover {
+    transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 12deg);
+  }
+}
+
+/* Reduced glow effects complexity for better performance */
+.glow-primary {
+  box-shadow: 0 0 15px rgba(var(--primary), 0.2);
+  transition: box-shadow 0.2s ease-out;
+}
+
+.glow-primary:hover {
+  box-shadow: 0 0 20px rgba(var(--primary), 0.3);
+}
+
+.glow-accent {
+  box-shadow: 0 0 15px rgba(var(--accent), 0.2);
+  transition: box-shadow 0.2s ease-out;
+}
+
+.glow-accent:hover {
+  box-shadow: 0 0 20px rgba(var(--accent), 0.3);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(0.08 0 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0.15 160);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.8 0.15 160);
+}
+
+/* Performance optimization for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient {
+    animation: none;
+  }
+
+  .interactive-element,
+  .hover-card,
+  .btn-hover,
+  .icon-hover {
+    transition: none;
+  }
+
+  .interactive-element:hover,
+  .hover-card:hover,
+  .btn-hover:hover,
+  .icon-hover:hover {
+    transform: none;
+  }
 }
