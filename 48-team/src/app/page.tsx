@@ -15,6 +15,7 @@ import PageLoader from "@/components/PageLoader"
 import ProgressiveBlurNoise from "@/components/ProgressiveBlurNoise"
 import AnimatedMeshBackground from "@/components/AnimatedMeshBackground"
 import ScrollDownIndicator from "@/components/ScrollDownIndicator"
+import { useLenisScroll } from "@/hooks/useLenisScroll"
 
 export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -23,11 +24,10 @@ export default function MainPage() {
     setIsLoading(false)
   }
 
+  useLenisScroll()
+
   return (
-    <div
-      className="relative text-foreground min-h-screen"
-      id="scroll-container"
-    >
+    <div className="relative text-foreground min-h-screen" id="scroll-container">
       {isLoading && <PageLoader onComplete={handleComplete} />}
 
       <AnimatedMeshBackground />
