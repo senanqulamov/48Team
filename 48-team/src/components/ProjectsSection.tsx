@@ -22,18 +22,6 @@ const ProjectsSection = () => {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  }
-
   const projects = [
     {
       id: 1,
@@ -99,7 +87,13 @@ const ProjectsSection = () => {
 
   const ProjectCard = ({ project, index }: { project: any; index: number }) => (
     <motion.div
-      variants={itemVariants}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.3 + index * 0.15,
+          ease: "easeInOut",
+        }}
       className="group relative bg-card/50 border border-primary/20 rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300 will-change-transform hover:border-primary/40 hover:translate-y-[-8px]"
       style={{ willChange: "transform" }}
     >
@@ -245,7 +239,7 @@ const ProjectsSection = () => {
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             className="btn-hover bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-medium group"
           >
-            Let's Work Together
+            Let&apos;s Work Together
             <ArrowRight className="ml-2 w-5 h-5 icon-hover group-hover:translate-x-1 transition-transform duration-300" />
           </Button>
         </motion.div>

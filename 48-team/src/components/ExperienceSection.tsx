@@ -20,18 +20,6 @@ const ExperienceSection = () => {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  }
-
   const experiences = [
     {
       id: 1,
@@ -113,8 +101,11 @@ const ExperienceSection = () => {
   ]
 
   const TimelineItem = ({ experience, index }: { experience: any; index: number }) => (
-    <motion.div variants={itemVariants} className="relative flex gap-6 pb-12 last:pb-0">
-      {/* Timeline line */}
+    <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative flex gap-6 pb-12 last:pb-0">
       <div className="relative flex flex-col items-center">
         <div
           className={`w-12 h-12 rounded-full border-2 border-primary/20 bg-card flex items-center justify-center ${experience.color} group-hover:border-primary/40 transition-colors`}

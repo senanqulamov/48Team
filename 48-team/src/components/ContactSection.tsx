@@ -59,7 +59,7 @@ const ContactSection = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: "cubic-bezier(0.4,0,0.2,1)",
       },
     },
   }
@@ -123,11 +123,11 @@ const ContactSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Let's Work Together
+            Let&apos;s Work Together
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Ready to bring your ideas to life? Whether you need a technical solution, therapeutic guidance, or want to
-            discuss a potential collaboration, I'd love to hear from you.
+            discuss a potential collaboration, I&apos;d love to hear from you.
           </p>
         </motion.div>
 
@@ -138,11 +138,19 @@ const ContactSection = () => {
           className="grid lg:grid-cols-2 gap-16"
         >
           {/* Contact Information */}
-          <motion.div variants={itemVariants} className="space-y-8">
+          <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1], 
+              }}
+              className="space-y-8"
+          >
             <div>
               <h3 className="text-2xl font-display font-bold text-foreground mb-6">Get In Touch</h3>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                I'm always open to discussing new opportunities, innovative projects, or just having a conversation
+                I&apos;m always open to discussing new opportunities, innovative projects, or just having a conversation
                 about technology and human potential. Feel free to reach out through any of the channels below.
               </p>
             </div>
@@ -192,7 +200,15 @@ const ContactSection = () => {
           </motion.div>
 
           {/* Contact Form */}
-          <motion.div variants={itemVariants}>
+          <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1], 
+              }}
+              className="space-y-8"
+          >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>

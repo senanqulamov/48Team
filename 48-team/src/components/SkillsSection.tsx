@@ -33,19 +33,6 @@ const SkillsSection = () => {
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  }
-
   const techSkills = [
     { name: "Frontend Development", icon: Code2, level: 95, color: "text-blue-400" },
     { name: "Backend Development", icon: Server, level: 90, color: "text-green-400" },
@@ -66,7 +53,9 @@ const SkillsSection = () => {
 
   const SkillCard = ({ skill, index }: { skill: any; index: number }) => (
     <motion.div
-      variants={itemVariants}
+        initial={{ opacity: 0, y: 20, scale: 0.8 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ scale: 1.05, y: -5 }}
       className="bg-card/50 border border-primary/20 rounded-xl p-6 backdrop-blur-sm group hover:border-primary/40 transition-all duration-300"
     >
@@ -117,7 +106,9 @@ const SkillsSection = () => {
             className="space-y-6"
           >
             <motion.h3
-              variants={itemVariants}
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               className="text-2xl font-display font-bold text-foreground mb-8 flex items-center gap-3"
             >
               <Code2 className="w-8 h-8 text-primary" />
@@ -138,7 +129,9 @@ const SkillsSection = () => {
             className="space-y-6"
           >
             <motion.h3
-              variants={itemVariants}
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               className="text-2xl font-display font-bold text-foreground mb-8 flex items-center gap-3"
             >
               <Brain className="w-8 h-8 text-accent" />

@@ -27,17 +27,9 @@ const Navigation = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      // Enhanced scroll behavior with Locomotive Scroll integration
-      const locomotiveScroll = (window as any).locomotiveScroll
-      if (locomotiveScroll) {
-        locomotiveScroll.scrollTo(element, {
-          duration: 1200,
-          easing: [0.25, 0.0, 0.35, 1.0],
-        })
-      } else {
         element.scrollIntoView({ behavior: "smooth" })
-      }
     }
+
     setIsMobileMenuOpen(false)
   }
 
@@ -56,10 +48,12 @@ const Navigation = () => {
       <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-background/20">
         <motion.div
           className="h-full bg-gradient-to-r from-primary via-accent to-primary"
-          style={{ scaleX: scrollProgress }}
           initial={{ scaleX: 0 }}
           transition={{ duration: 0.1 }}
-          transformOrigin="left"
+          style={{
+            scaleX: scrollProgress,
+            transformOrigin: "left"
+          }}
         />
       </div>
 
