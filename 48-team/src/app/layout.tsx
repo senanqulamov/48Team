@@ -19,10 +19,10 @@ export const metadata: Metadata = {
   title: "Senan The 48 - Programmer, Therapist & Founder",
   description:
     "Portfolio of Senan The 48 - Programmer, Therapist, and Founder of NeoSphere startup. Build. Connect. Create.",
-  keywords: ["programmer", "therapist", "founder", "neosphere", "portfolio", "web development"],
-  authors: [{ name: "Senan The 48" }],
-  creator: "Senan The 48",
-    generator: 'v0.app'
+  keywords: ["programmer", "therapist", "founder", "neosphere", "bidbary", "portfolio", "web development"],
+  authors: [{ name: "Senan Qulamov" }],
+  creator: "Senan Qulamov",
+    generator: 'Senan Qulamov'
 }
 
 export default function RootLayout({

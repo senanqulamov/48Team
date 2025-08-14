@@ -24,7 +24,10 @@ export default function MainPage() {
   }
 
   return (
-    <div className="relative text-foreground min-h-screen" id="scroll-container">
+    <div
+      className="relative text-foreground min-h-screen"
+      id="scroll-container"
+    >
       {isLoading && <PageLoader onComplete={handleComplete} />}
 
       <AnimatedMeshBackground />

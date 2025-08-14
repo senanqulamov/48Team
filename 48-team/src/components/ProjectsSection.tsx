@@ -22,7 +22,26 @@ const ProjectsSection = () => {
     },
   }
 
-  const projects = [
+  type Project = {
+    id: number;
+    title: string;
+    subtitle: string;
+    description: string;
+    longDescription: string;
+    image: string;
+    technologies: string[];
+    category: string;
+    status: string;
+    icon: React.ElementType;
+    color: string;
+    links: {
+      demo: string;
+      github: string;
+    };
+    features: string[];
+  };
+
+  const projects: Project[] = [
     {
       id: 1,
       title: "NeoSphere",
@@ -85,7 +104,7 @@ const ProjectsSection = () => {
     },
   ]
 
-  const ProjectCard = ({ project, index }: { project: any; index: number }) => (
+  const ProjectCard = ({ project, index }: { project: Project; index: number }) => (
     <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

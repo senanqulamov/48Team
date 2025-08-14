@@ -100,7 +100,20 @@ const ExperienceSection = () => {
     },
   ]
 
-  const TimelineItem = ({ experience, index }: { experience: any; index: number }) => (
+  type Experience = {
+    id: number;
+    type: string;
+    title: string;
+    company: string;
+    location: string;
+    period: string;
+    description: string;
+    achievements: string[];
+    icon: React.ElementType;
+    color: string;
+  };
+
+  const TimelineItem = ({ experience, index }: { experience: Experience; index: number }) => (
     <motion.div
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}

@@ -51,7 +51,14 @@ const SkillsSection = () => {
     { name: "Design Thinking", icon: Palette, level: 85, color: "text-pink-400" },
   ]
 
-  const SkillCard = ({ skill, index }: { skill: any; index: number }) => (
+  type Skill = {
+    name: string;
+    icon: React.ElementType;
+    level: number;
+    color: string;
+  };
+
+  const SkillCard = ({ skill, index }: { skill: Skill; index: number }) => (
     <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.8 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}

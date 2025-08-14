@@ -122,9 +122,9 @@ const AboutSection = () => {
                 About Me
               </motion.h2>
               <motion.p variants={itemVariants} className="text-lg text-muted-foreground leading-relaxed mb-6">
-                I'm a unique blend of <span className="text-primary font-medium">technical expertise</span> and{" "}
+                I&apos;m a unique blend of <span className="text-primary font-medium">technical expertise</span> and{" "}
                 <span className="text-accent font-medium">human understanding</span>. As a programmer, I build scalable
-                solutions that solve real-world problems. As a therapist, I help people navigate life's challenges and
+                solutions that solve real-world problems. As a therapist, I help people navigate life&apos;s challenges and
                 unlock their potential.
               </motion.p>
               <motion.p variants={itemVariants} className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -133,13 +133,13 @@ const AboutSection = () => {
                 the gap between human needs and technological solutions.
               </motion.p>
               <motion.p variants={itemVariants} className="text-lg text-muted-foreground leading-relaxed">
-                When I'm not coding or counseling, you'll find me exploring new technologies, reading about human
-                behavior, or brainstorming the next big idea that could make a difference in people's lives.
+                When I&apos;m not coding or counseling, you&apos;ll find me exploring new technologies, reading about human
+                behavior, or brainstorming the next big idea that could make a difference in people&apos;s lives.
               </motion.p>
             </div>
 
             <motion.div variants={itemVariants} className="grid grid-cols-2 gap-6">
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
                   variants={itemVariants}

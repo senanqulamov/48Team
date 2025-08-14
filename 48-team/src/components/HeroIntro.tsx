@@ -31,7 +31,7 @@ const HeroIntro = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-6"
         >
-          <span className="text-lg md:text-xl text-primary font-medium tracking-wide">Hello, I'm</span>
+          <span className="text-lg md:text-xl text-primary font-medium tracking-wide">Hello, I&apos;m</span>
         </motion.div>
 
         {/* Main name with gradient animation */}
@@ -97,7 +97,6 @@ const HeroIntro = () => {
             onClick={() => scrollToSection("contact")}
             variant="outline"
             size="lg"
-            className="btn-hover border-primary text-primary hover:bg-primary/10 px-8 py-3 text-lg font-medium group"
           >
             Contact Me
             <Mail className="ml-2 w-4 h-4 icon-hover" />

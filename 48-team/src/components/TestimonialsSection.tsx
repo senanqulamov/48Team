@@ -20,7 +20,7 @@ const TestimonialsSection = () => {
       company: "TechFlow Solutions",
       image: "/placeholder.svg?height=80&width=80",
       rating: 5,
-      text: "Senan's unique combination of technical expertise and emotional intelligence made him an invaluable team member. His ability to understand both user needs and technical constraints resulted in solutions that were both innovative and practical.",
+      text: "Senan&apos;s unique combination of technical expertise and emotional intelligence made him an invaluable team member. His ability to understand both user needs and technical constraints resulted in solutions that were both innovative and practical.",
     },
     {
       id: 2,
@@ -47,7 +47,7 @@ const TestimonialsSection = () => {
       company: "StartupHub",
       image: "/placeholder.svg?height=80&width=80",
       rating: 5,
-      text: "Senan's entrepreneurial mindset and technical execution are exceptional. He doesn't just build products; he creates solutions that genuinely improve people's lives. His leadership style is both inspiring and effective.",
+      text: "Senan&apos;s entrepreneurial mindset and technical execution are exceptional. He doesn&apos;t just build products; he creates solutions that genuinely improve people&apos;s lives. His leadership style is both inspiring and effective.",
     },
     {
       id: 5,
@@ -75,18 +75,6 @@ const TestimonialsSection = () => {
       transition: {
         staggerChildren: 0.2,
         delayChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
       },
     },
   }
@@ -141,7 +129,7 @@ const TestimonialsSection = () => {
 
             {/* Testimonial Text */}
             <blockquote className="text-lg md:text-xl text-foreground leading-relaxed text-center mb-8 relative z-10">
-              "{testimonials[currentIndex].text}"
+              &quot;{testimonials[currentIndex].text}&quot;
             </blockquote>
 
             {/* Author */}
@@ -165,7 +153,7 @@ const TestimonialsSection = () => {
           {/* Navigation */}
           <div className="flex items-center justify-center gap-4 mt-8">
             <Button
-              variant="outline"
+              variant="outline_pag"
               size="sm"
               onClick={prevTestimonial}
               className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
@@ -187,7 +175,7 @@ const TestimonialsSection = () => {
             </div>
 
             <Button
-              variant="outline"
+              variant="outline_pag"
               size="sm"
               onClick={nextTestimonial}
               className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
