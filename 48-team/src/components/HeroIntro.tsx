@@ -42,7 +42,7 @@ const HeroIntro = () => {
           className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight"
         >
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient">
-            Senan The 48
+            Senan - The 48
           </span>
         </motion.h1>
 
