@@ -7,12 +7,13 @@ export function useLenisScroll() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     lenisRef.current = new Lenis({
-      lerp: 0.12, // Higher value for more direct, less laggy scroll
-      syncTouch: true,
-      touchMultiplier: 1.1, // Responsive but not too aggressive
-      wheelMultiplier: 1.05, // Slightly faster but controlled
+      lerp: 0.06, // smoother, less CPU-heavy
+      smoothWheel: true, // disable smooth wheel scrolling
+      syncTouch: true,    // sync with touch input
+      touchMultiplier: 1,
+      wheelMultiplier: 1,
       infinite: false,
-    });
+    })
 
     let frameId: number;
     function raf(time: number) {
