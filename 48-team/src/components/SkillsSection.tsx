@@ -5,9 +5,6 @@ import { useInView } from "framer-motion"
 import { useRef } from "react"
 import {
   Code2,
-  Database,
-  Globe,
-  Smartphone,
   Brain,
   Users,
   MessageCircle,
@@ -34,44 +31,126 @@ const SkillsSection = () => {
   }
 
   const techSkills = [
-    { name: "Frontend Development", icon: Code2, level: 95, color: "text-blue-400" },
-    { name: "Backend Development", icon: Server, level: 90, color: "text-green-400" },
-    { name: "Database Design", icon: Database, level: 85, color: "text-purple-400" },
-    { name: "Mobile Development", icon: Smartphone, level: 80, color: "text-orange-400" },
-    { name: "Web Technologies", icon: Globe, level: 92, color: "text-cyan-400" },
-    { name: "Version Control", icon: GitBranch, level: 88, color: "text-red-400" },
+    {
+      name: "Backend Development",
+      subtitle: "Java, PHP & Databases",
+      icon: Server,
+      level: 92,
+      color: "text-green-400",
+      tags: [
+        "Java", "Javalin", "Spring Boot", "OOP", "Algorithms", "REST API", "Json",
+        "PHP", "Laravel", "OpenCart", "Ajax", "MySQL", "Oracle SQL"
+      ]
+    },
+    {
+      name: "Frontend Development",
+      subtitle: "Web & UI Technologies",
+      icon: Palette,
+      level: 88,
+      color: "text-pink-400",
+      tags: ["JavaScript", "Next.js", "Jquery", "GSAP", "Three.js", "WebGL", "Bootstrap", "CSS", "HTML", "Sass"]
+    },
+    {
+      name: "DevOps & Tools",
+      subtitle: "Automation & Version Control",
+      icon: GitBranch,
+      level: 80,
+      color: "text-red-400",
+      tags: ["Docker", "Git", "GitLab", "Kali Linux"]
+    },
+    {
+      name: "C, Embedded & Hardware",
+      subtitle: "Low-level & IoT",
+      icon: Rocket,
+      level: 75,
+      color: "text-cyan-400",
+      tags: ["C", "C++", "Arduino"]
+    },
+    {
+      name: "Design",
+      subtitle: "UI/UX & Creative Tools",
+      icon: Palette,
+      level: 82,
+      color: "text-yellow-500",
+      tags: ["Figma", "Canva", "Motiff", "Photoshop", "Illustrator", "After Effects"]
+    },
   ]
 
   const softSkills = [
-    { name: "Therapeutic Counseling", icon: Brain, level: 95, color: "text-primary" },
-    { name: "Team Leadership", icon: Users, level: 90, color: "text-accent" },
-    { name: "Communication", icon: MessageCircle, level: 95, color: "text-blue-400" },
-    { name: "Problem Solving", icon: Lightbulb, level: 92, color: "text-yellow-400" },
-    { name: "Innovation", icon: Rocket, level: 88, color: "text-purple-400" },
-    { name: "Design Thinking", icon: Palette, level: 85, color: "text-pink-400" },
-  ]
+    {
+      name: "Therapeutic Counseling",
+      subtitle: "Empathy & Support",
+      icon: Brain,
+      level: 97,
+      color: "text-primary",
+      tags: ["Active Listening", "Empathy", "Guidance", "Support"]
+    },
+    {
+      name: "Team Leadership",
+      subtitle: "Collaboration & Motivation",
+      icon: Users,
+      level: 90,
+      color: "text-accent",
+      tags: ["Teamwork", "Mentoring", "Motivation", "Conflict Resolution"]
+    },
+    {
+      name: "Communication",
+      subtitle: "Verbal & Written Skills",
+      icon: MessageCircle,
+      level: 93,
+      color: "text-blue-400",
+      tags: ["Public Speaking", "Writing", "Negotiation", "Presentation"]
+    },
+    {
+      name: "Problem Solving & Innovation",
+      subtitle: "Creativity & Analysis",
+      icon: Lightbulb,
+      level: 89,
+      color: "text-yellow-400",
+      tags: ["Critical Thinking", "Creativity", "Analysis", "Innovation", "Design Thinking"]
+    },
+    {
+      name: "Personal Achievements",
+      subtitle: "Chess Player, Swimmer, Book Writer",
+      icon: Rocket,
+      level: 85,
+      color: "text-purple-400",
+      tags: ["Chess", "Swimming", "Book Writing"]
+    },
+  ];
 
   type Skill = {
     name: string;
     icon: React.ElementType;
     level: number;
     color: string;
+    tags?: string[];
+    subtitle?: string;
   };
 
   const SkillCard = ({ skill, index }: { skill: Skill; index: number }) => (
     <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.8 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className="bg-card/50 border border-primary/20 rounded-xl p-6 backdrop-blur-sm group hover:border-primary/40 transition-all duration-300"
+        transition={{ duration: 0.25, ease: "easeInOut" }}
+      whileHover={{
+        scale: 1.07,
+        y: -8,
+        boxShadow: "0 8px 32px 0 rgba(80, 120, 255, 0.15)",
+        borderColor: "#4f46e5",
+        background: "linear-gradient(90deg, rgba(80,120,255,0.08) 0%, rgba(255,255,255,0.04) 100%)"
+      }}
+      className="bg-card/50 border border-primary/20 rounded-xl p-6 backdrop-blur-sm group transition-all duration-200 ease-in-out hover:border-primary/60 hover:shadow-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10"
     >
       <div className="flex items-center gap-4 mb-4">
         <div className={`p-3 rounded-lg bg-background/50 ${skill.color} group-hover:scale-110 transition-transform`}>
           <skill.icon className="w-6 h-6" />
         </div>
         <div className="flex-1">
-          <h3 className="font-semibold text-foreground mb-1">{skill.name}</h3>
+          <h3 className="font-semibold text-foreground mb-1 text-2xl">{skill.name}</h3>
+          {skill.subtitle && (
+            <div className="text-base font-semibold text-muted-foreground mb-2">{skill.subtitle}</div>
+          )}
           <div className="w-full bg-muted rounded-full h-2">
             <motion.div
               initial={{ width: 0 }}
@@ -80,6 +159,18 @@ const SkillsSection = () => {
               className="h-2 bg-gradient-to-r from-primary to-accent rounded-full"
             />
           </div>
+          {skill.tags && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {skill.tags.map(tag => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-card border border-primary/10 rounded-full text-sm font-semibold text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <span className="text-sm font-medium text-muted-foreground">{skill.level}%</span>
       </div>
@@ -162,18 +253,7 @@ const SkillsSection = () => {
           <h3 className="text-2xl font-display font-bold text-foreground mb-8">Technology Stack</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              "React",
-              "Next.js",
-              "TypeScript",
-              "Node.js",
-              "Python",
-              "PostgreSQL",
-              "MongoDB",
-              "AWS",
-              "Docker",
-              "GraphQL",
-              "Tailwind CSS",
-              "Framer Motion",
+              "Java", "Javalin", "PHP", "Laravel", "OpenCart", "MySQL", "Oracle SQL", "JavaScript", "Next.js", "OOP", "Algorithms", "WebGL", "Three.js", "C", "C++", "Bootstrap", "CSS", "HTML", "Kali Linux", "Docker", "JSON", "Ajax", "Arduino", "REST API", "jQuery", "Git", "GitLab", "GSAP", "Sass"
             ].map((tech, index) => (
               <motion.span
                 key={tech}
@@ -181,7 +261,7 @@ const SkillsSection = () => {
                 animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 whileHover={{ scale: 1.1, y: -2 }}
-                className="px-4 py-2 bg-card border border-primary/20 rounded-full text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-all duration-200 cursor-default"
+                className="px-4 py-2 bg-card border border-primary/20 rounded-full text-base font-semibold text-foreground hover:border-primary/40 hover:text-primary transition-all duration-200 cursor-default"
               >
                 {tech}
               </motion.span>

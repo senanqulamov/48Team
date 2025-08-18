@@ -16,9 +16,9 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: "Senan The 48 - Programmer, Therapist & Founder",
+  title: "Senan Qulamov - Programmer, Therapist & Founder",
   description:
-    "Portfolio of Senan The 48 - Programmer, Therapist, and Founder of NeoSphere startup. Build. Connect. Create.",
+    "Portfolio of Senan Qulamov - Programmer, Therapist, and Founder of NeoSphere startup. Build. Connect. Create.",
   keywords: ["programmer", "therapist", "founder", "neosphere", "bidbary", "portfolio", "web development"],
   authors: [{ name: "Senan Qulamov" }],
   creator: "Senan Qulamov",

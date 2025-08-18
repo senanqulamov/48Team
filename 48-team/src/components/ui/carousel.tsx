@@ -231,6 +231,46 @@ function CarouselNext({
   )
 }
 
+function CarouselDots({ className }: { className?: string }) {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [slideCount, setSlideCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!api) return;
+
+    setSlideCount(api.slideNodes().length);
+
+    const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+    api.on('select', onSelect);
+    onSelect();
+
+    // Cleanup function must return void
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
+
+
+  if (slideCount <= 1) return null;
+
+  return (
+    <div className={cn("flex justify-center gap-2 mt-4", className)}>
+      {Array.from({ length: slideCount }).map((_, idx) => (
+        <button
+          key={idx}
+          aria-label={`Go to slide ${idx + 1}`}
+          className={cn(
+            "w-3 h-3 rounded-full transition-all",
+            idx === selectedIndex ? "bg-primary scale-110 shadow" : "bg-muted/40 hover:bg-primary/40"
+          )}
+          onClick={() => api?.scrollTo(idx)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export {
   type CarouselApi,
   Carousel,
@@ -238,4 +278,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselDots,
 }

@@ -15,7 +15,6 @@ import PageLoader from "@/components/PageLoader"
 import ProgressiveBlurNoise from "@/components/ProgressiveBlurNoise"
 import AnimatedMeshBackground from "@/components/AnimatedMeshBackground"
 import ScrollDownIndicator from "@/components/ScrollDownIndicator"
-import { useLenisScroll } from "@/hooks/useLenisScroll"
 
 export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -24,7 +23,7 @@ export default function MainPage() {
     setIsLoading(false)
   }
 
-  useLenisScroll()
+  // useLenisScroll()
 
   return (
     <div className="relative text-foreground min-h-screen" id="scroll-container">
@@ -37,43 +36,43 @@ export default function MainPage() {
         <>
           <Navigation />
           <PageWrapper>
-            <section id="hero" className="relative z-20" data-scroll-section>
-              <div data-scroll data-scroll-speed="0.5">
+            <section id="hero" className="relative z-20">
+              <div>
                 <HeroIntro />
               </div>
             </section>
 
-            <div data-scroll-section>
-              <div data-scroll data-scroll-speed="0.2">
+            <div>
+              <div>
                 <AboutSection />
               </div>
             </div>
 
-            <div data-scroll-section>
-              <div data-scroll data-scroll-speed="0.3">
+            <div>
+              <div>
                 <SkillsSection />
               </div>
             </div>
 
-            <div data-scroll-section>
-              <div data-scroll data-scroll-speed="0.1">
+            <div>
+              <div>
                 <ProjectsSection />
               </div>
             </div>
 
-            <div data-scroll-section>
-              <div data-scroll data-scroll-speed="0.2">
+            <div>
+              <div>
                 <ExperienceSection />
               </div>
             </div>
 
-            <div data-scroll-section>
-              <div data-scroll data-scroll-speed="0.1">
+            <div>
+              <div>
                 <TestimonialsSection />
               </div>
             </div>
 
-            <div data-scroll-section>
+            <div>
               <ContactSection />
             </div>
           </PageWrapper>

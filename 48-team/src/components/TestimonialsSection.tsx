@@ -79,6 +79,9 @@ const TestimonialsSection = () => {
     },
   }
 
+  // Show coming soon layer and blur effect
+  const isComingSoon = true;
+
   return (
     <section id="testimonials" className="py-20 px-4 relative overflow-hidden">
       <div className="max-w-6xl mx-auto" ref={ref}>
@@ -98,92 +101,107 @@ const TestimonialsSection = () => {
           </p>
         </motion.div>
 
-        {/* Main Testimonial */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="relative"
-        >
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.5 }}
-            className="bg-card/50 border border-primary/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm relative"
-          >
-            {/* Quote Icon */}
-            <div className="absolute top-6 left-6 text-primary/20">
-              <Quote className="w-12 h-12" />
-            </div>
-
-            {/* Rating */}
-            <div className="flex justify-center mb-6">
-              <div className="flex gap-1">
-                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonial Text */}
-            <blockquote className="text-lg md:text-xl text-foreground leading-relaxed text-center mb-8 relative z-10">
-              &quot;{testimonials[currentIndex].text}&quot;
-            </blockquote>
-
-            {/* Author */}
-            <div className="flex items-center justify-center gap-4">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20">
-                <Image
-                  src={testimonials[currentIndex].image || "/placeholder.svg"}
-                  alt={testimonials[currentIndex].name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="text-center">
-                <h4 className="font-display font-bold text-foreground">{testimonials[currentIndex].name}</h4>
-                <p className="text-primary font-medium">{testimonials[currentIndex].role}</p>
-                <p className="text-muted-foreground text-sm">{testimonials[currentIndex].company}</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <Button
-              variant="outline_pag"
-              size="sm"
-              onClick={prevTestimonial}
-              className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
+        {/* Main Testimonial Slider with Blur and Coming Soon Overlay */}
+        <div className="relative">
+          <div className={isComingSoon ? "pointer-events-none blur-sm select-none" : ""}>
+            {/* Main Testimonial */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="relative"
             >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+                className="bg-card/50 border border-primary/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm relative"
+              >
+                {/* Quote Icon */}
+                <div className="absolute top-6 left-6 text-primary/20">
+                  <Quote className="w-12 h-12" />
+                </div>
 
-            {/* Dots */}
-            <div className="flex gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex ? "bg-primary w-8" : "bg-primary/20 hover:bg-primary/40"
-                  }`}
-                />
-              ))}
-            </div>
+                {/* Rating */}
+                <div className="flex justify-center mb-6">
+                  <div className="flex gap-1">
+                    {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
 
-            <Button
-              variant="outline_pag"
-              size="sm"
-              onClick={nextTestimonial}
-              className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+                {/* Testimonial Text */}
+                <blockquote className="text-lg md:text-xl text-foreground leading-relaxed text-center mb-8 relative z-10">
+                  &quot;{testimonials[currentIndex].text}&quot;
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center justify-center gap-4">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20">
+                    <Image
+                      src={testimonials[currentIndex].image || "/placeholder.svg"}
+                      alt={testimonials[currentIndex].name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <h4 className="font-display font-bold text-foreground">{testimonials[currentIndex].name}</h4>
+                    <p className="text-primary font-medium">{testimonials[currentIndex].role}</p>
+                    <p className="text-muted-foreground text-sm">{testimonials[currentIndex].company}</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Navigation */}
+              <div className="flex items-center justify-center gap-4 mt-8">
+                <Button
+                  variant="outline_pag"
+                  size="sm"
+                  onClick={prevTestimonial}
+                  className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
+                  disabled={isComingSoon}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+
+                {/* Dots */}
+                <div className="flex gap-2">
+                  {testimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentIndex ? "bg-primary w-8" : "bg-primary/20 hover:bg-primary/40"
+                      }`}
+                      disabled={isComingSoon}
+                    />
+                  ))}
+                </div>
+
+                <Button
+                  variant="outline_pag"
+                  size="sm"
+                  onClick={nextTestimonial}
+                  className="border-primary/20 text-primary hover:bg-primary/10 bg-transparent"
+                  disabled={isComingSoon}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Coming Soon Overlay */}
+          {isComingSoon && (
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-30">
+              <span className="text-4xl md:text-5xl font-bold text-primary drop-shadow-lg">Coming Soon</span>
+            </div>
+          )}
+        </div>
 
         {/* Background Decorations */}
         <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
