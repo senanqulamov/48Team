@@ -246,7 +246,7 @@ const ProjectsSection = () => {
                     className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white px-8 py-4 text-base font-semibold rounded-xl shadow-lg transition-all duration-300 group"
                 >
                 <span className="flex items-center gap-2">
-                  Let's Work Together
+                  Let&apos;s Work Together
                   <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
                 </Button>
