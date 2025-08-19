@@ -185,7 +185,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-8 rounded-full",
+        "size-8 rounded-full",
         orientation === "horizontal"
           ? "top-1/2 -left-12 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -215,7 +215,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-8 rounded-full",
+        "size-8 rounded-full",
         orientation === "horizontal"
           ? "top-1/2 -right-12 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -261,8 +261,8 @@ function CarouselDots({ className }: { className?: string }) {
           key={idx}
           aria-label={`Go to slide ${idx + 1}`}
           className={cn(
-            "w-3 h-3 rounded-full transition-all",
-            idx === selectedIndex ? "bg-primary scale-110 shadow" : "bg-muted/40 hover:bg-primary/40"
+            "w-3 h-3 rounded-full transition-all cursor-pointer",
+            idx === selectedIndex ? "bg-primary scale-110 shadow" : "bg-green-900 hover:bg-primary/40"
           )}
           onClick={() => api?.scrollTo(idx)}
         />

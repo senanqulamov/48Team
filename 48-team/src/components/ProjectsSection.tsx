@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import Image from "next/image"
-import { ExternalLink, Github, ArrowRight, Zap, Brain, Globe } from "lucide-react"
+import {ExternalLink, Github, ArrowRight, Zap, Brain, Globe, ArrowDown} from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const ProjectsSection = () => {
@@ -242,12 +242,14 @@ const ProjectsSection = () => {
                 </p>
                 <Button
                     size="lg"
+                    variant="outline"
                     onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                    className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white px-8 py-4 text-base font-semibold rounded-xl shadow-lg transition-all duration-300 group"
+                    className="px-4 py-2 bg-card border border-primary/20 rounded-full cursor-pointer text-sm md:text-base font-medium text-primary backdrop-blur-sm"
+                    asChild
                 >
                 <span className="flex items-center gap-2">
                   Let&apos;s Work Together
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowDown className="transition-transform duration-300 group-hover:translate-y-1" />
                 </span>
                 </Button>
               </div>
@@ -259,7 +261,7 @@ const ProjectsSection = () => {
                 <Button
                     size="lg"
                     variant="outline"
-                    className="w-full sm:w-auto bg-background hover:bg-accent/10 text-accent border-2 border-accent hover:border-accent/80 px-8 py-4 text-base font-semibold rounded-xl shadow-lg transition-all duration-300 group"
+                    className="px-4 py-2 bg-card border border-primary/20 rounded-full text-sm md:text-base font-medium text-primary backdrop-blur-sm"
                     asChild
                 >
                   <a href="/projects">
