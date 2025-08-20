@@ -41,9 +41,9 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="relative bg-background border-t border-primary/20">
+    <footer className="relative z-1 bg-background border-t border-primary/20">
       {/* Back to top button */}
-      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
         <Button
           onClick={scrollToTop}
           size="sm"
@@ -106,8 +106,8 @@ const Footer = () => {
             <h3 className="text-lg font-display font-semibold text-foreground">Get In Touch</h3>
             <div className="space-y-2 text-muted-foreground">
               <p>Baku, Azerbaijan</p>
-              <a href="mailto:senan@neosphere.com" className="hover:text-primary transition-colors duration-200 block">
-                senan@neosphere.com
+              <a href="mailto:qulamovsenan@gmail.com" className="hover:text-primary transition-colors duration-200 block">
+                qulamovsenan@gmail.com
               </a>
               <a href="tel:+994515838095" className="hover:text-primary transition-colors duration-200 block">
                 +994 (051) 583-8095

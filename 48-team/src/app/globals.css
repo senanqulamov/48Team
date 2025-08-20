@@ -266,3 +266,14 @@
     transform: none;
   }
 }
+
+/* Custom Cursor: hide native cursor on fine pointers */
+body.has-custom-cursor, body.has-custom-cursor * { cursor: none !important; }
+/* Allow text caret where appropriate */
+body.has-custom-cursor input[type="text"],
+body.has-custom-cursor input[type="search"],
+body.has-custom-cursor input[type="password"],
+body.has-custom-cursor textarea,
+body.has-custom-cursor [contenteditable="true"] {
+  cursor: text !important;
+}

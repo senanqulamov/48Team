@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
-import { Calendar, MapPin, Award, GraduationCap, Briefcase, Rocket } from "lucide-react"
+import {Calendar, MapPin, Award, GraduationCap, Briefcase, Rocket, Axis3d} from "lucide-react"
 
 const ExperienceSection = () => {
   const ref = useRef(null)
@@ -27,13 +27,13 @@ const ExperienceSection = () => {
       title: "Founder & CEO",
       company: "NeoSphere",
       location: "Remote",
-      period: "2023 - Present",
+      period: "2020 - Present",
       description:
-        "Leading the development of an AI-powered wellness platform that combines therapeutic principles with cutting-edge technology. Managing a team of 8 developers and therapists.",
+          "Founder of NeoSphere, a workers' union hub and gig/job marketplace that connects freelancers, job seekers, and organizations. Driving product vision, architecture, and development using Laravel and React, with backend APIs extending into Java (Javalin).",
       achievements: [
-        "Raised $500K in seed funding",
-        "Built MVP with 1000+ beta users",
-        "Established partnerships with 3 therapy clinics",
+        "Designed and structured the platform around Spheres, Core Hubs, and Karma Points",
+        "Built MVP with core modules: jobs, events, and user profiles",
+        "Defined revenue streams: subscriptions, sponsored Spheres, and transaction fees"
       ],
       icon: Rocket,
       color: "text-primary",
@@ -41,64 +41,176 @@ const ExperienceSection = () => {
     {
       id: 2,
       type: "work",
-      title: "Senior Full-Stack Developer",
-      company: "TechFlow Solutions",
-      location: "San Francisco, CA",
-      period: "2021 - 2023",
+      title: "Middle Backend Developer",
+      company: "Inci Group of Companies LLC",
+      location: "Baku, Azerbaijan",
+      period: "May 2025 - Present",
       description:
-        "Developed scalable web applications for enterprise clients, specializing in React, Node.js, and cloud architecture. Led a team of 5 junior developers.",
+          "Building scalable backend systems for enterprise projects using Laravel and modern PHP, while also introducing Java + Javalin APIs for microservices and integrations. Collaborating onsite in Baku Economic Zone with cross-functional teams.",
       achievements: [
-        "Improved application performance by 40%",
-        "Mentored 12 junior developers",
-        "Architected microservices for 3 major clients",
+        "Developed and maintained backend services with Laravel 10/12, PHP 8+, and MySQL/PostgreSQL",
+        "Integrated third-party APIs (RESTful, OAuth, Webhooks) and enterprise systems",
+        "Implemented microservices with Java (Javalin) for API-first architecture",
+        "Optimized queries and application performance for high scalability",
+        "Improved CI/CD pipelines with GitHub Actions and Docker"
+      ],
+      icon: Briefcase,
+      color: "text-indigo-400",
+    },
+    {
+      id: 3,
+      type: "work",
+      title: "Middle Backend Developer",
+      company: "GlobalSoft",
+      location: "Baku, Azerbaijan",
+      period: "Mar 2025 - May 2025",
+      description:
+          "Backend Developer focusing on Laravel/PHP applications and enterprise web solutions. Contributed to API development, integration, and performance improvements.",
+      achievements: [
+        "Delivered scalable Laravel/PHP applications",
+        "Developed and integrated RESTful APIs for business workflows",
+        "Collaborated with frontend teams for seamless feature delivery"
+      ],
+      icon: Briefcase,
+      color: "text-amber-400",
+    },
+    {
+      id: 4,
+      type: "service",
+      title: "Military Service",
+      company: "Army Duty",
+      location: "Azerbaijan",
+      period: "Jan 2024 - Jan 2025",
+      description:
+          "Completed mandatory military service. Built discipline, resilience, teamwork, and leadership that positively influence my engineering approach.",
+      achievements: [
+        "Fulfilled mandatory service requirements",
+        "Developed strong teamwork and leadership skills"
+      ],
+      icon: Award,
+      color: "text-rose-400",
+    },
+    {
+      id: 5,
+      type: "work",
+      title: "Freelance Full-stack Developer",
+      company: "Self-employed",
+      location: "Remote",
+      period: "Aug 2023 - Jan 2024",
+      description:
+          "6-month freelancing period delivering web apps and APIs. Implemented features end-to-end, from UI to data models and deployments.",
+      achievements: [
+        "Delivered multiple client projects with Laravel/Next.js",
+        "Integrated third-party APIs and optimized performance"
+      ],
+      icon: Axis3d,
+      color: "text-teal-400",
+    },
+    {
+      id: 6,
+      type: "work",
+      title: "Technical Lead & Full-stack Web Developer",
+      company: "ALLRENT",
+      location: "Baku, Azerbaijan",
+      period: "Nov 2022 - Jul 2023",
+      description:
+          "Led the full development of Allrent.io from scratch, building an online rental marketplace with advanced features and optimized booking workflows.",
+      achievements: [
+        "Integrated online payments, review systems, and interactive maps",
+        "Developed a custom reservation calendar to streamline bookings",
+        "Transitioned from freelancer to permanent technical lead role"
+      ],
+      icon: Briefcase,
+      color: "text-primary",
+    },
+    {
+      id: 7,
+      type: "work",
+      title: "Team Leader & Full-stack Web Developer",
+      company: "DEIRVLON Technologies",
+      location: "Baku, Azerbaijan",
+      period: "May 2022 - Oct 2022",
+      description:
+          "Led Laravel and JavaScript development teams, delivering scalable solutions for logistics and enterprise projects.",
+      achievements: [
+        "Architected and developed a cargo management platform",
+        "Directed cross-functional teams to deliver on-time features",
+        "Contributed to the development of Monyo.az"
       ],
       icon: Briefcase,
       color: "text-blue-400",
     },
     {
-      id: 3,
+      id: 8,
       type: "work",
-      title: "Licensed Therapist",
-      company: "Mindful Wellness Center",
-      location: "Austin, TX",
-      period: "2020 - Present",
+      title: "Full-stack Web Developer & Cybersecurity Admin",
+      company: "FERRUM CAPITAL",
+      location: "Baku, Azerbaijan",
+      period: "Mar 2021 - May 2022",
       description:
-        "Providing individual and group therapy sessions, specializing in anxiety, depression, and career transitions. Developed innovative therapy techniques combining traditional methods with technology.",
+          "Developed Laravel and React-based systems while serving as Cybersecurity Administrator. Introduced secure architecture patterns and began building Java APIs for internal systems.",
       achievements: [
-        "Helped 200+ clients achieve their goals",
-        "Developed digital therapy tools",
-        "Published 3 research papers",
+        "Delivered projects including Otomall.az, Agagroup.az, and Balli.az",
+        "Implemented authentication/authorization systems with Laravel Sanctum/Passport",
+        "Developed internal Java (Javalin) APIs to extend backend functionality",
+        "Implemented cybersecurity best practices and monitored system threats"
       ],
-      icon: Award,
+      icon: Briefcase,
       color: "text-accent",
     },
     {
-      id: 4,
-      type: "education",
-      title: "Master of Science in Psychology",
-      company: "University of Texas at Austin",
-      location: "Austin, TX",
-      period: "2018 - 2020",
+      id: 9,
+      type: "work",
+      title: "Full-stack Web Developer Intern",
+      company: "ATL Tech",
+      location: "Baku, Azerbaijan",
+      period: "Jul 2019 - Oct 2019",
       description:
-        "Specialized in cognitive behavioral therapy and digital mental health interventions. Thesis on 'AI-Assisted Therapeutic Interventions'.",
-      achievements: ["Summa Cum Laude", "Research Assistant", "Psychology Honor Society"],
+          "Internship focused on PHP/Laravel, backend development, and prototype building for partner companies.",
+      achievements: [
+        "Developed features for 'Student Library' project",
+        "Built an online course platform (similar to Udemy) as a final project",
+        "Strengthened Laravel backend and frontend skills"
+      ],
+      icon: Award,
+      color: "text-green-400",
+    },
+    {
+      id: 10,
+      type: "education",
+      title: "Master of Computer Science",
+      company: "Baku State University (SABAH Groups)",
+      location: "Baku, Azerbaijan",
+      period: "2021 - 2023",
+      description:
+          "Focused on Cyber Security and Data Science with a GPA of 88.7. Research and coursework emphasized secure system design and scalable web platforms.",
+      achievements: [
+        "SABAH groups certification 2023",
+        "Graduated with honors",
+        "Specialization in Cyber Security & Data Science"
+      ],
       icon: GraduationCap,
       color: "text-green-400",
     },
     {
-      id: 5,
+      id: 11,
       type: "education",
-      title: "Bachelor of Science in Computer Science",
-      company: "Stanford University",
-      location: "Stanford, CA",
-      period: "2014 - 2018",
+      title: "Bachelor of Computer Science",
+      company: "Khazar University",
+      location: "Baku, Azerbaijan",
+      period: "2017 - 2021",
       description:
-        "Focused on artificial intelligence, machine learning, and human-computer interaction. Active in hackathons and coding competitions.",
-      achievements: ["Dean's List (4 years)", "ACM Programming Contest Winner", "CS Teaching Assistant"],
+          "Studied Computer Science with focus on Cyber Security, Web Development, Database Administration, Data Science, and Robotics. Graduated with GPA 89.",
+      achievements: [
+        "Diploma with honors",
+        "2nd place in World Robot Olympiad Azerbaijan 2018",
+        "Active in applied projects and research initiatives"
+      ],
       icon: GraduationCap,
       color: "text-purple-400",
     },
-  ]
+  ];
+
 
   type Experience = {
     id: number;

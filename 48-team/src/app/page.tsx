@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Navigation from "@/components/Navigation"
 import HeroIntro from "@/components/HeroIntro"
 import AboutSection from "@/components/AboutSection"
@@ -22,6 +22,28 @@ export default function MainPage() {
   const handleComplete = () => {
     setIsLoading(false)
   }
+
+  // After loader completes, scroll to a hash target if present
+  useEffect(() => {
+    if (isLoading) return
+
+    const scrollToHash = () => {
+      const hash = window.location.hash?.slice(1)
+      if (!hash) return
+      const el = document.getElementById(hash)
+      if (!el) return
+      // slight delay to ensure layout has settled
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth" })
+      }, 50)
+    }
+
+    scrollToHash()
+
+    const onHashChange = () => scrollToHash()
+    window.addEventListener("hashchange", onHashChange)
+    return () => window.removeEventListener("hashchange", onHashChange)
+  }, [isLoading])
 
   // useLenisScroll()
 

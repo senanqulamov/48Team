@@ -4,17 +4,20 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { usePathname, useRouter } from "next/navigation"
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = scrollTop / docHeight
+      const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0
 
       setIsScrolled(scrollTop > 50)
       setScrollProgress(scrollPercent)
@@ -24,13 +27,29 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
+  const onHome = (pathname ?? "/") === "/"
+
+  const smoothScrollOnHome = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
+      element.scrollIntoView({ behavior: "smooth" })
+      // reflect hash in URL without reloading
+      const newHash = `#${sectionId}`
+      if (window.location.hash !== newHash) {
+        history.pushState(null, "", newHash)
+      }
     }
+  }
 
-    setIsMobileMenuOpen(false)
+  const scrollToSection = (sectionId: string) => {
+    if (onHome) {
+      smoothScrollOnHome(sectionId)
+      setIsMobileMenuOpen(false)
+    } else {
+      // navigate to home with hash; main page will handle the scroll after it mounts
+      router.push(`/#${sectionId}`)
+      setIsMobileMenuOpen(false)
+    }
   }
 
   const navItems = [
@@ -41,6 +60,9 @@ const Navigation = () => {
     { id: "experience", label: "Experience" },
     { id: "contact", label: "Contact" },
   ]
+
+  // Replace the "Get In Touch" button with "Go Back" button if user is in the projects route
+  const isProjectsRoute = (pathname ?? "").includes("projects")
 
   return (
     <>
@@ -120,19 +142,28 @@ const Navigation = () => {
 
             {/* Enhanced CTA button with glow effect */}
             <div className="hidden md:block">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  onClick={() => scrollToSection("contact")}
-                  className="relative bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              {isProjectsRoute ? (
+                <button
+                  onClick={() => router.push('/')}
+                  className="px-6 py-2 rounded-full cursor-pointer font-semibold text-base transition-all duration-200 bg-card hover:bg-primary/10 hover:text-primary"
                 >
-                  <span className="relative z-10">Get In Touch</span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-0"
-                    whileHover={{ opacity: 0.3 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </Button>
-              </motion.div>
+                  &larr; Go Back
+                </button>
+              ) : (
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    onClick={() => scrollToSection("contact")}
+                    className="relative bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <span className="relative z-10">Get In Touch</span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-0"
+                      whileHover={{ opacity: 0.3 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </Button>
+                </motion.div>
+              )}
             </div>
 
             {/* Modern mobile menu button */}

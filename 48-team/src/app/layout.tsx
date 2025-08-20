@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Space_Grotesk } from "next/font/google"
 import "./globals.css"
+import CustomCursor from "@/components/CustomCursor"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   )
 }

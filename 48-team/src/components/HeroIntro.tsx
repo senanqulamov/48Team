@@ -110,9 +110,9 @@ const HeroIntro = () => {
           className="flex justify-center gap-6"
         >
           {[
-            { icon: Github, href: "#", label: "GitHub" },
-            { icon: Linkedin, href: "#", label: "LinkedIn" },
-            { icon: Mail, href: "mailto:senan@example.com", label: "Email" },
+            { icon: Github, href: "https://github.com/senanqulamov", label: "GitHub" },
+            { icon: Linkedin, href: "https://www.linkedin.com/in/senan-qulamov/", label: "LinkedIn" },
+            { icon: Mail, href: "mailto:qulamovsenan@gmail.com", label: "Email" },
           ].map(({ icon: Icon, href, label }) => (
             <motion.a
               key={label}
