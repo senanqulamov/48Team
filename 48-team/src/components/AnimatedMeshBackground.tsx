@@ -10,6 +10,9 @@ export default function NeonStarfieldBackground() {
   useEffect(() => {
     if (!canvasRef.current) return
 
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+    const lowEnd = (window.__LOW_END__ === true) || prefersReducedMotion
+
     // Create reusable circle texture
     const createCircleTexture = () => {
       const size = 64
@@ -28,42 +31,42 @@ export default function NeonStarfieldBackground() {
 
     const circleTexture = createCircleTexture()
 
-    // Setup renderer
+    // Setup renderer (lower DPR on low-end)
     const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
+      canvas: canvasRef.current!,
+      antialias: !lowEnd,
       alpha: true,
+      powerPreference: lowEnd ? "low-power" : "high-performance",
     })
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(lowEnd ? 1 : Math.min(window.devicePixelRatio, 2))
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
     camera.position.z = 30
 
-    // Mouse-based parallax
+    // Mouse-based parallax (skip on low-end)
     const mouse = new THREE.Vector2()
     const target = new THREE.Vector2()
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
-    document.addEventListener("mousemove", handleMouseMove)
+    if (!lowEnd) document.addEventListener("mousemove", handleMouseMove, { passive: true })
 
-    // Scroll-based velocity tracking
+    // Scroll-based velocity tracking (skip on low-end)
     let lastScrollY = window.scrollY
     let scrollSpeed = 0
     let smoothedScrollSpeed = 0
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       scrollSpeed = currentScrollY - lastScrollY
       lastScrollY = currentScrollY
     }
-    window.addEventListener("scroll", handleScroll)
+    if (!lowEnd) window.addEventListener("scroll", handleScroll, { passive: true })
 
-    // Starfield
-    const starsCount = 800
+    // Starfield (fewer on low-end)
+    const starsCount = lowEnd ? 250 : 800
     const starsGeometry = new THREE.BufferGeometry()
     const positions = new Float32Array(starsCount * 3)
     const colors = new Float32Array(starsCount * 3)
@@ -77,7 +80,7 @@ export default function NeonStarfieldBackground() {
       new THREE.Color(0xff6600),
     ]
     const planetIndices = new Set<number>()
-    while (planetIndices.size < starsCount * 0.05) {
+    while (planetIndices.size < starsCount * (lowEnd ? 0.02 : 0.05)) {
       planetIndices.add(Math.floor(Math.random() * starsCount))
     }
 
@@ -110,10 +113,10 @@ export default function NeonStarfieldBackground() {
     starsGeometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1))
 
     const starsMaterial = new THREE.PointsMaterial({
-      size: 0.3,
+      size: lowEnd ? 0.25 : 0.3,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
       map: circleTexture,
@@ -123,7 +126,7 @@ export default function NeonStarfieldBackground() {
     const starfield = new THREE.Points(starsGeometry, starsMaterial)
     scene.add(starfield)
 
-    // Shooting stars
+    // Shooting stars (disable on low-end)
     class ShootingStar {
       line: THREE.Line
       positions: Float32Array
@@ -197,7 +200,7 @@ export default function NeonStarfieldBackground() {
           this.positions[i * 3 + 2] = startZ + this.direction.z * offset
         }
 
-        this.line.geometry.attributes.position.needsUpdate = true
+        ;(this.line.geometry as THREE.BufferGeometry).attributes.position.needsUpdate = true
       }
 
       update() {
@@ -215,7 +218,7 @@ export default function NeonStarfieldBackground() {
         this.positions[1] = this.currentPosition.y
         this.positions[2] = this.currentPosition.z
 
-        this.line.geometry.attributes.position.needsUpdate = true
+        ;(this.line.geometry as THREE.BufferGeometry).attributes.position.needsUpdate = true
 
         if (
           this.age > this.maxAge ||
@@ -229,40 +232,59 @@ export default function NeonStarfieldBackground() {
     }
 
     const shootingStars: ShootingStar[] = []
-    for (let i = 0; i < 8; i++) {
+    const shootingStarsCount = lowEnd ? 0 : 8
+    for (let i = 0; i < shootingStarsCount; i++) {
       const star = new ShootingStar()
       scene.add(star.line)
       shootingStars.push(star)
     }
 
     const clock = new THREE.Clock()
-    const animate = () => {
+    let last = 0
+    const targetFps = lowEnd ? 24 : 45
+    const interval = 1000 / targetFps
+
+    const animate = (now: number) => {
+      const deltaMs = now - last
+      if (deltaMs < interval) {
+        req.current = requestAnimationFrame(animate)
+        return
+      }
+      last = now
+
       const time = clock.getElapsedTime()
 
       // Mouse-based parallax
-      target.x += (mouse.x * 10 - target.x) * 0.05
-      target.y += (mouse.y * 10 - target.y) * 0.05
-      camera.position.x = target.x
-      camera.position.y = target.y
+      if (!lowEnd) {
+        target.x += (mouse.x * 10 - target.x) * 0.05
+        target.y += (mouse.y * 10 - target.y) * 0.05
+        camera.position.x = target.x
+        camera.position.y = target.y
 
-      // Scroll-driven forward/backward motion
-      smoothedScrollSpeed += (scrollSpeed - smoothedScrollSpeed) * 0.1
-      camera.position.z -= smoothedScrollSpeed * 0.05
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, 5, 100)
+        // Scroll-driven forward/backward motion
+        smoothedScrollSpeed += (scrollSpeed - smoothedScrollSpeed) * 0.1
+        camera.position.z -= smoothedScrollSpeed * 0.05
+        camera.position.z = THREE.MathUtils.clamp(camera.position.z, 5, 100)
+      }
 
       camera.lookAt(scene.position)
 
       // Animate elements
-      starfield.rotation.x = time * 0.02
-      starfield.rotation.y = time * 0.01
+      starfield.rotation.x = time * (lowEnd ? 0.01 : 0.02)
+      starfield.rotation.y = time * (lowEnd ? 0.005 : 0.01)
 
-      shootingStars.forEach((star) => star.update())
+      if (!lowEnd) shootingStars.forEach((star) => star.update())
 
       renderer.render(scene, camera)
       req.current = requestAnimationFrame(animate)
     }
 
-    req.current = requestAnimationFrame(animate)
+    if (lowEnd) {
+      // Render once for static background
+      renderer.render(scene, camera)
+    } else {
+      req.current = requestAnimationFrame(animate)
+    }
 
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight
@@ -273,8 +295,10 @@ export default function NeonStarfieldBackground() {
 
     return () => {
       if (req.current) cancelAnimationFrame(req.current)
-      document.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("scroll", handleScroll)
+      if (!lowEnd) {
+        document.removeEventListener("mousemove", handleMouseMove)
+        window.removeEventListener("scroll", handleScroll)
+      }
       window.removeEventListener("resize", handleResize)
       renderer.dispose()
     }

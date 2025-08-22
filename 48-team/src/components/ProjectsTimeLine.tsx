@@ -311,23 +311,24 @@ const projects: Project[] = [
     title: "Agagroup.az",
     subtitle: "FerrumCapital",
     description:
-        "Delivered corporate site and backend services for Agagroup.az with Laravel and MySQL.",
+        "Delivered corporate site and backend services for Agagroup.az with PHP and MySQL.",
     blog: `<p>Agagroup.az was developed to streamline corporate presence for FerrumCapital. Focused on content management, security, and backend efficiency.</p>`,
-    image: "/images/agagroup/1.jpg",
+    image: "/images/agagroup.az/5.png",
     images: [
-      "/images/agagroup/1.jpg",
-      "/images/agagroup/2.jpg",
-      "/images/agagroup/3.jpg",
-      "/images/agagroup/4.jpg",
-      "/images/agagroup/5.jpg"
+      "/images/agagroup.az/1.png",
+      "/images/agagroup.az/2.png",
+      "/images/agagroup.az/3.png",
+      "/images/agagroup.az/4.png",
+      "/images/agagroup.az/5.png",
+      "/images/agagroup.az/6.png"
     ],
-    technologies: ["Laravel", "MySQL", "Bootstrap"],
+    technologies: ["PHP", "WordPress", "MySQL", "Bootstrap"],
     category: "Client Projects",
     status: "Completed",
     icon: Server,
     color: "from-red-400 to-orange-400",
     date: "2021 - 2022",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://agagroup.az", github: "#" },
     features: ["Corporate Website", "CMS", "Optimized Backend"],
   },
   {
@@ -335,87 +336,53 @@ const projects: Project[] = [
     title: "Balli.az",
     subtitle: "FerrumCapital",
     description:
-        "Built Balli.az with Laravel backend, integrating secure payment systems and optimized APIs.",
-    blog: `<p>Balli.az was developed as a modern e-commerce solution under FerrumCapital, with Laravel backend, secure payments, and reliable order workflows.</p>`,
-    image: "/images/balli/1.jpg",
+        "Built Balli.az with PHP backend and WordPress, integrating secure payment systems and optimized APIs.",
+    blog: `<p>Balli.az was developed as a modern e-commerce solution under FerrumCapital, with core PHP backend and WordPress, secure payments, and reliable order workflows.</p>`,
+    image: "/images/balli.az/demo1.png",
     images: [
-      "/images/balli/1.jpg",
-      "/images/balli/2.jpg",
-      "/images/balli/3.jpg",
-      "/images/balli/4.jpg",
-      "/images/balli/5.jpg"
+      "/images/balli.az/demo1.png",
+      "/images/balli.az/demo2.png",
+      "/images/balli.az/demo3.png",
+      "/images/balli.az/demo4.png",
+      "/images/balli.az/demo5.png"
     ],
-    technologies: ["Laravel", "React", "MySQL"],
+    technologies: ["PHP", "WordPress", "MySQL", "REST APIs", "Stripe"],
     category: "Client Projects",
     status: "Completed",
     icon: Server,
     color: "from-red-400 to-orange-400",
     date: "2021 - 2022",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://balli.az", github: "#" },
     features: ["E-commerce", "Payments", "Order Management"],
   },
   {
-    id: 12,
-    title: "Ferrumcapital.az",
-    subtitle: "FerrumCapital",
-    description:
-        "Corporate website with Laravel backend and security-first implementation.",
-    blog: `<p>Built Ferrumcapital.az focusing on secure architecture, scalability, and professional corporate presence for the FerrumCapital brand.</p>`,
-    image: "/images/ferrumcapital/1.jpg",
-    images: [
-      "/images/ferrumcapital/1.jpg",
-      "/images/ferrumcapital/2.jpg",
-      "/images/ferrumcapital/3.jpg",
-      "/images/ferrumcapital/4.jpg",
-      "/images/ferrumcapital/5.jpg"
-    ],
-    technologies: ["Laravel", "MySQL", "Bootstrap"],
-    category: "Client Projects",
-    status: "Completed",
-    icon: Server,
-    color: "from-red-400 to-orange-400",
-    date: "2021 - 2022",
-    links: { demo: "#", github: "#" },
-    features: ["Corporate Website", "Security", "Optimized Performance"],
-  },
-  {
-    id: 13,
-    title: "Monyo.az",
-    subtitle: "Deirvlon Technologies",
-    description:
-        "Developed Monyo.az e-commerce platform with Laravel and JavaScript, focusing on scalable architecture.",
-    blog: `<p>Monyo.az was built as a scalable e-commerce solution at Deirvlon, integrating modern backend architecture with efficient frontend flows.</p>`,
-    image: "/images/monyo/1.jpg",
-    images: [
-      "/images/monyo/1.jpg",
-      "/images/monyo/2.jpg",
-      "/images/monyo/3.jpg",
-      "/images/monyo/4.jpg",
-      "/images/monyo/5.jpg"
-    ],
-    technologies: ["Laravel", "JavaScript", "MySQL"],
-    category: "Client Projects",
-    status: "Completed",
-    icon: Server,
-    color: "from-indigo-400 to-blue-500",
-    date: "2022",
-    links: { demo: "#", github: "#" },
-    features: ["E-commerce", "Scalable Backend", "User-friendly UI"],
-  },
-  {
     id: 14,
-    title: "KendigetirCargo.com (Shiplounge.co)",
+    title: "Shiplounge.co",
     subtitle: "Deirvlon Technologies",
     description:
-        "Led the cargo management project with Laravel backend, ensuring scalability and performance.",
-    blog: `<p>KendigetirCargo.com (Shiplounge.co) was developed as a logistics/cargo system. Designed scalable backend workflows and ensured performance under load.</p>`,
-    image: "/images/kendigetir/1.jpg",
+        "End-to-end cargo and logistics platform for SMEs.",
+    blog: `<p>Shiplounge.co (KendigetirCargo.com) is a logistics and cargo management system designed for reliability at scale. It streamlines the full shipment lifecycle—rate calculation, booking, pickup, in-transit updates, and delivery confirmation—while giving operators clear tooling to manage tariffs, routes, and invoices.</p>
+<p><strong>Architecture</strong>: Laravel + MySQL with optimized indexes and pagination, background jobs/queues for notifications and third‑party integrations, application‑level caching for hot reads, and strict RBAC for admins, operators, and clients. We hardened performance by removing N+1 queries, introducing composite indexes where needed, and keeping critical screens fast under load.</p>
+<ul>
+  <li>Shipment lifecycle: quote → booking → pickup → in‑transit → delivered</li>
+  <li>Rate calculator and tariff/route management</li>
+  <li>Live status timeline with optional map view</li>
+  <li>Invoicing and basic finance reports</li>
+  <li>Role‑based access (admin / operator / client)</li>
+  <li>Operations‑optimized UI: filters, bulk actions, quick search</li>
+</ul>
+<p><strong>Outcome</strong>: faster order handling, fewer ops errors, and clear visibility via dashboards and shipment timelines.</p>`,
+    image: "/images/shiplounge.co/7.png",
     images: [
-      "/images/kendigetir/1.jpg",
-      "/images/kendigetir/2.jpg",
-      "/images/kendigetir/3.jpg",
-      "/images/kendigetir/4.jpg",
-      "/images/kendigetir/5.jpg"
+      "/images/shiplounge.co/1.png",
+      "/images/shiplounge.co/2.png",
+      "/images/shiplounge.co/3.png",
+      "/images/shiplounge.co/4.png",
+      "/images/shiplounge.co/5.png",
+      "/images/shiplounge.co/6.png",
+      "/images/shiplounge.co/7.png",
+      "/images/shiplounge.co/8.png",
+      "/images/shiplounge.co/9.png"
     ],
     technologies: ["Laravel", "MySQL", "Bootstrap"],
     category: "Client Projects",
@@ -423,32 +390,15 @@ const projects: Project[] = [
     icon: Server,
     color: "from-indigo-400 to-blue-500",
     date: "2022",
-    links: { demo: "#", github: "#" },
-    features: ["Cargo Solutions", "Scalable Backend", "Optimized UI"],
-  },
-  {
-    id: 15,
-    title: "Visaglo.az",
-    subtitle: "GlobalSoft",
-    description:
-        "Backend development for Visaglo.az travel services website, with Laravel/PHP and secure booking workflows.",
-    blog: `<p>Visaglo.az was developed at GlobalSoft as an international travel service platform. Focused on secure booking, integrations, and Laravel APIs.</p>`,
-    image: "/images/visaglo/1.jpg",
-    images: [
-      "/images/visaglo/1.jpg",
-      "/images/visaglo/2.jpg",
-      "/images/visaglo/3.jpg",
-      "/images/visaglo/4.jpg",
-      "/images/visaglo/5.jpg"
+    links: { demo: "https://shiplounge.co", github: "#" },
+    features: [
+      "Shipment Lifecycle",
+      "Rate & Tariffs",
+      "Real-time Tracking",
+      "Invoicing & Reports",
+      "RBAC",
+      "Ops-optimized UI",
     ],
-    technologies: ["Laravel", "PHP", "MySQL"],
-    category: "Client Projects",
-    status: "Completed",
-    icon: Server,
-    color: "from-amber-400 to-yellow-500",
-    date: "2025",
-    links: { demo: "#", github: "#" },
-    features: ["Booking Systems", "Payment Integration", "Backend APIs"],
   },
   {
     id: 16,
@@ -457,94 +407,114 @@ const projects: Project[] = [
     description:
         "Developed LuckyHolidays.az for travel services, focusing on Laravel backend and secure APIs.",
     blog: `<p>LuckyHolidays.az was a project for GlobalSoft, delivering travel booking features, payment flows, and optimized backend APIs.</p>`,
-    image: "/images/luckyholidays/1.jpg",
+    image: "/images/luckyholidays.az/5.png",
     images: [
-      "/images/luckyholidays/1.jpg",
-      "/images/luckyholidays/2.jpg",
-      "/images/luckyholidays/3.jpg",
-      "/images/luckyholidays/4.jpg",
-      "/images/luckyholidays/5.jpg"
+      "/images/luckyholidays.az/1.png",
+      "/images/luckyholidays.az/2.png",
+      "/images/luckyholidays.az/3.png",
+      "/images/luckyholidays.az/4.png",
+      "/images/luckyholidays.az/5.png",
+      "/images/luckyholidays.az/6.png",
+      "/images/luckyholidays.az/7.png",
+      "/images/luckyholidays.az/8.png",
     ],
-    technologies: ["Laravel", "PHP", "MySQL"],
+    technologies: ["Laravel", "PHP", "MySQL", "React", "Node.js"],
     category: "Client Projects",
     status: "Completed",
     icon: Server,
     color: "from-amber-400 to-yellow-500",
     date: "2025",
-    links: { demo: "#", github: "#" },
-    features: ["Travel Website", "Payment Systems", "APIs"],
+    links: { demo: "https://luckyholidays.az", github: "#" },
+    features: ["Travel Website", "Payment Systems", "APIs", "Ecommerce", "Admin Panel"],
   },
   {
     id: 17,
     title: "CTSA.az",
     subtitle: "GlobalSoft",
     description:
-        "Built CTSA.az backend services with Laravel, integrating APIs and enterprise-grade security.",
-    blog: `<p>CTSA.az was a GlobalSoft project focused on critical infrastructure solutions. Delivered Laravel backend, API integrations, and secure workflows.</p>`,
-    image: "/images/ctsa/1.jpg",
+        "Built CTSA.az backend services with Laravel + React, integrating APIs and enterprise-grade security.",
+    blog: `<p>CTSA.az was a GlobalSoft project focused on critical infrastructure solutions. Delivered Laravel backend, react frontend, API integrations and secure workflows.</p>`,
+    image: "/images/ctsa.az/1.png",
     images: [
-      "/images/ctsa/1.jpg",
-      "/images/ctsa/2.jpg",
-      "/images/ctsa/3.jpg",
-      "/images/ctsa/4.jpg",
-      "/images/ctsa/5.jpg"
+      "/images/ctsa.az/1.png",
+      "/images/ctsa.az/2.png",
+      "/images/ctsa.az/3.png",
+      "/images/ctsa.az/4.png",
+      "/images/ctsa.az/5.png",
+      "/images/ctsa.az/6.png"
     ],
-    technologies: ["Laravel", "PHP", "MySQL"],
+    technologies: ["Laravel", "PHP", "MySQL", "Gitlab CI/CD", "React", "Node.js"],
     category: "Client Projects",
     status: "Completed",
     icon: Server,
     color: "from-amber-400 to-yellow-500",
     date: "2025",
-    links: { demo: "#", github: "#" },
-    features: ["Enterprise APIs", "Security", "Backend Systems"],
+    links: { demo: "https://ctsa.az", github: "#" },
+    features: ["Ecommerce", "Customizing", "Backend Systems", "Landing Page"],
   },
   {
     id: 18,
     title: "GPSAI.az",
     subtitle: "INCI",
     description:
-        "Developed GPSAI.az backend with Laravel and Javalin, integrating mapping APIs and real-time data.",
-    blog: `<p>GPSAI.az was built under INCI, delivering GPS tracking and AI-enhanced data solutions. Backend APIs with Laravel and Javalin ensured scalability.</p>`,
-    image: "/images/gpsai/1.jpg",
+        "Developed GPSAI.az backend with Laravel and Javalin with my own custom AdminPanel, integrating mapping APIs and real-time data.",
+    blog: `<p>GPSAI.az was built under INCI, delivering GPS tracking and AI-enhanced data solutions. Backend APIs with Laravel and Javalin ensured scalability. Builded my own custom AdminPanel for its landing page</p>`,
+    image: "/images/gpsai.az/4.png",
     images: [
-      "/images/gpsai/1.jpg",
-      "/images/gpsai/2.jpg",
-      "/images/gpsai/3.jpg",
-      "/images/gpsai/4.jpg",
-      "/images/gpsai/5.jpg"
+      "/images/gpsai.az/1.png",
+      "/images/gpsai.az/2.png",
+      "/images/gpsai.az/3.png",
+      "/images/gpsai.az/4.png"
     ],
     technologies: ["Laravel", "Javalin", "PHP 8+", "MySQL/PostgreSQL"],
     category: "Client Projects",
-    status: "Ongoing",
+    status: "Completed",
     icon: Server,
     color: "from-green-400 to-teal-400",
-    date: "2025 - Present",
-    links: { demo: "#", github: "#" },
-    features: ["GPS Tracking", "AI-enhanced Data", "APIs"],
+    date: "2025",
+    links: { demo: "https://gpsai.az", github: "#" },
+    features: ["GPS Tracking", "APIs", "Landing Page"],
   },
   {
     id: 19,
-    title: "FingerMaffin.az",
+    title: "LMS",
     subtitle: "INCI",
     description:
-        "Backend services for FingerMaffin.az built with Laravel, focusing on API integrations and security.",
-    blog: `<p>FingerMaffin.az was developed under INCI, with Laravel backend and secure API integrations for e-commerce workflows.</p>`,
-    image: "/images/fingermaffin/1.jpg",
+        "Modern LMS (learning management system) for creating and delivering courses.",
+    blog: `<p>The LMS at <a href=\"https://lms.maffin.az\" target=\"_blank\" rel=\"noopener\">lms.maffin.az</a> provides a complete learning experience: course authoring, lesson scheduling, enrollment, quizzes, grading, and certification. It’s designed for maintainability and scale, with a clean operations panel for admins and instructors.</p>
+<p><strong>Architecture</strong>: Laravel (PHP 8+) + MySQL with RBAC, queue workers for email/notifications, cached catalog queries, and media handling optimized for large course libraries. We hardened performance by eliminating N+1 queries, adding pagination and composite indexes, and guarding critical paths with policies/middleware.</p>
+<ul>
+  <li>Course/lesson management with modules and content types (video, docs, links)</li>
+  <li>Enrollment, cohorts, and prerequisites</li>
+  <li>Quizzes and assignments with grading</li>
+  <li>Progress tracking and certificates</li>
+  <li>Role-based access: admin / instructor / student</li>
+  <li>Reports: completion, quiz stats, learner activity</li>
+</ul>`,
+    image: "/images/lms.maffin.az/2.png",
     images: [
-      "/images/fingermaffin/1.jpg",
-      "/images/fingermaffin/2.jpg",
-      "/images/fingermaffin/3.jpg",
-      "/images/fingermaffin/4.jpg",
-      "/images/fingermaffin/5.jpg"
+      "/images/lms.maffin.az/1.png",
+      "/images/lms.maffin.az/2.png",
+      "/images/lms.maffin.az/3.png",
+      "/images/lms.maffin.az/4.png",
+      "/images/lms.maffin.az/5.png",
+      "/images/lms.maffin.az/6.png"
     ],
-    technologies: ["Laravel", "PHP 8+", "MySQL", "Docker"],
+    technologies: ["Laravel", "PHP 8+", "MySQL", "Tailwind", "Livewire", "Docker"],
     category: "Client Projects",
     status: "Ongoing",
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
     links: { demo: "#", github: "#" },
-    features: ["APIs", "E-commerce Backend", "Security"],
+    features: [
+      "Courses & Lessons",
+      "Enrollments & Cohorts",
+      "Quizzes & Assignments",
+      "Progress & Certificates",
+      "RBAC",
+      "Reports & Analytics",
+    ],
   },
   {
     id: 20,
@@ -553,13 +523,13 @@ const projects: Project[] = [
     description:
         "Developed Ofisait.az backend for office solutions e-commerce site, with Laravel and PostgreSQL.",
     blog: `<p>Ofisait.az was an INCI project focused on office supplies e-commerce. Backend was optimized with Laravel, PostgreSQL, and Docker.</p>`,
-    image: "/images/ofisait/1.jpg",
+    image: "/images/ofisait.az/3.png",
     images: [
-      "/images/ofisait/1.jpg",
-      "/images/ofisait/2.jpg",
-      "/images/ofisait/3.jpg",
-      "/images/ofisait/4.jpg",
-      "/images/ofisait/5.jpg"
+      "/images/ofisait.az/1.png",
+      "/images/ofisait.az/2.png",
+      "/images/ofisait.az/3.png",
+      "/images/ofisait.az/4.png",
+      "/images/ofisait.az/5.png"
     ],
     technologies: ["Laravel", "PostgreSQL", "Docker"],
     category: "Client Projects",
@@ -577,13 +547,14 @@ const projects: Project[] = [
     description:
         "Integrated Chat2Desk.az with Laravel backend and external APIs for communication workflows.",
     blog: `<p>Chat2Desk.az was built at INCI to provide a unified communication tool. Integrated APIs and backend services with Laravel.</p>`,
-    image: "/images/chat2desk/1.jpg",
+    image: "/images/chat2.maffin.az/1.png",
     images: [
-      "/images/chat2desk/1.jpg",
-      "/images/chat2desk/2.jpg",
-      "/images/chat2desk/3.jpg",
-      "/images/chat2desk/4.jpg",
-      "/images/chat2desk/5.jpg"
+      "/images/chat2.maffin.az/1.png",
+      "/images/chat2.maffin.az/2.png",
+      "/images/chat2.maffin.az/3.png",
+      "/images/chat2.maffin.az/4.png",
+      "/images/chat2.maffin.az/5.png",
+      "/images/chat2.maffin.az/6.png"
     ],
     technologies: ["Laravel", "PHP 8+", "MySQL"],
     category: "Client Projects",
@@ -591,7 +562,7 @@ const projects: Project[] = [
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://chat2.maffin.az", github: "#" },
     features: ["Communication APIs", "Backend Integrations", "Secure Workflows"],
   },
   {
@@ -850,7 +821,7 @@ export default function ProjectsTimelinePage() {
                                 {/* Overlay */}
                                 <div
                                     className="absolute inset-0 z-10"
-                                    style={{ background: "linear-gradient(rgba(20,20,30,0.7), rgba(20,20,30,0.7))" }}
+                                    style={{ background: "linear-gradient(rgb(20 20 30 / 85%), rgb(20 20 30 / 89%))" }}
                                 />
 
                                 {/* Dark overlay for non-hovered cards */}
@@ -989,3 +960,4 @@ export default function ProjectsTimelinePage() {
       </section>
   )
 }
+

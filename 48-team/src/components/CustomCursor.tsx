@@ -24,6 +24,9 @@ export type CursorType =
 
 const isFinePointer = () => {
   if (typeof window === "undefined") return false
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+  // Gate by low-end heuristic flag or prefers-reduced motion
+  if (window.__LOW_END__ === true || prefersReduced) return false
   const mq = (q: string) => window.matchMedia && window.matchMedia(q).matches
   const hasFine = mq("(pointer: fine)") || mq("(any-pointer: fine)")
   const hasHover = mq("(hover: hover)") || mq("(any-hover: hover)")
@@ -85,7 +88,7 @@ function findCursorType(target: Element | null): CursorType {
   // 1) Explicit override via data-cursor
   while (el && depth < 6) {
     const raw = (el as HTMLElement).dataset?.cursor?.toLowerCase() ?? null
-    if (isCursorType(raw)) return raw
+    if (isCursorType(raw)) return raw as CursorType
     el = el.parentElement
     depth++
   }
@@ -104,7 +107,7 @@ function findCursorType(target: Element | null): CursorType {
   let el2: Element | null = target
   depth = 0
   while (el2 && depth < 6) {
-    if (el2 instanceof HTMLElement && (el2.tagName.toLowerCase() === "img" || el2.getAttribute("role") === "img")) {
+    if (el2 instanceof HTMLElement && (el2.tagName.toLowerCase() === "img" || (el2 as HTMLElement).getAttribute("role") === "img")) {
       return "image"
     }
     el2 = el2.parentElement
@@ -116,7 +119,7 @@ function findCursorType(target: Element | null): CursorType {
   depth = 0
   while (el3 && depth < 6) {
     const h = el3 as HTMLElement
-    if (h.getAttribute("draggable") === "true" || h.classList?.contains("drag-handle") || h.dataset?.cursor === "drag") {
+    if (h.getAttribute("draggable") === "true" || h.classList?.contains("drag-handle") || (h as HTMLElement).dataset?.cursor === "drag") {
       return "drag"
     }
     el3 = el3.parentElement
@@ -146,7 +149,7 @@ function findCursorType(target: Element | null): CursorType {
   while (el5 && depth < 6) {
     const h = el5 as HTMLElement
     const hasOnClickProp = typeof h.onclick === "function"
-    const hasOnClickAttr = h.hasAttribute?.("onclick") ?? false
+    const hasOnClickAttr = (h as HTMLElement).hasAttribute?.("onclick") ?? false
     if (hasOnClickProp || hasOnClickAttr || hasHoverCue(h)) {
       return "pointer"
     }

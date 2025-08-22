@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -13,18 +13,37 @@ const Navigation = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0
+  // Throttled scroll progress via rAF
+  const tickingRef = useRef(false)
+  const docHeightRef = useRef(1)
 
-      setIsScrolled(scrollTop > 50)
-      setScrollProgress(scrollPercent)
+  useEffect(() => {
+    const computeDocHeight = () => {
+      docHeightRef.current = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+    }
+    computeDocHeight()
+    window.addEventListener("resize", computeDocHeight)
+
+    const onScroll = () => {
+      if (!tickingRef.current) {
+        tickingRef.current = true
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY
+          const docHeight = docHeightRef.current
+          const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0
+          setIsScrolled(scrollTop > 50)
+          setScrollProgress(scrollPercent)
+          tickingRef.current = false
+        })
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", onScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener("resize", computeDocHeight)
+      window.removeEventListener("scroll", onScroll)
+    }
   }, [])
 
   const onHome = (pathname ?? "/") === "/"

@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import CustomCursor from "@/components/CustomCursor"
+import PerformanceGuard from "@/components/PerformanceGuard"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
       <body className="font-sans antialiased">
+        <PerformanceGuard />
         <CustomCursor />
         {children}
       </body>

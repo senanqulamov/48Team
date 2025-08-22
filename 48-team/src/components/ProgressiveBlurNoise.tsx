@@ -7,8 +7,10 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
   const animationFrameId = useRef<number | null>(null)
   const blurIntensity = useRef<number>(20)
   const noiseDataRef = useRef<Uint8ClampedArray | null>(null)
+  const dimsRef = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
+  const runningRef = useRef(false)
 
-  // Pre-generate noise data
+  // Pre-generate noise data at a given resolution
   const generateNoise = (width: number, height: number) => {
     const size = width * height * 4
     const data = new Uint8ClampedArray(size)
@@ -25,18 +27,30 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
     const ctx = canvas?.getContext("2d")
     if (!canvas || !ctx) return
 
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+    const lowEnd = (window.__LOW_END__ === true) || prefersReducedMotion
+
+    const scale = lowEnd ? 0.5 : 1 // downscale internal resolution on low-end
+
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      // Regenerate noise on resize
-      noiseDataRef.current = generateNoise(canvas.width, canvas.height)
+      const w = Math.max(1, Math.floor(window.innerWidth * scale))
+      const h = Math.max(1, Math.floor(window.innerHeight * scale))
+      dimsRef.current = { w, h }
+      canvas.width = w
+      canvas.height = h
+      // CSS size stays full screen
+      canvas.style.width = "100%"
+      canvas.style.height = "100%"
+      noiseDataRef.current = generateNoise(w, h)
     }
 
-    resize()
-    window.addEventListener("resize", resize)
+    const clear = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
 
     let lastTime = 0
-    const fpsInterval = 1000 / 30 // Target 30fps instead of 60fps
+    const targetFps = lowEnd ? 20 : 30
+    const fpsInterval = 1000 / targetFps
 
     const drawNoise = (timestamp: number) => {
       if (!ctx || !noiseDataRef.current) {
@@ -55,35 +69,49 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Only fill if showing
+      // Only render when visible
       if (show) {
-        ctx.fillStyle = "gray"
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-      }
+        // Create image data from pre-generated noise
+        const { w, h } = dimsRef.current
+        const imageData = new ImageData(new Uint8ClampedArray(noiseDataRef.current), w, h)
 
-      // Create image data from pre-generated noise
-      const imageData = new ImageData(
-          new Uint8ClampedArray(noiseDataRef.current),
-          canvas.width,
-          canvas.height
-      )
-
-      // Apply blur filter if show is true
-      if (show) {
+        // Apply blur filter
         ctx.filter = `blur(${blurIntensity.current}px)`
-        blurIntensity.current = Math.max(0, blurIntensity.current - 0.2)
-      } else {
-        ctx.filter = "none"
-        blurIntensity.current = 20
-      }
+        blurIntensity.current = Math.max(0, blurIntensity.current - (lowEnd ? 0.35 : 0.5))
+        ctx.putImageData(imageData, 0, 0)
 
-      ctx.putImageData(imageData, 0, 0)
+        // Stop animating once blur is done
+        if (blurIntensity.current <= 0.1) {
+          runningRef.current = false
+          if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current)
+          animationFrameId.current = null
+          return
+        }
+      } else {
+        // Not showing: ensure cleared and stop loop
+        runningRef.current = false
+        clear()
+        if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current)
+        animationFrameId.current = null
+        return
+      }
 
       animationFrameId.current = requestAnimationFrame(drawNoise)
     }
 
-    // Start animation
-    animationFrameId.current = requestAnimationFrame(drawNoise)
+    // Init
+    resize()
+    window.addEventListener("resize", resize)
+
+    // Start/stop loop based on `show`
+    if (show && !runningRef.current) {
+      runningRef.current = true
+      blurIntensity.current = 20
+      animationFrameId.current = requestAnimationFrame(drawNoise)
+    } else if (!show) {
+      runningRef.current = false
+      clear()
+    }
 
     return () => {
       window.removeEventListener("resize", resize)
@@ -96,11 +124,10 @@ export default function ProgressiveBlurNoise({ show }: { show: boolean }) {
   return (
       <canvas
           ref={canvasRef}
-          className={`fixed top-0 left-0 w-full h-full z-[1000] pointer-events-none transition-opacity duration-1000 ease-out`}
+          className={`fixed top-0 left-0 w-full h-full z-[1000] pointer-events-none transition-opacity duration-500 ease-out`}
           style={{
             mixBlendMode: "screen",
             backgroundColor: show ? "#f5deb329" : "transparent",
-            transition: "background-color 1.5s ease-in-out",
             zIndex: show ? 100 : -1,
           }}
       />

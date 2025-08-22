@@ -248,6 +248,13 @@
 
 /* Performance optimization for reduced motion users */
 @media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
   .animate-gradient {
     animation: none;
   }
@@ -276,4 +283,32 @@ body.has-custom-cursor input[type="password"],
 body.has-custom-cursor textarea,
 body.has-custom-cursor [contenteditable="true"] {
   cursor: text !important;
+}
+
+/* Low-end and reduced-motion fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body.low-end .animate-gradient {
+  animation: none !important;
+}
+body.low-end .backdrop-blur-xl,
+body.low-end .backdrop-blur-lg,
+body.low-end .backdrop-blur-md,
+body.low-end .backdrop-blur-sm {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+body.low-end .shadow-2xl,
+body.low-end .shadow-xl {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+body.low-end * {
+  will-change: auto !important;
 }
