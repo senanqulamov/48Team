@@ -12,6 +12,12 @@ import {
 } from "@/components/ui/carousel"
 import ProjectBlogModal from "@/components/ui/ProjectBlogModal"
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
+
+// Inline blur placeholder to avoid missing file fetches
+const BLUR_DATA_URL =
+  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%2321252f'/%3E%3C/svg%3E";
 
 // Project interface definition
 interface Project {
@@ -289,13 +295,15 @@ const projects: Project[] = [
     description:
         "Developed and maintained Otomall.az with Laravel and React, ensuring scalability, payments integration, and secure backend systems.",
     blog: `<p>Built Otomall.az as part of FerrumCapital's digital infrastructure. Focused on backend performance, payment systems, and responsive frontend with React.</p>`,
-    image: "/images/otomaill/1.jpg",
+    image: "/images/otomall.az/8.png",
     images: [
-      "/images/otomaill/1.jpg",
-      "/images/otomaill/2.jpg",
-      "/images/otomaill/3.jpg",
-      "/images/otomaill/4.jpg",
-      "/images/otomaill/5.jpg"
+      "/images/otomall.az/1.png",
+      "/images/otomall.az/2.png",
+      "/images/otomall.az/3.png",
+      "/images/otomall.az/4.png",
+      "/images/otomall.az/5.png",
+      "/images/otomall.az/6.png",
+      "/images/otomall.az/7.png",
     ],
     technologies: ["Laravel", "React", "MySQL", "Bootstrap"],
     category: "Client Projects",
@@ -572,13 +580,16 @@ const projects: Project[] = [
     description:
         "Backend developer for HBNgroup.az, delivering Laravel backend with secure architecture and CI/CD pipelines.",
     blog: `<p>HBNgroup.az was developed as an enterprise platform for INCI. Focused on backend APIs, security, and deployment pipelines.</p>`,
-    image: "/images/hbngroup/1.jpg",
+    image: "/images/hbngroup.az/3.png",
     images: [
-      "/images/hbngroup/1.jpg",
-      "/images/hbngroup/2.jpg",
-      "/images/hbngroup/3.jpg",
-      "/images/hbngroup/4.jpg",
-      "/images/hbngroup/5.jpg"
+      "/images/hbngroup.az/1.png",
+      "/images/hbngroup.az/2.png",
+      "/images/hbngroup.az/3.png",
+      "/images/hbngroup.az/4.png",
+      "/images/hbngroup.az/5.png",
+      "/images/hbngroup.az/6.png",
+      "/images/hbngroup.az/7.png",
+      "/images/hbngroup.az/8.png",
     ],
     technologies: ["Laravel", "PHP 8+", "PostgreSQL", "Docker", "CI/CD"],
     category: "Client Projects",
@@ -692,6 +703,7 @@ export default function ProjectsTimelinePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
 
   // Helper: Ensure at least 4 cards for slider
   const filteredProjects = useMemo(
@@ -724,6 +736,11 @@ export default function ProjectsTimelinePage() {
   return (
       <section className="py-30 px-4 bg-muted/20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
+          {/* SR-only live region for category updates */}
+          <p className="sr-only" aria-live="polite">
+            Showing {filteredProjects.length} projects in {activeCategory}
+          </p>
+
           {/* Title Section */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -735,12 +752,13 @@ export default function ProjectsTimelinePage() {
           </div>
 
           {/* Category Tabs */}
-          <div className="flex justify-center gap-4 mb-10 flex-wrap">
+          <div className="flex justify-center gap-4 mb-10 flex-wrap" role="group" aria-label="Project categories">
             {categories.map((cat) => (
                 <button
                     key={cat}
                     onClick={() => handleTabChange(cat)}
                     className={`px-4 py-2 md:px-6 md:py-2 cursor-pointer rounded-full font-semibold text-sm md:text-base transition-all duration-200 border border-primary/20 bg-card hover:bg-primary/10 hover:text-primary ${activeCategory === cat ? "bg-primary/10 text-primary" : "text-foreground"}`}
+                    aria-pressed={activeCategory === cat}
                 >
                   {cat}
                 </button>
@@ -789,6 +807,8 @@ export default function ProjectsTimelinePage() {
                         const techsRest = Math.max(techs.length - MAX_MOBILE_TAGS, 0);
                         const featsRest = Math.max(feats.length - MAX_MOBILE_TAGS, 0);
 
+                        const modalId = `project-modal-${project.id}`;
+
                         return (
                             <CarouselItem
                                 key={project.id + "-" + idx}
@@ -796,7 +816,7 @@ export default function ProjectsTimelinePage() {
                                 data-cursor="drag"
                             >
                               {/* Project Card Content */}
-                              <div
+                              <motion.div
                                   className={`w-full h-[500px] border border-primary/20 rounded-2xl p-6 md:p-8 flex flex-col justify-between select-none relative overflow-hidden group transition-all duration-500
                           ${hoveredIdx !== null && hoveredIdx !== idx ? "opacity-70" : ""}
                         `}
@@ -804,6 +824,11 @@ export default function ProjectsTimelinePage() {
                                   onMouseEnter={() => setHoveredIdx(idx)}
                                   onMouseLeave={() => setHoveredIdx(null)}
                                   data-cursor="drag"
+                                  initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
+                                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                                  viewport={{ once: true, amount: 0.2 }}
+                                  whileHover={reduceMotion ? undefined : { scale: 1.01 }}
+                                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                               >
                                 {/* Background Image */}
                                 <Image
@@ -814,7 +839,7 @@ export default function ProjectsTimelinePage() {
                                     className="absolute inset-0 w-full h-full object-cover rounded-2xl z-0"
                                     priority={idx === 0}
                                     placeholder="blur"
-                                    blurDataURL="/images/placeholder-blur.png"
+                                    blurDataURL={BLUR_DATA_URL}
                                     quality={70}
                                 />
 
@@ -866,6 +891,9 @@ export default function ProjectsTimelinePage() {
                                               className="px-3 py-1 rounded-full bg-primary/20 text-primary/90 text-sm font-semibold cursor-pointer"
                                               aria-label={`Open project to see ${techsRest} more technologies`}
                                               title={`See ${techsRest} more`}
+                                              aria-haspopup="dialog"
+                                              aria-controls={modalId}
+                                              aria-expanded={modalOpen && selectedProject?.id === project.id}
                                           >
                                             +{techsRest} more
                                           </button>
@@ -903,6 +931,9 @@ export default function ProjectsTimelinePage() {
                                               className="px-3 py-1 rounded-full bg-accent/20 text-accent/90 text-sm font-semibold cursor-pointer"
                                               aria-label={`Open project to see ${featsRest} more features`}
                                               title={`See ${featsRest} more`}
+                                              aria-haspopup="dialog"
+                                              aria-controls={modalId}
+                                              aria-expanded={modalOpen && selectedProject?.id === project.id}
                                           >
                                             +{featsRest} more
                                           </button>
@@ -929,13 +960,17 @@ export default function ProjectsTimelinePage() {
                                         className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-primary font-semibold text-sm border border-primary/20 hover:bg-primary/10 transition-all cursor-pointer"
                                         onClick={() => { setSelectedProject(project); setModalOpen(true); }}
                                         data-cursor="pointer"
+                                        aria-label={`See details for ${project.title}`}
+                                        aria-haspopup="dialog"
+                                        aria-controls={modalId}
+                                        aria-expanded={modalOpen && selectedProject?.id === project.id}
                                     >
                                       <Eye className="w-4 h-4" />
                                       See Project
                                     </button>
                                   </div>
                                 </div>
-                              </div>
+                              </motion.div>
                             </CarouselItem>
                         );
                       })}
@@ -955,9 +990,9 @@ export default function ProjectsTimelinePage() {
               open={modalOpen}
               onCloseAction={() => { setModalOpen(false); setSelectedProject(null); }}
               project={selectedProject}
+              modalId={selectedProject ? `project-modal-${selectedProject.id}` : undefined}
           />
         </div>
       </section>
   )
 }
-

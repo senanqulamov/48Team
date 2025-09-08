@@ -27,6 +27,7 @@ interface ModalProps {
     open: boolean;
     onCloseAction: () => void;
     project: Project | null;
+    modalId?: string;
 }
 
 const BLUR_DATA_URL =
@@ -127,28 +128,51 @@ const Lightbox = React.memo(function Lightbox({
                         </AnimatePresence>
                     </div>
 
-                    <div className="absolute top-3 right-3 border border-primary/10 rounded-2xl bg-background/60 flex items-center justify-center">
-                        <CloseButton onClick={onClose} />
+                    {/*<div className="absolute top-6 right-6 border border-primary/10 rounded-2xl bg-background/60 flex items-center justify-center">*/}
+                    {/*    <CloseButton onClick={onClose} />*/}
+                    {/*</div>*/}
+                    <div className="absolute inset-x-0 top-0 z-[10023] flex justify-end px-4 sm:px-6 md:px-8 lg:px-12 pt-4 pointer-events-none">
+                        <button
+                            type="button"
+                            className="pointer-events-auto inline-flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 text-white backdrop-blur-sm ring-1 ring-white/20 hover:bg-black/60 hover:ring-white/30 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-md transition"
+                            onClick={onClose}
+                            aria-label="Close"
+                            data-cursor="close"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
                     </div>
 
                     {images.length > 1 && (
                         <>
-                            <button
-                                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2 cursor-pointer"
-                                onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
-                                aria-label="Prev image"
-                                data-cursor="prev"
-                            >
-                                &#10094;
-                            </button>
-                            <button
-                                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/40 hover:bg-black/60 text-white px-3 py-2 cursor-pointer"
-                                onClick={() => setIndex((i) => (i + 1) % images.length)}
-                                aria-label="Next image"
-                                data-cursor="next"
-                            >
-                                &#10095;
-                            </button>
+                            <div className="absolute inset-0 z-[10022] flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 pointer-events-none">
+                                <button
+                                    type="button"
+                                    className="pointer-events-auto inline-flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 text-white backdrop-blur-sm ring-1 ring-white/20 hover:bg-black/60 hover:ring-white/30 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-md transition"
+                                    onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
+                                    aria-label="Prev image"
+                                    data-cursor="prev"
+                                >
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="15 18 9 12 15 6" />
+                                    </svg>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="pointer-events-auto inline-flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 text-white backdrop-blur-sm ring-1 ring-white/20 hover:bg-black/60 hover:ring-white/30 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-md transition"
+                                    onClick={() => setIndex((i) => (i + 1) % images.length)}
+                                    aria-label="Next image"
+                                    data-cursor="next"
+                                >
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="9 18 15 12 9 6" />
+                                    </svg>
+                                </button>
+                            </div>
                         </>
                     )}
                 </motion.div>
@@ -246,7 +270,7 @@ const DescriptionRight = React.memo(function DescriptionRight({ blog }: { blog?:
     );
 });
 
-export default function ProjectBlogModal({ open, onCloseAction, project }: ModalProps) {
+export default function ProjectBlogModal({ open, onCloseAction, project, modalId }: ModalProps) {
     // Portal mount guard
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
@@ -267,6 +291,8 @@ export default function ProjectBlogModal({ open, onCloseAction, project }: Modal
     const [lightboxIndex, setLightboxIndex] = React.useState(0);
     const memoImages = React.useMemo<string[]>(() => project?.images ?? [], [project?.images]);
 
+    const titleId = project ? `project-modal-title-${project.id}` : undefined;
+
     if (!mounted) return null;
 
     return createPortal(
@@ -279,6 +305,8 @@ export default function ProjectBlogModal({ open, onCloseAction, project }: Modal
                     exit={{ opacity: 0 }}
                     aria-modal="true"
                     role="dialog"
+                    id={modalId}
+                    aria-labelledby={titleId}
                 >
                     {/* Backdrop above everything */}
                     <Backdrop onClick={onCloseAction} />
@@ -315,7 +343,7 @@ export default function ProjectBlogModal({ open, onCloseAction, project }: Modal
                             <div className="sticky top-0 z-[10005] flex items-center justify-between px-6 sm:px-10 py-4 md:py-5 bg-background/60 backdrop-blur-lg rounded-t-3xl border-b border-primary/10">
                                 <div className="flex items-center gap-3">
                                     {project?.icon && <project.icon className="w-8 h-8 text-primary" />}
-                                    <h3 className="text-2xl md:text-3xl font-bold text-foreground font-display truncate max-w-[60vw]">
+                                    <h3 id={titleId} className="text-2xl md:text-3xl font-bold text-foreground font-display truncate max-w-[60vw]">
                                         {project?.title}
                                     </h3>
                                 </div>
