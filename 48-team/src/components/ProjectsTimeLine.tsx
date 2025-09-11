@@ -48,13 +48,13 @@ const projects: Project[] = [
     description:
         "A privacy-first password manager with encryption, vaults, and cross-device sync. Designed to enhance digital security with a clean UI and robust encryption.",
     blog: `<p>Passmate is a secure password manager built with Laravel, React, and MySQL, featuring encryption, vault management, and password generation. Designed as a practical cybersecurity-focused project.</p>`,
-    image: "/images/passmate/1.jpg",
+    image: "/images/passmate/1.png",
     images: [
-      "/images/passmate/1.jpg",
-      "/images/passmate/2.jpg",
-      "/images/passmate/3.jpg",
-      "/images/passmate/4.jpg",
-      "/images/passmate/5.jpg"
+      "/images/passmate/1.png",
+      "/images/passmate/2.png",
+      "/images/passmate/3.png",
+      "/images/passmate/4.png",
+      "/images/passmate/5.png"
     ],
     technologies: ["Laravel", "React", "MySQL", "Tailwind", "Docker"],
     category: "My Projects",
