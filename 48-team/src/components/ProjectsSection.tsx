@@ -46,22 +46,27 @@ const ProjectsSection = () => {
     {
       id: 1,
       title: "NeoSphere",
-      subtitle: "AI-Powered Wellness Platform",
+      subtitle: "AI-Powered Career & Community Platform",
       description:
-          "A revolutionary platform combining AI technology with therapeutic principles to provide personalized mental health support and wellness coaching.",
+          "A next-generation hub uniting workers, freelancers, and communities through AI-powered insights, job opportunities, and supportive networks.",
       longDescription:
-          "NeoSphere represents the future of digital wellness, where artificial intelligence meets human empathy. The platform uses advanced algorithms to analyze user behavior patterns and provide personalized therapeutic interventions.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React", "Next.js", "Python", "TensorFlow", "PostgreSQL", "AWS"],
+          "NeoSphere is the future of work and connection — a platform where artificial intelligence enhances human collaboration. It enables users to find jobs, join communities, host events, and build meaningful networks. With built-in AI analytics, mentorship tools, and progress tracking, NeoSphere creates a trusted digital ecosystem for both professional and personal growth.",
+      image: "/images/neosphere/1.png",
+      technologies: ["React", "Laravel", "Java", "Javalin", "MySQL", "AWS"],
       category: "Startup",
       status: "In Development",
-      icon: Brain,
+      icon: Zap,
       color: "from-primary to-accent",
       links: {
-        demo: "#",
+        demo: "https://neosphere.vercel.app",
         github: "#",
       },
-      features: ["AI-Powered Insights", "Personalized Therapy", "Progress Tracking", "Community Support"],
+      features: [
+        "AI-Powered Career & Community Insights",
+        "Personalized Growth & Mentorship",
+        "Work & Collaboration Tracking",
+        "Supportive Networks & Communities"
+      ],
       date: "2023-10-01",
     },
     {
@@ -72,11 +77,11 @@ const ProjectsSection = () => {
           "An intelligent auction platform that uses machine learning to optimize bidding strategies and provide real-time market insights for buyers and sellers.",
       longDescription:
           "BidBary transforms the traditional auction experience with smart algorithms that help users make informed bidding decisions while ensuring fair and transparent transactions.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Vue.js", "Node.js", "MongoDB", "Socket.io", "Redis", "Docker"],
-      category: "Web App",
-      status: "Live",
-      icon: Zap,
+      image: "/images/bidbary/1.png",
+      technologies: ["Next.js", "Javalin API", "Oracle DB", "Socket.io", "Redis", "Docker"],
+      category: "Startup",
+      status: "In Development",
+      icon: Brain,
       color: "from-blue-500 to-purple-500",
       links: {
         demo: "#",
@@ -87,25 +92,33 @@ const ProjectsSection = () => {
     },
     {
       id: 3,
-      title: "BorderMate",
-      subtitle: "Immigration Assistant",
+      title: "LMS",
+      subtitle: "INCI",
       description:
-          "A comprehensive digital assistant for immigration processes, helping users navigate complex paperwork and requirements with AI-guided support.",
+          "A modern learning management system for creating, delivering, and scaling online courses with robust tools for learners and instructors.",
       longDescription:
-          "BorderMate simplifies immigration by providing step-by-step guidance, document management, and real-time updates on application status, making the process less stressful for applicants.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React Native", "Express.js", "MySQL", "Firebase", "Stripe", "Twilio"],
-      category: "Mobile App",
-      status: "Beta",
+          "The INCI LMS provides a complete learning experience with course authoring, lesson scheduling, enrollment management, quizzes, grading, and certification. Designed for maintainability and scalability, it includes a clean operations panel for admins and instructors. The architecture is built on Laravel (PHP 8+) and MySQL, with RBAC, queue workers for email/notifications, cached catalog queries, and optimized media handling for large course libraries. Performance is hardened by eliminating N+1 queries, adding pagination and composite indexes, and securing critical paths with policies and middleware.",
+      image: "/images/lms.maffin.az/2.png",
+      technologies: ["Laravel", "PHP 8+", "MySQL", "Tailwind", "Livewire", "Docker"],
+      category: "Client Projects",
+      status: "Live",
       icon: Globe,
-      color: "from-green-500 to-teal-500",
+      color: "from-green-400 to-teal-400",
       links: {
-        demo: "#",
+        demo: "https://lms.maffin.az",
         github: "#",
       },
-      features: ["Document Scanner", "Progress Tracking", "Expert Chat", "Multi-language Support"],
-      date: "2023-08-10",
-    },
+      features: [
+        "Courses & Lessons",
+        "Enrollments & Cohorts",
+        "Quizzes & Assignments",
+        "Progress & Certificates",
+        "RBAC",
+        "Reports & Analytics"
+      ],
+      date: "2025 - Present",
+    }
+
   ]
 
   const ProjectCard = ({ project, index }: { project: Project; index: number }) => (

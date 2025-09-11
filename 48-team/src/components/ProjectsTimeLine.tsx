@@ -64,7 +64,7 @@ const projects: Project[] = [
     date: "2024 - Present",
     links: {
       demo: "#",
-      github: "#",
+      github: "https://github.com/senanqulamov/PassMate",
     },
     features: ["Encryption", "Vault Management", "Password Generation", "Cross-device Sync"],
   },
@@ -124,7 +124,7 @@ const projects: Project[] = [
   },
   {
     id: 4,
-    title: "MonayBadge",
+    title: "MoneyBadge",
     subtitle: "Gamified Productivity Tool",
     description:
         "A gamification app that awards users with badges for completing tasks, designed to motivate productivity and consistency.",
@@ -183,9 +183,9 @@ const projects: Project[] = [
     title: "NeoSphere",
     subtitle: "Union Hub & Gig Marketplace",
     description:
-        "A modern platform for workers’ unions, freelancers, and organizations. Built around Spheres, Core Hubs, Karma Points, jobs, and events.",
-    blog: `<p>NeoSphere is a gig/job marketplace and networking hub. It includes job boards, events, karma-based reputation, and sponsored Spheres. Stack: Laravel (backend), React (frontend), MySQL.</p>`,
-    image: "/images/neosphere/1.jpg",
+        "A next-generation platform for workers’ unions, freelancers, and organizations. Centered around Spheres, Core Hubs, Karma Points, jobs, and events.",
+    blog: `<p>NeoSphere is a hybrid gig marketplace and networking hub designed to connect people with opportunities, communities, and growth. Users can explore job boards, attend events, and build reputation through a karma-based system. Organizations can create sponsored Spheres, while Core Hubs provide structure and governance. Tech stack: Laravel (backend), React (frontend), MySQL.</p>`,
+    image: "/images/neosphere/1.png",
     images: [
       "/images/neosphere/1.jpg",
       "/images/neosphere/2.jpg",
@@ -203,24 +203,29 @@ const projects: Project[] = [
       demo: "#",
       github: "#",
     },
-    features: ["Job Marketplace", "Events", "Karma System", "Sponsored Spheres"],
+    features: [
+      "Job Marketplace",
+      "Event Discovery & Hosting",
+      "Karma Reputation System",
+      "Sponsored & Community Spheres"
+    ],
   },
   {
     id: 7,
     title: "BidBary",
     subtitle: "Collectors & Auction App",
     description:
-        "A collector and auction marketplace with modern dark UI, powered by Laravel, Livewire, and Tailwind, offering real-time bidding and auctions.",
-    blog: `<p>BidBary connects collectors and auctioneers. Features include live auctions, collector profiles, bidding history, and a modern UI designed with Motiff.</p>`,
-    image: "/images/bidbary/1.jpg",
+        "A modern collector and auction marketplace with a sleek dark UI. Powered by Laravel, Livewire, and Tailwind, it enables real-time bidding, collector engagement, and transparent auction flows.",
+    blog: `<p>BidBary redefines the auction experience for collectors and sellers. With live bidding, collector profiles, auction history, and a modern UI designed with Motiff, it creates a transparent and engaging platform for rare items and collectibles.</p>`,
+    image: "/images/bidbary/1.png",
     images: [
-      "/images/bidbary/1.jpg",
-      "/images/bidbary/2.jpg",
-      "/images/bidbary/3.jpg",
-      "/images/bidbary/4.jpg",
-      "/images/bidbary/5.jpg"
+      "/images/bidbary/1.png",
+      "/images/bidbary/2.png",
+      "/images/bidbary/3.png",
+      "/images/bidbary/4.png",
+      "/images/bidbary/5.png"
     ],
-    technologies: ["Laravel", "Livewire", "Volt", "Tailwind"],
+    technologies: ["Java", "Javalin", "Next.js", "Tailwind"],
     category: "Startups",
     status: "In Development",
     icon: Rocket,
@@ -230,7 +235,12 @@ const projects: Project[] = [
       demo: "#",
       github: "#",
     },
-    features: ["Real-time Bidding", "Collector Profiles", "Auction History", "Modern Dark UI"],
+    features: [
+      "Real-time Bidding",
+      "Collector Profiles",
+      "Auction History",
+      "Modern Dark UI"
+    ],
   },
   {
     id: 8,
@@ -514,7 +524,7 @@ const projects: Project[] = [
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://lms.maffin.az", github: "#" },
     features: [
       "Courses & Lessons",
       "Enrollments & Cohorts",
@@ -545,7 +555,7 @@ const projects: Project[] = [
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://ofisait.az", github: "#" },
     features: ["E-commerce", "APIs", "Secure Backend"],
   },
   {
@@ -570,7 +580,7 @@ const projects: Project[] = [
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
-    links: { demo: "https://chat2.maffin.az", github: "#" },
+    links: { demo: "https://chat2desk.az", github: "#" },
     features: ["Communication APIs", "Backend Integrations", "Secure Workflows"],
   },
   {
@@ -597,7 +607,7 @@ const projects: Project[] = [
     icon: Server,
     color: "from-green-400 to-teal-400",
     date: "2025 - Present",
-    links: { demo: "#", github: "#" },
+    links: { demo: "https://hbngroup.az", github: "#" },
     features: ["Enterprise APIs", "CI/CD", "Secure Backend"],
   },
 ];
