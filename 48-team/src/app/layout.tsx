@@ -24,7 +24,12 @@ export const metadata: Metadata = {
   keywords: ["programmer", "therapist", "founder", "neosphere", "bidbary", "portfolio", "web development"],
   authors: [{ name: "Senan Qulamov" }],
   creator: "Senan Qulamov",
-    generator: 'Senan Qulamov'
+  generator: 'Senan Qulamov',
+  icons: {
+    icon: "/logo_ico.png",
+    shortcut: "/logo_ico.png",
+    apple: "/logo_ico.png",
+  },
 }
 
 export default function RootLayout({
