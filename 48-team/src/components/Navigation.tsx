@@ -61,6 +61,13 @@ const Navigation = () => {
   }
 
   const scrollToSection = (sectionId: string) => {
+    // Handle external blog route
+    if (sectionId === "blogs") {
+      router.push("/blogs")
+      setIsMobileMenuOpen(false)
+      return
+    }
+
     if (onHome) {
       smoothScrollOnHome(sectionId)
       setIsMobileMenuOpen(false)
@@ -77,6 +84,7 @@ const Navigation = () => {
     { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
     { id: "experience", label: "Experience" },
+    { id: "blogs", label: "Blogs" },
     { id: "contact", label: "Contact" },
   ]
 
