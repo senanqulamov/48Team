@@ -15,7 +15,6 @@ import PageLoader from "@/components/PageLoader"
 import ProgressiveBlurNoise from "@/components/ProgressiveBlurNoise"
 import AnimatedMeshBackground from "@/components/AnimatedMeshBackground"
 import ScrollDownIndicator from "@/components/ScrollDownIndicator"
-import LatestCommits from "@/components/latestCommits";
 
 export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -80,12 +79,6 @@ export default function MainPage() {
             <div>
               <div>
                 <ProjectsSection />
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <LatestCommits />
               </div>
             </div>
 

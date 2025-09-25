@@ -145,26 +145,48 @@ function useCommitDetails(repo: string, sha: string | null) {
   return { data, error, loading }
 }
 
-export default function LatestCommits({ user = "senanqulamov", limit = 10 }: { user?: string; limit?: number }) {
+type LoadedInfo = { count: number; error?: string | null }
+
+export default function LatestCommits({
+  user = "senanqulamov",
+  limit = 10,
+  compact = false,
+  onLoaded,
+}: {
+  user?: string
+  limit?: number
+  compact?: boolean
+  onLoaded?: (info: LoadedInfo) => void
+}) {
   const { data, error, loading } = useCommits(user, limit)
 
+  useEffect(() => {
+    if (loading) return
+    if (onLoaded) {
+      onLoaded({ count: Array.isArray(data) ? data.length : 0, error })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, data, error])
+
   return (
-    <section id="latest-commits" className="py-8">
+    <section id="latest-commits" className={compact ? "py-4" : "py-8"}>
       <div className="max-w-6xl mx-auto">
-        <div className="mb-6 flex items-end justify-between">
-          <div>
-            <h3 className="text-2xl md:text-3xl font-display font-bold">Latest Updates</h3>
-            <p className="text-muted-foreground text-sm">Recent public push events from GitHub</p>
+        {!compact && (
+          <div className="mb-6 flex items-end justify-between">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-display font-bold">Latest Updates</h3>
+              <p className="text-muted-foreground text-sm">Recent public push events from GitHub</p>
+            </div>
+            <a
+              href={`https://github.com/${user}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary text-sm inline-flex items-center gap-2"
+            >
+              View Profile <ExternalLink className="size-4" />
+            </a>
           </div>
-          <a
-            href={`https://github.com/${user}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary text-sm inline-flex items-center gap-2"
-          >
-            View Profile <ExternalLink className="size-4" />
-          </a>
-        </div>
+        )}
 
         {loading && (
           <div className="grid md:grid-cols-2 gap-4">

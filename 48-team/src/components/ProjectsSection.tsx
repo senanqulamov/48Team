@@ -2,14 +2,18 @@
 
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import {ExternalLink, Github, ArrowRight, Zap, Brain, Globe, ArrowDown} from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import LatestCommits from "@/components/latestCommits"
 
 const ProjectsSection = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [commitCount, setCommitCount] = useState<number | null>(null)
+  const [commitError, setCommitError] = useState<string | null>(null)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -299,6 +303,73 @@ const ProjectsSection = () => {
                 <ProjectCard key={project.id} project={project} index={index} />
             ))}
           </motion.div>
+
+          {/* Latest Commits Accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-16"
+          >
+            <div className="bg-gradient-to-br from-card/60 to-background/60 border border-primary/20 rounded-2xl overflow-hidden backdrop-blur-md shadow-[0_0_0_1px_rgba(0,0,0,0.02)]">
+              <Accordion type="single" collapsible defaultValue="latest-commits">
+                 <AccordionItem value="latest-commits">
+                  <AccordionTrigger className="px-4 sm:px-6">
+                    <div className="flex w-full items-center gap-3 sm:gap-4">
+                      <span className="inline-flex size-8 items-center justify-center rounded-md bg-primary/15 text-primary border border-primary/25 shadow-sm">
+                        <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M16 3.549a9 9 0 1 1-8 0"/>
+                          <path d="M12 12v9"/>
+                        </svg>
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-base sm:text-lg font-semibold">Latest GitHub activity</span>
+                          {/* dynamic badge */}
+                          {commitError ? (
+                            <span className="text-xs rounded-md border border-red-500/30 text-red-400 bg-red-500/10 px-2 py-0.5">Unavailable</span>
+                          ) : commitCount === null ? (
+                            <span className="text-xs rounded-md border border-primary/30 text-primary bg-primary/10 px-2 py-0.5 inline-flex items-center gap-1">
+                              <span className="size-1.5 rounded-full bg-primary animate-pulse" /> Fetching…
+                            </span>
+                          ) : commitCount > 0 ? (
+                            <span className="text-xs rounded-md border border-emerald-500/30 text-emerald-400 bg-emerald-500/10 px-2 py-0.5">{commitCount} updates</span>
+                          ) : (
+                            <span className="text-xs rounded-md border border-muted/40 text-muted-foreground bg-muted/20 px-2 py-0.5">No recent activity</span>
+                          )}
+                        </div>
+                        <span className="block text-xs sm:text-sm text-muted-foreground">Recent public commits and changes</span>
+                      </div>
+                      <div className="hidden sm:flex items-center gap-2">
+                        <a href="https://github.com/senanqulamov" target="_blank" rel="noreferrer">
+                          <Button size="sm" variant="outline" className="border-primary/30 text-primary">
+                            <Github className="size-4 mr-1.5" /> Profile
+                          </Button>
+                        </a>
+                        <a href="#contact">
+                          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            Hire me
+                          </Button>
+                        </a>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+                   <AccordionContent className="px-0">
+                     {/* Embedded feed */}
+                    <LatestCommits
+                      user="senanqulamov"
+                      limit={10}
+                      compact
+                      onLoaded={(info) => {
+                        setCommitCount(info.count)
+                        setCommitError(info.error || null)
+                      }}
+                    />
+                   </AccordionContent>
+                 </AccordionItem>
+               </Accordion>
+             </div>
+           </motion.div>
 
           {/* Background Decorations */}
           <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
