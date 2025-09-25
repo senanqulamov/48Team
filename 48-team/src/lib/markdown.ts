@@ -8,7 +8,9 @@ const escapeHtml = (str: string) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
 
-export function renderMarkdown(md: string): string {
+export function renderMarkdown(md: string, options?: { baseLevel?: number }): string {
+  const baseLevel = Math.min(Math.max(options?.baseLevel || 1, 1), 6)
+
   if (!md) return ""
 
   // Normalize newlines, strip BOM/NBSP, normalize tabs
@@ -45,7 +47,8 @@ export function renderMarkdown(md: string): string {
   // 4) Block-level transforms on the whole string
   // Headings (allow up to 3 leading spaces)
   tmp = tmp.replace(/^\s{0,3}(#{1,6})\s+(.+?)\s*$/gm, (_m, hashes, text) => {
-    const level = Math.min(6, String(hashes).length)
+    const rawLevel = Math.min(6, String(hashes).length)
+    const level = Math.min(6, rawLevel - 1 + baseLevel)
     const sizeMap: Record<number, string> = {
       1: "text-3xl md:text-4xl",
       2: "text-2xl md:text-3xl",

@@ -17,3 +17,31 @@
 User-Agent: *
 Content-Usage: tdm=y
 Allow: /
+
+# Explicit AI / LLM crawler allowances (adjust if you wish to restrict)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Disallow noisy internal build/system paths if any emerge later
+# Disallow: /api/internal
+
+# Sitemap for search engines & AI agents
+Sitemap: https://48team.space/sitemap.xml
+
+# Helpful: declare canonical host (some crawlers respect this)
+# Host: 48team.com

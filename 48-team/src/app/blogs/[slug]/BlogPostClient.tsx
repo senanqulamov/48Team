@@ -327,7 +327,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-gray-300 prose-strong:text-white prose-code:text-emerald-400 prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800"
-                    dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+                    dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content, { baseLevel: 2 }) }}
                   />
                 </div>
               </section>
