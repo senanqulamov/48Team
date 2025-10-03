@@ -299,7 +299,7 @@ const projects: Project[] = [
 
 // 🏢 Client Projects
   {
-    id: 9,
+    id: 12,
     title: "Otomall.az",
     subtitle: "FerrumCapital",
     description:

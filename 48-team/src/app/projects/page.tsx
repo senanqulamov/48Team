@@ -10,6 +10,7 @@ import ScrollDownIndicator from "@/components/ScrollDownIndicator"
 import Footer from "@/components/Footer"
 
 import ProjectsPage from "@/components/ProjectsTimeLine"
+import FeaturedTimeline from "@/components/featured-timeline/FeaturedTimeline"
 
 export default function ProjectsRoutePage() {
     const [isLoading, setIsLoading] = useState(true)
@@ -28,7 +29,8 @@ export default function ProjectsRoutePage() {
                     <Navigation />
                     <PageWrapper>
                         <div>
-                            <div>
+                            <div className="space-y-16 md:space-y-24">
+                                <FeaturedTimeline />
                                 <ProjectsPage />
                             </div>
                         </div>
