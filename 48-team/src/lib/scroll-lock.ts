@@ -17,8 +17,8 @@ export function lockScroll() {
   if (lockCount === 0) {
     prevBodyOverflow = document.body.style.overflow
     prevHtmlOverflow = document.documentElement.style.overflow
-    prevBodyPaddingRight = (document.body.style as any).paddingRight || ""
-    prevHtmlPaddingRight = (document.documentElement.style as any).paddingRight || ""
+    prevBodyPaddingRight = document.body.style.paddingRight || ""
+    prevHtmlPaddingRight = document.documentElement.style.paddingRight || ""
 
     const scrollbar = getScrollbarWidth()
     if (scrollbar > 0) {

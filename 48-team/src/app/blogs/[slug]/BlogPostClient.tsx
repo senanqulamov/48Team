@@ -36,7 +36,7 @@ const ShareButton = ({ url, title, icon: Icon, label, color }: {
         await navigator.clipboard.writeText(url)
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
-      } catch (e) {
+      } catch {
         // noop
       }
       return

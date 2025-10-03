@@ -4,24 +4,9 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
+import type { Project as BaseProject } from "@/types/project"
 
-interface Project {
-    id: number;
-    title: string;
-    subtitle?: string;
-    description: string;
-    image?: string;
-    images?: string[];
-    technologies?: string[];
-    category?: string;
-    status?: string;
-    icon?: React.ElementType;
-    color?: string; // tailwind gradient e.g. "from-primary to-accent"
-    date?: string;
-    links?: { demo?: string; github?: string };
-    features?: string[];
-    blog?: string;
-}
+type Project = BaseProject & { icon?: React.ElementType }
 
 interface ModalProps {
     open: boolean;
