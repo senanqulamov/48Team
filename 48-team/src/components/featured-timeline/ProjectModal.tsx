@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as Dialog from "@radix-ui/react-dialog"
 import { AnimatePresence, motion } from "framer-motion"
+import { lockScroll, unlockScroll } from "@/lib/scroll-lock"
 
 export type ProjectModalProps = {
   open: boolean
@@ -12,32 +13,37 @@ export type ProjectModalProps = {
   children: React.ReactNode
 }
 
-/**
- * Accessible, animated side-panel modal for project case studies.
- * - Uses Radix Dialog for focus trap, ESC, and overlay click close
- * - Framer Motion for panel slide-in/out
- * - Locks background scroll while open
- * - z-index: overlay z-[999], panel z-[1000]
- */
-export default function ProjectModal({ open, onCloseAction, from = "right", labelledBy, children }: ProjectModalProps) {
-  // Additional body scroll locking to ensure background does not scroll in all browsers
-  React.useEffect(() => {
-    if (!open) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [open])
+const ModalCloseContext = React.createContext<{ requestClose: () => void } | null>(null)
+export function useProjectModalClose() {
+  return React.useContext(ModalCloseContext)
+}
 
+export default function ProjectModal({ open, onCloseAction, from = "right", labelledBy, children }: ProjectModalProps) {
   const initialX = from === "left" ? "-100%" : "100%"
   const sideAnchor = from === "left"
     ? "left-0 right-0 md:right-auto md:left-0 md:border-r"
     : "left-0 right-0 md:left-auto md:right-0 md:border-l"
 
+  // Old modal logic: lock on open, unlock on close (no presence-based lifecycle)
+  React.useEffect(() => {
+    if (!open) return
+    lockScroll()
+    return () => {
+      unlockScroll()
+    }
+  }, [open])
+
+  const beginClose = React.useCallback(() => {
+    onCloseAction()
+  }, [onCloseAction])
+
+  // Always provide a Dialog.Title for a11y; fall back to a hidden title when none is provided
+  const generatedTitleId = React.useId()
+  const contentLabelledBy = labelledBy ?? generatedTitleId
+
   return (
-    <Dialog.Root open={open} onOpenChange={(isOpen) => { if (!isOpen) onCloseAction() }}>
-      <Dialog.Portal>
+    <Dialog.Root open={open}>
+      <Dialog.Portal forceMount>
         <AnimatePresence>
           {open && (
             <motion.div
@@ -49,26 +55,34 @@ export default function ProjectModal({ open, onCloseAction, from = "right", labe
               aria-modal="true"
               aria-labelledby={labelledBy}
             >
-              <Dialog.Overlay asChild>
+              <Dialog.Overlay asChild forceMount>
                 <motion.div
                   className="absolute inset-0 z-[999] bg-black/50 backdrop-blur-sm"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
+                  onClick={beginClose}
+                  aria-hidden="true"
                 />
               </Dialog.Overlay>
 
-              <Dialog.Content asChild>
+              <Dialog.Content asChild forceMount>
                 <motion.div
                   className={`absolute inset-y-0 ${sideAnchor} md:w-[72%] lg:w-[66%] bg-card/90 backdrop-blur-xl border border-primary/10 shadow-2xl outline-none z-[1000]`}
                   initial={{ x: initialX }}
                   animate={{ x: 0 }}
                   exit={{ x: initialX }}
                   transition={{ type: "spring", stiffness: 260, damping: 28 }}
-                  onClick={(e) => e.stopPropagation()}
-                  aria-labelledby={labelledBy}
+                  aria-labelledby={contentLabelledBy}
                 >
-                  {children}
+                  {/* Always render a hidden title to satisfy Radix a11y requirement */}
+                  <Dialog.Title id={generatedTitleId} className="sr-only">
+                    Dialog
+                  </Dialog.Title>
+                  <EscapeToClose onEscape={beginClose} />
+                  <ModalCloseContext.Provider value={{ requestClose: beginClose }}>
+                    {children}
+                  </ModalCloseContext.Provider>
                 </motion.div>
               </Dialog.Content>
             </motion.div>
@@ -77,4 +91,18 @@ export default function ProjectModal({ open, onCloseAction, from = "right", labe
       </Dialog.Portal>
     </Dialog.Root>
   )
+}
+
+function EscapeToClose({ onEscape }: { onEscape: () => void }) {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault()
+        onEscape()
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [onEscape])
+  return null
 }

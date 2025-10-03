@@ -5,7 +5,24 @@ import type { Project, ImageItem, TechItem, MetricItem } from "@/types/project"
 import ProjectGallery from "./ProjectGallery"
 import TechIconsRow from "./TechIconsRow"
 import CTAButtons from "./CTAButtons"
-import ProjectModal from "./ProjectModal"
+import ProjectModal, { useProjectModalClose } from "./ProjectModal"
+
+function ModalHeaderCloseButton({ fallback }: { fallback: () => void }) {
+  const ctx = useProjectModalClose()
+  return (
+    <button
+      type="button"
+      className="ml-3 inline-flex items-center justify-center w-10 h-10 rounded-full bg-muted text-foreground/90 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
+      onClick={() => (ctx?.requestClose ? ctx.requestClose() : fallback())}
+      aria-label="Close case study"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  )
+}
 
 function coalesceScreenshots(p: Project): ImageItem[] | undefined {
   if (p.screenshots?.length) return p.screenshots
@@ -58,17 +75,7 @@ export default function CaseStudyPanel({
               {project?.yearRange ? ` • ${project.yearRange}` : project?.date ? ` • ${project.date}` : ""}
             </p>
           </div>
-          <button
-            type="button"
-            className="ml-3 inline-flex items-center justify-center w-10 h-10 rounded-full bg-muted text-foreground/90 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
-            onClick={onCloseAction}
-            aria-label="Close case study"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
+          <ModalHeaderCloseButton fallback={onCloseAction} />
         </div>
 
         {/* Content */}

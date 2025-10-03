@@ -7,6 +7,8 @@ import { trackEvent } from "@/lib/analytics"
 import TimelineItem from "./TimelineItem"
 import TimelineMarker from "./TimelineMarker"
 import CaseStudyPanel from "./CaseStudyPanel"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
+import { Laptop } from "lucide-react"
 
 function opposite(side: "left" | "right"): "left" | "right" {
   return side === "left" ? "right" : "left"
@@ -23,6 +25,12 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
   const [selected, setSelected] = React.useState<Project | null>(null)
   const [open, setOpen] = React.useState(false)
   const [fromSide, setFromSide] = React.useState<"left" | "right">("right")
+
+  // Pagination: show up to 5 initially, then reveal more on demand
+  const [showCount, setShowCount] = React.useState(5)
+  const visibleItems = items.slice(0, showCount)
+  const canShowMore = items.length > showCount
+  const showMore = () => setShowCount((c) => Math.min(items.length, c + 5))
 
   // Deep-linking: ?project=ID or #project-ID
   React.useEffect(() => {
@@ -65,11 +73,21 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
     requestAnimationFrame(() => lastTriggerRef.current?.focus())
   }
 
+  // Scroll indicator refs and transforms (must be called on every render)
+  const containerRef = React.useRef<HTMLDivElement | null>(null)
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start 0.9", "end 0.1"] })
+  // Smooth using a spring mapped from scroll progress
+  const springProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 22, mass: 0.25 })
+  const topPct = useTransform(springProgress, (v) => `calc(${Math.min(98, Math.max(2, v * 100))}% - 14px)`)
+  const dotOpacity = useTransform(springProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0])
+  const dotScale = useTransform(springProgress, [0, 0.1, 0.9, 1], [0.85, 1, 1, 0.9])
+  const trailHeight = useTransform(springProgress, (v) => `${Math.min(98, Math.max(0, v * 100))}%`)
+
   if (!items.length) return null
 
   return (
     <section aria-labelledby="featured-timeline-title" className="relative py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4" ref={containerRef}>
         <div className="text-center mb-10 md:mb-14">
           <h2 id="featured-timeline-title" className="text-3xl md:text-5xl font-bold font-display">
             Featured Projects Timeline
@@ -79,12 +97,30 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
           </p>
         </div>
 
-        {/* Center vertical line */}
+        {/* Center vertical line with animated indicator */}
         <div className="relative">
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent" aria-hidden="true" />
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent" aria-hidden="true" />
+
+          {/* Green trail that grows along the line */}
+          <motion.div
+            className="hidden md:block absolute left-1/2 -translate-x-1/2 w-[3px] rounded-full bg-gradient-to-b from-emerald-500 via-emerald-400 to-transparent"
+            style={{ top: 0, height: trailHeight, opacity: dotOpacity }}
+            aria-hidden="true"
+          />
+
+          {/* Animated green laptop dot */}
+          <motion.div
+            className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center"
+            style={{ top: topPct, opacity: dotOpacity, scale: dotScale }}
+            aria-hidden="true"
+          >
+            <div className="w-7 h-7 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.25)] flex items-center justify-center">
+              <Laptop className="w-4 h-4 text-white" />
+            </div>
+          </motion.div>
 
           <ol className="space-y-10 md:space-y-16">
-            {items.map((p, idx) => {
+            {visibleItems.map((p, idx) => {
               const side: "left" | "right" = idx % 2 === 0 ? "left" : "right"
               return (
                 <li key={p.id} id={`project-${p.id}`} className="relative">
@@ -126,6 +162,19 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
               )
             })}
           </ol>
+
+          {canShowMore && (
+            <div className="mt-10 md:mt-14 flex justify-center">
+              <button
+                type="button"
+                onClick={showMore}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-semibold shadow hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                aria-label="Load more featured projects"
+              >
+                See more
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
