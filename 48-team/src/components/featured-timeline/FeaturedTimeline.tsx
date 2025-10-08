@@ -8,9 +8,7 @@ import TimelineItem from "./TimelineItem"
 import TimelineMarker from "./TimelineMarker"
 import CaseStudyPanel from "./CaseStudyPanel"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import {Laptop, Search} from "lucide-react"
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import {Laptop} from "lucide-react"
 
 function opposite(side: "left" | "right"): "left" | "right" {
   return side === "left" ? "right" : "left"

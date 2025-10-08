@@ -1,12 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { motion, Variants } from "framer-motion"
+import { motion, Variants, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import type { TeamMemberProfile } from "@/data/teamData"
+import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect"
 
 export type TeamCardProps = {
   member: TeamMemberProfile
@@ -21,10 +22,14 @@ const itemVariants: Variants = {
 
 export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
   const open = React.useCallback(() => onOpen?.(member), [member, onOpen])
+  const [hovered, setHovered] = React.useState(false)
 
   const onIconClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.stopPropagation()
   }
+
+  const activate = () => setHovered(true)
+  const deactivate = () => setHovered(false)
 
   return (
     <motion.div
@@ -32,36 +37,93 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 220, damping: 20, mass: 0.7 }}
       className={cn(
-        "group relative rounded-2xl border border-border bg-card/80 shadow-md backdrop-blur-md",
-        "hover:shadow-lg hover:shadow-primary/20 hover:ring-1 hover:ring-primary/30",
+        "group/canvas-card group relative rounded-2xl border border-border bg-card/80 shadow-md backdrop-blur-md overflow-hidden",
+        "hover:shadow-lg hover:shadow-primary/20 hover:ring-1 hover:ring-primary/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
         "transition-all duration-300 cursor-pointer",
         className
       )}
       onClick={open}
       role="button"
+      tabIndex={0}
       aria-label={`Open details for ${member.name}`}
+      onMouseEnter={activate}
+      onMouseLeave={deactivate}
+      onFocus={activate}
+      onBlur={deactivate}
     >
-      <div className="p-4">
+      {/* Canvas Reveal Overlay */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            key="reveal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="absolute inset-0 z-0 pointer-events-none"
+          >
+            <CanvasRevealEffect
+              animationSpeed={3.2}
+              containerClassName="h-full w-full bg-background/40 dark:bg-background/30"
+              colors={[[255, 115, 179], [110, 110, 255], [56, 189, 248]]}
+              dotSize={3}
+              showGradient={false}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/60 to-background/10" />
+            {/* Overlay textual content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.35, ease: "easeOut" }}
+                className="space-y-2"
+              >
+                <h3 className="text-lg md:text-xl font-semibold tracking-tight drop-shadow-sm">{member.name}</h3>
+                <p className="text-sm text-muted-foreground/90 capitalize">{member.role}</p>
+                <p className="text-xs uppercase tracking-wide text-primary/90 mt-4 font-medium">Click to see portfolio</p>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="relative z-10 p-4">
         {/* Image */}
         <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl">
           <Image
             src={member.image || "/placeholder-user.jpg"}
             alt={member.name}
             fill
-            className="object-cover"
+            className={cn(
+              "object-cover transition-all duration-500",
+              hovered ? "opacity-0 scale-105" : "opacity-100"
+            )}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          {/* Subtle overlay when not hovered to keep consistency */}
+          <div
+            className={cn(
+              "absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent transition-opacity duration-500",
+              hovered ? "opacity-0" : "opacity-60"
+            )}
           />
         </div>
 
-        {/* Name/Role */}
-        <div className="mt-3">
+        {/* Name/Role (hidden on hover) */}
+        <div className={cn(
+          "mt-3 relative transition-all duration-300",
+          hovered && "opacity-0 -translate-y-1"
+        )}>
           <div className="text-base md:text-lg font-semibold leading-tight tracking-tight">{member.name}</div>
           <div className="text-sm text-muted-foreground">{member.role}</div>
         </div>
 
-        {/* Socials bottom-right */}
+        {/* Socials bottom-right (hidden on hover) */}
         <TooltipProvider>
-          <div className="absolute bottom-3 right-3 flex items-center gap-1.5">
+          <div className={cn(
+            "absolute bottom-3 right-3 flex items-center gap-1.5 z-20 transition-opacity duration-300",
+            hovered && "opacity-0"
+          )}>
             {member.socials?.linkedin && (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -128,4 +190,3 @@ function MailIcon({ className }: { className?: string }) {
     </svg>
   )
 }
-
