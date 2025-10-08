@@ -262,7 +262,7 @@ const Navigation = () => {
                     onClick={() => scrollToSection("contact")}
                     className="relative bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    <span className="relative z-10">Get In Touch</span>
+                    <span className="relative z-10">Hire me</span>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-0"
                       whileHover={{ opacity: 0.3 }}

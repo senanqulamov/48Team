@@ -121,7 +121,7 @@ const SkillsSection = () => {
 
   type Skill = {
     name: string;
-    icon: React.ElementType;
+    icon: React.ComponentType<{ className?: string }>;
     level: number;
     color: string;
     tags?: string[];

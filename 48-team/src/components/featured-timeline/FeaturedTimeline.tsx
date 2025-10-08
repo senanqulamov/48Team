@@ -9,6 +9,7 @@ import TimelineMarker from "./TimelineMarker"
 import CaseStudyPanel from "./CaseStudyPanel"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import {Laptop} from "lucide-react"
+import { Spotlight } from "@/components/ui/spotlight"
 
 function opposite(side: "left" | "right"): "left" | "right" {
   return side === "left" ? "right" : "left"
@@ -91,13 +92,14 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
 
         {/* Hero Section */}
         <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+          <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="white" />
           <div className="max-w-6xl mx-auto">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
-                className="text-center mb-16"
+                className="text-center mb-16 relative z-10"
             >
               <h1 id="featured-timeline-title" className="text-5xl md:text-7xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">

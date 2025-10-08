@@ -164,11 +164,11 @@ const ProjectsSection = () => {
           </div>
 
           {/* Project Icon */}
-          <div className="absolute top-4 left-4">
-            <div className={`p-3 rounded-xl bg-gradient-to-r ${project.color} backdrop-blur-sm`}>
-              <project.icon className="w-6 h-6 text-white" />
-            </div>
-          </div>
+          {/*<div className="absolute top-4 left-4">*/}
+          {/*  <div className={`p-3 rounded-xl bg-gradient-to-r ${project.color} backdrop-blur-sm`}>*/}
+          {/*    <project.icon className="w-6 h-6 text-white" />*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
           {/* Hover Overlay - Simplified */}
           <div className="absolute inset-0 bg-background/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

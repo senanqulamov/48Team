@@ -17,7 +17,7 @@ import {
   Boxes,
 } from "lucide-react"
 
-const ICONS: Record<string, React.ElementType> = {
+const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Laravel: Flame,
   PHP: Braces,
   "PHP 8+": Braces,

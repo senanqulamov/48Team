@@ -121,11 +121,6 @@ export default function CaseStudyPanel({
             </section>
           ) : null}
 
-          {/* Gallery */}
-          {screenshots?.length ? (
-            <ProjectGallery items={screenshots} />
-          ) : null}
-
           {/* Tech & Tools */}
           {techStack?.length ? (
             <TechIconsRow items={techStack} />
@@ -141,6 +136,12 @@ export default function CaseStudyPanel({
               <p className="text-foreground/90 whitespace-pre-line">{project.personalNote}</p>
             </section>
           )}
+
+          {/* Gallery */}
+          {screenshots?.length ? (
+              <ProjectGallery items={screenshots} />
+          ) : null}
+
         </div>
       </div>
     </ProjectModal>

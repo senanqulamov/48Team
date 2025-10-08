@@ -27,7 +27,7 @@ export default function TeamPage() {
           <PageWrapper>
             <div className="space-y-16 md:space-y-24">
               <TeamGrid
-                title="The -48- Team"
+                title="The 48 Team"
                 subtitle="The people behind the work. Our team is made up of 48+ people from all over the world. We're a team of designers, developers, and product managers."
                 members={teamData}
               />

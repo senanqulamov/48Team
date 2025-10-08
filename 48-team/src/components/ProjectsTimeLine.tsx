@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useRef, useEffect } from "react"
 import { Eye } from "lucide-react"
 import {
   Carousel,
@@ -122,6 +122,48 @@ export default function ProjectsTimelinePage() {
   const [loading, setLoading] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
+  const targetHashRef = useRef<number | null>(null);
+
+  // Deep-link hash support (#p-ID)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash;
+    if (hash.startsWith('#p-')) {
+      const id = parseInt(hash.slice(3), 10);
+      if (Number.isFinite(id)) {
+        targetHashRef.current = id;
+        const proj = allProjects.find(p => p.id === id);
+        if (proj && proj.category && proj.category !== activeCategory) {
+          setLoading(true);
+          setTimeout(() => { // mimic tab change delay
+            setActiveCategory(proj.category as string);
+            setLoading(false);
+          }, 50);
+        } else {
+          // Scroll after initial render
+          setTimeout(() => {
+            const el = document.getElementById(`p-${id}`);
+            el?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          }, 450);
+        }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // After loading or category change, attempt scroll if target pending
+  useEffect(() => {
+    if (loading) return;
+    if (targetHashRef.current) {
+      const el = document.getElementById(`p-${targetHashRef.current}`);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          targetHashRef.current = null;
+        }, 200);
+      }
+    }
+  }, [loading, activeCategory]);
 
   // Helper: Ensure at least 4 cards for slider
   const filteredProjects = useMemo(
@@ -232,6 +274,7 @@ export default function ProjectsTimelinePage() {
                                 key={project.id + "-" + idx}
                                 className="relative pl-4 md:pl-4 pr-4 md:pr-0 w-full sm:max-w-[85%] md:max-w-[45%] lg:max-w-[35%] xl:max-w-[520px] mx-auto flex-shrink-0"
                                 data-cursor="drag"
+                                id={`p-${project.id}`}
                             >
                               {/* Project Card Content */}
                               <motion.div

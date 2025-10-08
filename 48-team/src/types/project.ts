@@ -48,4 +48,6 @@ export interface Project {
   links?: { demo?: string; github?: string };
   features?: string[];
   blog?: string;
+  /** Optional icon component for branding (e.g., lucide icon) */
+  icon?: React.ComponentType<{ className?: string }>;
 }

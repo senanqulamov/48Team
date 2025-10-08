@@ -13,6 +13,7 @@ export type TeamCardProps = {
   member: TeamMemberProfile
   className?: string
   onOpen?: (member: TeamMemberProfile) => void
+  layoutId?: string // optional for shared layout animation
 }
 
 const itemVariants: Variants = {
@@ -20,7 +21,7 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 }
 
-export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
+export default function TeamCard({ member, className, onOpen, layoutId }: TeamCardProps) {
   const open = React.useCallback(() => onOpen?.(member), [member, onOpen])
   const [hovered, setHovered] = React.useState(false)
 
@@ -36,6 +37,7 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
       variants={itemVariants}
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 220, damping: 20, mass: 0.7 }}
+      data-team-card-id={layoutId || undefined}
       className={cn(
         "group/canvas-card group relative rounded-2xl border border-border bg-card/80 shadow-md backdrop-blur-md overflow-hidden",
         "hover:shadow-lg hover:shadow-primary/20 hover:ring-1 hover:ring-primary/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
@@ -50,6 +52,7 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
       onMouseLeave={deactivate}
       onFocus={activate}
       onBlur={deactivate}
+      {...(layoutId ? { layoutId: `card-${layoutId}` } : {})}
     >
       {/* Canvas Reveal Overlay */}
       <AnimatePresence>
@@ -81,6 +84,51 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
                 <h3 className="text-lg md:text-xl font-semibold tracking-tight drop-shadow-sm">{member.name}</h3>
                 <p className="text-sm text-muted-foreground/90 capitalize">{member.role}</p>
                 <p className="text-xs uppercase tracking-wide text-primary/90 mt-4 font-medium">Click to see portfolio</p>
+
+                 {/*Socials bottom-right (hidden on hover)*/}
+                <TooltipProvider>
+                  <div className={cn(
+                    "absolute bottom-3 right-3 flex items-center gap-1.5 z-20 transition-opacity duration-300",
+                    hovered && "opacity-0"
+                  )}>
+                    {member.socials?.linkedin && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
+                            <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" onClick={onIconClick} aria-label={`${member.name} on LinkedIn`}>
+                              <LinkedInIcon className="size-4" />
+                            </a>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>LinkedIn</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {member.socials?.github && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
+                            <a href={member.socials.github} target="_blank" rel="noopener noreferrer" onClick={onIconClick} aria-label={`${member.name} on GitHub`}>
+                              <GitHubIcon className="size-4" />
+                            </a>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>GitHub</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {member.socials?.email && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
+                            <a href={member.socials.email} onClick={onIconClick} aria-label={`Email ${member.name}`}>
+                              <MailIcon className="size-4" />
+                            </a>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Email</TooltipContent>
+                      </Tooltip>
+                    )}
+                  </div>
+                </TooltipProvider>
               </motion.div>
             </div>
           </motion.div>
@@ -89,7 +137,7 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
 
       <div className="relative z-10 p-4">
         {/* Image */}
-        <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl">
+        <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl" {...(layoutId ? { layoutId: `image-${layoutId}` } : {})}>
           <Image
             src={member.image || "/placeholder-user.jpg"}
             alt={member.name}
@@ -114,54 +162,9 @@ export default function TeamCard({ member, className, onOpen }: TeamCardProps) {
           "mt-3 relative transition-all duration-300",
           hovered && "opacity-0 -translate-y-1"
         )}>
-          <div className="text-base md:text-lg font-semibold leading-tight tracking-tight">{member.name}</div>
-          <div className="text-sm text-muted-foreground">{member.role}</div>
+          <div className="text-base md:text-lg font-semibold leading-tight tracking-tight" {...(layoutId ? { layoutId: `title-${layoutId}` } : {})}>{member.name}</div>
+          <div className="text-sm text-muted-foreground" {...(layoutId ? { layoutId: `role-${layoutId}` } : {})}>{member.role}</div>
         </div>
-
-        {/* Socials bottom-right (hidden on hover) */}
-        <TooltipProvider>
-          <div className={cn(
-            "absolute bottom-3 right-3 flex items-center gap-1.5 z-20 transition-opacity duration-300",
-            hovered && "opacity-0"
-          )}>
-            {member.socials?.linkedin && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
-                    <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" onClick={onIconClick} aria-label={`${member.name} on LinkedIn`}>
-                      <LinkedInIcon className="size-4" />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>LinkedIn</TooltipContent>
-              </Tooltip>
-            )}
-            {member.socials?.github && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
-                    <a href={member.socials.github} target="_blank" rel="noopener noreferrer" onClick={onIconClick} aria-label={`${member.name} on GitHub`}>
-                      <GitHubIcon className="size-4" />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>GitHub</TooltipContent>
-              </Tooltip>
-            )}
-            {member.socials?.email && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button asChild variant="ghost" size="icon" className="size-8 rounded-full hover:bg-primary/10">
-                    <a href={member.socials.email} onClick={onIconClick} aria-label={`Email ${member.name}`}>
-                      <MailIcon className="size-4" />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Email</TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        </TooltipProvider>
       </div>
     </motion.div>
   )

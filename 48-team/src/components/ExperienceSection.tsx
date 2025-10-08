@@ -221,7 +221,7 @@ const ExperienceSection = () => {
     period: string;
     description: string;
     achievements: string[];
-    icon: React.ElementType;
+    icon: React.ComponentType<{ className?: string }>;
     color: string;
   };
 

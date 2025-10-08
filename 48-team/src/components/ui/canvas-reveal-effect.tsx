@@ -4,13 +4,22 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 
+// Brand green palette (approx variations around primary OKLCH 0.7 0.15 160)
+// Picked Tailwind-esque greens for vibrancy & contrast
+const BRAND_GREEN_PALETTE: number[][] = [
+  [34, 197, 94],   // emerald-500
+  [16, 185, 129],  // teal-500
+  [22, 163, 74],   // green-600
+];
+
 export const CanvasRevealEffect = ({
   animationSpeed = 0.4,
   opacities = [0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1],
-  colors = [[0, 255, 255]],
+  colors: inputColors = BRAND_GREEN_PALETTE,
   containerClassName,
   dotSize,
   showGradient = true,
+  useBrandColors = true,
 }: {
   /**
    * 0.1 - slower
@@ -22,12 +31,15 @@ export const CanvasRevealEffect = ({
   containerClassName?: string;
   dotSize?: number;
   showGradient?: boolean;
+  /** If true (default) overrides provided colors with brand greens */
+  useBrandColors?: boolean;
 }) => {
+  const palette = useBrandColors ? BRAND_GREEN_PALETTE : (inputColors || BRAND_GREEN_PALETTE);
   return (
     <div className={cn("h-full relative bg-white w-full", containerClassName)}>
       <div className="h-full w-full">
         <DotMatrix
-          colors={colors ?? [[0, 255, 255]]}
+          colors={palette}
           dotSize={dotSize ?? 3}
           opacities={
             opacities ?? [0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1]
@@ -42,7 +54,7 @@ export const CanvasRevealEffect = ({
         />
       </div>
       {showGradient && (
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 to-[84%]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/40 to-transparent" />
       )}
     </div>
   );
