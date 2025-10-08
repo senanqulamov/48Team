@@ -9,7 +9,6 @@ import type { TeamMemberProfile } from "@/data/teamData";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { cn } from "@/lib/utils";
 import { projects as allProjects } from "@/lib/projects";
-import type { Project } from "@/types/project";
 import type { TeamProject } from "@/data/teamData";
 
 // Projects grid (memoized) - placed before modal component usage
