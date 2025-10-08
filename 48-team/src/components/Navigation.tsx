@@ -2,13 +2,35 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ChevronDown } from "lucide-react"
+// Enhance dropdown icons
+import {
+  Sparkles,
+  UserRound,
+  BadgeCheck,
+  FolderKanban,
+  Briefcase,
+  MessageSquareQuote,
+  Mail,
+} from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { usePathname, useRouter } from "next/navigation"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMeOpen, setIsMeOpen] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
   const router = useRouter()
   const pathname = usePathname()
@@ -61,13 +83,6 @@ const Navigation = () => {
   }
 
   const scrollToSection = (sectionId: string) => {
-    // Handle external blog route
-    if (sectionId === "blogs") {
-      router.push("/blogs")
-      setIsMobileMenuOpen(false)
-      return
-    }
-
     if (onHome) {
       smoothScrollOnHome(sectionId)
       setIsMobileMenuOpen(false)
@@ -78,14 +93,20 @@ const Navigation = () => {
     }
   }
 
-  const navItems = [
-    { id: "hero", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "skills", label: "Skills" },
-    { id: "projects", label: "Projects" },
-    { id: "experience", label: "Experience" },
-    { id: "blogs", label: "Blogs" },
-    { id: "contact", label: "Contact" },
+  const goTo = (path: string) => {
+    router.push(path)
+    setIsMobileMenuOpen(false)
+  }
+
+  // Items under "Me" dropdown -> map to home sections
+  const meItems: { id: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
+    { id: "hero", label: "Headline", Icon: Sparkles },
+    { id: "about", label: "About", Icon: UserRound },
+    { id: "skills", label: "Skills", Icon: BadgeCheck },
+    { id: "projects", label: "Projects", Icon: FolderKanban },
+    { id: "experience", label: "Experience", Icon: Briefcase },
+    { id: "testimonials", label: "Testimonials", Icon: MessageSquareQuote },
+    { id: "contact", label: "Contact", Icon: Mail },
   ]
 
   // Replace the "Get In Touch" button with "Go Back" button if user is in the projects route
@@ -93,7 +114,7 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Added scroll progress bar */}
+      {/* Scroll progress bar */}
       <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-background/20">
         <motion.div
           className="h-full bg-gradient-to-r from-primary via-accent to-primary"
@@ -118,7 +139,7 @@ const Navigation = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Enhanced logo with animation */}
+            {/* Logo */}
             <motion.div
               className="flex-shrink-0 cursor-pointer"
               onClick={() => scrollToSection("hero")}
@@ -137,37 +158,96 @@ const Navigation = () => {
               </div>
             </motion.div>
 
-            {/* Enhanced desktop navigation with animated underlines */}
+            {/* Desktop navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-center space-x-1">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium"
-                    whileHover={{ y: -2 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    {item.label}
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 bg-primary/5 rounded-lg opacity-0"
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  </motion.button>
-                ))}
+                {/* Me dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <motion.button
+                      className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium inline-flex items-center gap-1"
+                      whileHover={{ y: -2 }}
+                    >
+                      Me <ChevronDown className="w-4 h-4" />
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left"
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      <motion.div
+                        className="absolute inset-0 bg-primary/5 rounded-lg opacity-0"
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </motion.button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" sideOffset={10} className="w-[28rem] p-3 border border-border/60 bg-card/95 backdrop-blur-xl rounded-2xl shadow-2xl">
+                    <div className="grid grid-cols-2 gap-2">
+                      {meItems.map(({ id, label, Icon }) => (
+                          <DropdownMenuItem key={id} asChild className="p-0 bg-transparent focus:bg-transparent focus:text-foreground">
+                            <button
+                                onClick={() => scrollToSection(id)}
+                                className="group w-full flex items-center gap-3 rounded-xl border border-border/60 p-3 text-left transition-all duration-200 hover:bg-primary/5 hover:border-primary/30 hover:shadow-md text-foreground hover:text-primary"
+                            >
+                              <span className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-background/60 text-primary w-10 h-10 shadow-sm group-hover:border-primary/30 group-hover:text-primary">
+                                <Icon className="w-5 h-5" />
+                              </span>
+                              <span className="text-sm font-semibold tracking-tight leading-tight group-hover:text-primary">
+                                {label}
+                              </span>
+                            </button>
+                          </DropdownMenuItem>
+                      ))}
+                    </div>
+                  </DropdownMenuContent>
+
+                </DropdownMenu>
+
+                {/* Top-level items */}
+                <motion.button
+                  onClick={() => goTo("/team")}
+                  className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium"
+                  whileHover={{ y: -2 }}
+                >
+                  My Team
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left" initial={{ scaleX: 0 }} whileHover={{ scaleX: 1 }} transition={{ duration: 0.3 }} />
+                  <motion.div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0" whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} />
+                </motion.button>
+
+                <motion.button
+                  onClick={() => goTo("/projects")}
+                  className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium"
+                  whileHover={{ y: -2 }}
+                >
+                  Projects
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left" initial={{ scaleX: 0 }} whileHover={{ scaleX: 1 }} transition={{ duration: 0.3 }} />
+                  <motion.div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0" whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} />
+                </motion.button>
+
+                <motion.button
+                  onClick={() => goTo("/blogs")}
+                  className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium"
+                  whileHover={{ y: -2 }}
+                >
+                  Blogs
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left" initial={{ scaleX: 0 }} whileHover={{ scaleX: 1 }} transition={{ duration: 0.3 }} />
+                  <motion.div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0" whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} />
+                </motion.button>
+
+                <motion.button
+                  onClick={() => scrollToSection("contact")}
+                  className="relative px-4 py-2 text-foreground/80 hover:text-foreground transition-colors duration-300 font-medium"
+                  whileHover={{ y: -2 }}
+                >
+                  Contact
+                  <motion.div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent origin-left" initial={{ scaleX: 0 }} whileHover={{ scaleX: 1 }} transition={{ duration: 0.3 }} />
+                  <motion.div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0" whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} />
+                </motion.button>
               </div>
             </div>
 
-            {/* Enhanced CTA button with glow effect */}
+            {/* CTA */}
             <div className="hidden md:block">
               {isProjectsRoute ? (
                 <button
@@ -193,7 +273,7 @@ const Navigation = () => {
               )}
             </div>
 
-            {/* Modern mobile menu button */}
+            {/* Mobile menu button */}
             <div className="md:hidden">
               <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -229,7 +309,7 @@ const Navigation = () => {
         </div>
       </nav>
 
-      {/* Modern mobile menu with backdrop blur */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -248,25 +328,72 @@ const Navigation = () => {
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, type: "spring", damping: 20 }}
             >
-              <div className="p-6 space-y-4">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="block w-full text-left px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ x: 8 }}
-                  >
-                    {item.label}
-                  </motion.button>
-                ))}
+              <div className="p-6 space-y-3">
+                {/* Me collapsible */}
+                <Collapsible open={isMeOpen} onOpenChange={setIsMeOpen}>
+                  <CollapsibleTrigger asChild>
+                    <button className="w-full flex items-center justify-between px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-semibold">
+                      <span>Me</span>
+                      <ChevronDown className={`w-4 h-4 transition-transform ${isMeOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="mt-1 space-y-1">
+                      {meItems.map((it, index) => (
+                        <motion.button
+                          key={it.id}
+                          onClick={() => scrollToSection(it.id)}
+                          className="block w-full text-left px-10 py-2.5 text-foreground/90 hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200"
+                          initial={{ opacity: 0, x: -12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.02 * index }}
+                        >
+                          {it.label}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+
+                {/* Top-level items */}
+                <motion.button
+                  onClick={() => goTo('/team')}
+                  className="block w-full text-left px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  My Team
+                </motion.button>
+                <motion.button
+                  onClick={() => goTo('/projects')}
+                  className="block w-full text-left px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  Projects
+                </motion.button>
+                <motion.button
+                  onClick={() => goTo('/blogs')}
+                  className="block w-full text-left px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  Blogs
+                </motion.button>
+                <motion.button
+                  onClick={() => scrollToSection('contact')}
+                  className="block w-full text-left px-4 py-3 text-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-200 font-medium"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  Contact
+                </motion.button>
+
                 <motion.div
-                  className="pt-4 border-t border-border/50"
+                  className="pt-3 border-t border-border/50"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ delay: 0.3 }}
                 >
                   <Button
                     onClick={() => scrollToSection("contact")}

@@ -8,7 +8,9 @@ import TimelineItem from "./TimelineItem"
 import TimelineMarker from "./TimelineMarker"
 import CaseStudyPanel from "./CaseStudyPanel"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Laptop } from "lucide-react"
+import {Laptop, Search} from "lucide-react"
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 
 function opposite(side: "left" | "right"): "left" | "right" {
   return side === "left" ? "right" : "left"
@@ -86,16 +88,32 @@ export default function FeaturedTimeline({ projects }: { projects?: Project[] })
   if (!items.length) return null
 
   return (
-    <section aria-labelledby="featured-timeline-title" className="relative py-16 md:py-24">
+    <section aria-labelledby="featured-timeline-title" className="relative py-16 md:py-30 bg-background/60">
       <div className="max-w-7xl mx-auto px-4" ref={containerRef}>
-        <div className="text-center mb-10 md:mb-14">
-          <h2 id="featured-timeline-title" className="text-3xl md:text-5xl font-bold font-display">
-            Featured Projects Timeline
-          </h2>
-          <p className="text-muted-foreground mt-3 md:mt-4 max-w-2xl mx-auto">
-            A curated set of highlights. Click any card to see the full case study.
-          </p>
-        </div>
+
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+                className="text-center mb-16"
+            >
+              <h1 id="featured-timeline-title" className="text-5xl md:text-7xl font-bold mb-6">
+                  <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    Featured Projects Timeline
+                  </span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
+                A curated set of highlights. Click any card to see the full case study.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+
 
         {/* Center vertical line with animated indicator */}
         <div className="relative">

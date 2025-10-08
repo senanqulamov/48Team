@@ -10,6 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Ignore build artifacts and dependencies, including nested .next under src/
+  {
+    ignores: [
+      "**/.next/**",
+      "src/.next/**",
+      "node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+    ],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 
