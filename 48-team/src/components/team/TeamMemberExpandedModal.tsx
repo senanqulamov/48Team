@@ -355,9 +355,9 @@ export function TeamMemberExpandedModal({ open, member, onCloseAction, layoutId,
            <div className="fixed inset-0 z-[110] grid place-items-center p-2 sm:p-4 md:p-6 lg:p-8" aria-hidden={false}>
              <div
                ref={ref}
-               className="relative w-full max-w-[76rem] h-full md:h-auto md:max-h-[94vh] flex items-stretch"
+               className="relative w-full max-w-[76rem] h-full md:h-auto md:max-h-[94vh] flex items-stretch min-h-0"
              >
-               {/* Prev button (outside card sticking to left edge) */}
+                {/* Prev button (outside card sticking to left edge) */}
                {hasPrev && (
                  <motion.button
                    type="button"
@@ -401,14 +401,14 @@ export function TeamMemberExpandedModal({ open, member, onCloseAction, layoutId,
 
                {/* Expanding card */}
                <motion.div
-                 layoutId={`card-${layoutId}`}
-                 aria-labelledby={titleId}
-                 role="dialog"
-                 aria-modal="true"
-                 className={cn(
-                   'relative w-full h-full md:h-auto md:max-h-full flex flex-col',
-                   'bg-card/95 dark:bg-background/95 rounded-3xl shadow-xl border border-border',
-                   'backdrop-blur-xl overflow-hidden focus:outline-none will-change-transform will-change-opacity'
+                  layoutId={`card-${layoutId}`}
+                  aria-labelledby={titleId}
+                  role="dialog"
+                  aria-modal="true"
+                  className={cn(
+                   'relative w-full h-full md:h-auto md:max-h-[94vh] flex flex-col min-h-0',
+                    'bg-card/95 dark:bg-background/95 rounded-3xl shadow-xl border border-border',
+                    'backdrop-blur-xl overflow-hidden focus:outline-none will-change-transform will-change-opacity'
                  )}
                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 18 }}
                  animate={{ opacity: 1, y: 0, transition: { duration: prefersReducedMotion ? 0 : 0.32, ease: 'easeOut' } }}
@@ -496,7 +496,7 @@ export function TeamMemberExpandedModal({ open, member, onCloseAction, layoutId,
                  {/* Scrollable content */}
                  <div
                    ref={scrollContainerRef}
-                   className="relative flex-1 overflow-y-auto px-6 md:px-8 pt-6 pb-10 space-y-20 scroll-smooth"
+                   className="relative flex-1 min-h-0 overflow-y-auto px-6 md:px-8 pt-6 pb-10 space-y-20 scroll-smooth [-webkit-overflow-scrolling:touch] overscroll-contain [touch-action:pan-y]"
                  >
                    {/* Overview Section */}
                    <section id="overview" aria-label="Overview" className="space-y-6">
