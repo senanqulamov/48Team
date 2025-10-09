@@ -15,7 +15,7 @@ import PageWrapper from "@/components/PageWrapper"
 import ScrollDownIndicator from "@/components/ScrollDownIndicator"
 import { renderMarkdown } from "@/lib/markdown"
 import { cn } from "@/lib/utils"
-import { Spotlight } from "@/components/ui/spotlight"
+import { Spotlight } from "@/components/ui/spotlight-new"
 
 interface BlogPostClientProps {
   post: BlogPost
@@ -115,6 +115,7 @@ const RelatedPostCard = ({ post }: { post: BlogPost }) => {
 }
 
 export default function BlogPostClient({ post, relatedPosts }: BlogPostClientProps) {
+  const titleRef = useRef<HTMLHeadingElement | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [currentUrl, setCurrentUrl] = useState("")
   const [showStickyHeader, setShowStickyHeader] = useState(false)
@@ -196,10 +197,10 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
           <PageWrapper>
             <div className="relative min-h-screen bg-black text-white">
               {/* Hero Section */}
-              <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-                <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" fill="white" />
-                {/* increased top padding to account for fixed header */}
-                <div className="max-w-4xl mx-auto relative z-10">
+              <section className="relative overflow-hidden md:overflow-visible pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+                <Spotlight className="inset-0" />
+                 {/* increased top padding to account for fixed header */}
+                 <div className="max-w-4xl mx-auto relative z-10">
                   {/* Sticky sentinel: when this leaves viewport, show sticky header */}
                   <div ref={stickySentinelRef} className="h-px w-full" aria-hidden />
                   {/* Inline back button visible before scroll; hidden when sticky header is shown */}
@@ -237,7 +238,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    <h1 ref={titleRef} data-spotlight-target className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                       <span className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-300 bg-clip-text text-transparent">
                         {post.title}
                       </span>
