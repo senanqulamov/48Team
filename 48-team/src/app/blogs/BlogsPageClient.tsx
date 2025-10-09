@@ -14,7 +14,6 @@ import PageWrapper from "@/components/PageWrapper"
 import PageLoader from "@/components/PageLoader"
 import ProgressiveBlurNoise from "@/components/ProgressiveBlurNoise"
 import ScrollDownIndicator from "@/components/ScrollDownIndicator"
-import { Spotlight } from "@/components/ui/spotlight-new"
 
 const BlogCard = ({ post, featured = false }: { post: BlogPost; featured?: boolean }) => {
   return (
@@ -138,7 +137,6 @@ export default function BlogsPageClient() {
             <div className="relative min-h-screen bg-black text-white">
               {/* Hero Section */}
               <section className="relative overflow-hidden md:overflow-visible pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-                <Spotlight className="inset-0" />
                 <div className="max-w-6xl mx-auto">
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -147,7 +145,7 @@ export default function BlogsPageClient() {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-16 relative z-10"
                   >
-                    <h1 ref={titleRef} data-spotlight-target className="text-5xl md:text-7xl font-bold mb-6">
+                    <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-6">
                       <span className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-300 bg-clip-text text-transparent">
                         Insights
                       </span>

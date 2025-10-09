@@ -5,7 +5,6 @@ import { motion, Variants } from "framer-motion"
 import TeamCard from "@/components/team/TeamCard"
 import { TeamMemberExpandedModal } from "@/components/team/TeamMemberExpandedModal"
 import type { TeamMemberProfile } from "@/data/teamData"
-import { Spotlight } from "@/components/ui/spotlight-new"
 import { useTeamMemberRoute } from "@/hooks/useTeamMemberRoute"
 
 export type TeamGridProps = {
@@ -56,7 +55,6 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
       <div className="max-w-7xl mx-auto px-4">
         {/* Hero Section */}
         <section className="relative overflow-hidden md:overflow-visible pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-          <Spotlight className="inset-0" />
           <div className="max-w-6xl mx-auto">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -65,7 +63,7 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
                 transition={{ duration: 0.8 }}
                 className="text-center mb-16 relative z-10"
             >
-              <h1 ref={titleRef} id="featured-timeline-title" data-spotlight-target className="text-5xl md:text-7xl font-bold mb-6">
+              <h1 ref={titleRef} id="featured-timeline-title" className="text-5xl md:text-7xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     {title}
                   </span>
