@@ -40,6 +40,7 @@
     "@radix-ui/react-tooltip": "1.1.6",
     "@react-three/fiber": "^9.3.0",
     "@studio-freight/lenis": "^1.0.42",
+    "@tabler/icons-react": "^3.35.0",
     "@types/nodemailer": "^7.0.1",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
