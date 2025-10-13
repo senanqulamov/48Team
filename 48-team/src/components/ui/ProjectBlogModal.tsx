@@ -243,14 +243,29 @@ const DetailsLeft = React.memo(function DetailsLeft({ project }: { project: Proj
     );
 });
 
-const DescriptionRight = React.memo(function DescriptionRight({ blog }: { blog?: string }) {
-    if (!blog) return null;
+const DescriptionRight = React.memo(function DescriptionRight({ project }: { project: Project | null }) {
+    if (!project) return null;
+
+    // Use blog first, then longDescription, then description as fallback
+    const content = project.blog || project.longDescription || project.description;
+
+    if (!content) return null;
+
+    // Check if content is HTML or plain text
+    const isHtml = content.includes('<') && content.includes('>');
+
     return (
         <div className="rounded-2xl border border-primary/10 bg-background/60 p-5 md:p-6 shadow-sm">
-            <div
-                className="prose prose-lg max-w-none text-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: blog }}
-            />
+            {isHtml ? (
+                <div
+                    className="prose prose-lg max-w-none text-foreground leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: content }}
+                />
+            ) : (
+                <p className="text-base md:text-lg text-foreground leading-relaxed whitespace-pre-line">
+                    {content}
+                </p>
+            )}
         </div>
     );
 });
@@ -361,7 +376,7 @@ export default function ProjectBlogModal({ open, onCloseAction, project, modalId
                                     <div className="px-4 sm:px-6 md:px-10 py-8 md:py-10">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
                                             <DetailsLeft project={project} />
-                                            <DescriptionRight blog={project.blog} />
+                                            <DescriptionRight project={project} />
                                         </div>
 
                                         {/* Gallery */}
