@@ -52,18 +52,6 @@ export const teamData: TeamMemberProfile[] = [
     ],
     projects: [
       {
-        title: "Passmate",
-        projectId: 1,
-        contribution: "Led full-stack development and architecture",
-        description: "Secure password management platform with end-to-end encryption"
-      },
-      {
-        title: "CustomAdmin",
-        projectId: 5,
-        contribution: "Designed core data layer and multi-tenancy system",
-        description: "Universal admin panel supporting multiple startup projects"
-      },
-      {
         title: "NeoSphere",
         projectId: 6,
         contribution: "Backend development and feature implementation"
@@ -72,6 +60,11 @@ export const teamData: TeamMemberProfile[] = [
         title: "BidBary",
         projectId: 7,
         contribution: "Real-time bidding system and WebSocket integration"
+      },
+      {
+        title: "JVD CLI",
+        projectId: 2,
+        contribution: "Java Command-Line Interface Toolkit"
       },
     ],
     socials: {
@@ -114,11 +107,6 @@ export const teamData: TeamMemberProfile[] = [
         projectId: 7,
         contribution: "Brand design and promotional graphics"
       },
-      {
-        title: "LuckyHolidays.az",
-        projectId: 16,
-        contribution: "Campaign visuals and social media assets"
-      },
     ],
     socials: {
       linkedin: "https://linkedin.com/in/eminbaghirov",
@@ -149,24 +137,19 @@ export const teamData: TeamMemberProfile[] = [
     ],
     projects: [
       {
-        title: "Passmate",
-        projectId: 1,
-        contribution: "Complete UI/UX design and user flow optimization"
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Visual identity and marketing materials"
       },
       {
-        title: "SchoolExam",
-        projectId: 2,
-        contribution: "Interface design and student experience refinement"
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Brand design and promotional graphics"
       },
       {
-        title: "JavaLearningApp",
-        projectId: 3,
-        contribution: "Learning interface and interactive components"
-      },
-      {
-        title: "Otomall.az",
-        projectId: 12,
-        contribution: "E-commerce UX and checkout flow redesign"
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "Campaign visuals and social media assets"
       },
     ],
     socials: {
@@ -199,24 +182,19 @@ export const teamData: TeamMemberProfile[] = [
     ],
     projects: [
       {
-        title: "CustomAdmin",
-        projectId: 5,
-        contribution: "Comprehensive testing and quality assurance"
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Visual identity and marketing materials"
       },
       {
         title: "BidBary",
         projectId: 7,
-        contribution: "Product roadmap and feature testing coordination"
+        contribution: "Brand design and promotional graphics"
       },
       {
         title: "LuckyHolidays.az",
         projectId: 16,
-        contribution: "End-to-end testing and product requirement management"
-      },
-      {
-        title: "NeoSphere",
-        projectId: 6,
-        contribution: "Quality assurance and user story validation"
+        contribution: "Campaign visuals and social media assets"
       },
     ],
     socials: {
@@ -247,19 +225,19 @@ export const teamData: TeamMemberProfile[] = [
     ],
     projects: [
       {
-        title: "LuckyHolidays.az",
-        projectId: 16,
-        contribution: "Social media content and promotional designs"
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Visual identity and marketing materials"
       },
       {
         title: "BidBary",
         projectId: 7,
-        contribution: "UI graphics and visual assets"
+        contribution: "Brand design and promotional graphics"
       },
       {
-        title: "Otomall.az",
-        projectId: 12,
-        contribution: "Product banners and marketing visuals"
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "Campaign visuals and social media assets"
       },
     ],
     socials: {
@@ -267,5 +245,144 @@ export const teamData: TeamMemberProfile[] = [
       email: "mailto:nazanin@example.com",
     },
     order: 5,
+  },
+  {
+    name: "Khayal",
+    role: "Senior DevOps Engineer",
+    image: "/images/team/manplaceholder1.png",
+    about: [
+      "Automating infrastructure and streamlining deployment pipelines",
+      "Strong focus on system reliability, monitoring, and scalability",
+      "Bridging development and operations for faster delivery cycles",
+    ],
+    skills: [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "CI/CD",
+      "Jenkins",
+      "GitLab CI",
+      "Terraform",
+      "Linux Administration",
+      "Nginx",
+      "Monitoring & Logging",
+      "Shell Scripting",
+      "Infrastructure as Code"
+    ],
+    projects: [
+      {
+        title: "CustomAdmin",
+        projectId: 5,
+        contribution: "Containerization and automated deployment setup"
+      },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Cloud infrastructure and CI/CD pipeline implementation"
+      },
+      {
+        title: "Otomall.az",
+        projectId: 12,
+        contribution: "High-availability architecture and performance optimization"
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/khayal",
+      github: "https://github.com/khayal",
+      email: "mailto:khayal@example.com",
+    },
+    order: 6,
+  },
+  {
+    name: "Shahla",
+    role: "SMM",
+    image: "/images/team/manplaceholder.png",
+    about: [
+      "Building brand presence through strategic social media campaigns",
+      "Data-driven approach to content planning and audience engagement",
+      "Creating compelling narratives that resonate with target audiences",
+    ],
+    skills: [
+      "Social Media Strategy",
+      "Content Planning",
+      "Instagram Marketing",
+      "Facebook Ads",
+      "Community Management",
+      "Analytics & Reporting",
+      "Copywriting",
+      "Trend Analysis",
+      "Influencer Outreach",
+      "Campaign Management",
+      "Canva",
+      "Hootsuite"
+    ],
+    projects: [
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Community building and engagement campaigns"
+      },
+      {
+        title: "Otomall.az",
+        projectId: 12,
+        contribution: "Social media advertising and brand awareness"
+      },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Launch campaign and ongoing social presence"
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/shahla",
+      email: "mailto:shahla@example.com",
+    },
+    order: 7,
+  },
+  {
+    name: "Cafar",
+    role: "SEO Specialist",
+    image: "/images/team/manplaceholder2.png",
+    about: [
+      "Driving organic traffic growth through technical and on-page optimization",
+      "Deep understanding of search algorithms and ranking factors",
+      "Proven track record of improving search visibility and conversions",
+    ],
+    skills: [
+      "Technical SEO",
+      "Keyword Research",
+      "On-Page Optimization",
+      "Link Building",
+      "Google Analytics",
+      "Google Search Console",
+      "SEMrush",
+      "Ahrefs",
+      "Content Strategy",
+      "Site Audits",
+      "Schema Markup",
+      "Local SEO"
+    ],
+    projects: [
+      {
+        title: "Otomall.az",
+        projectId: 12,
+        contribution: "Technical SEO audit and organic growth strategy"
+      },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "SEO foundation and content optimization"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Search engine optimization and ranking improvements"
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/cafar",
+      email: "mailto:cafar@example.com",
+    },
+    order: 8,
   },
 ]
