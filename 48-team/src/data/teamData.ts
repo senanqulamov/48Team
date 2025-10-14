@@ -7,6 +7,7 @@ export type TeamProject = {
 
 export type TeamSocials = {
   linkedin?: string
+  behance?: string
   github?: string
   email?: string
   twitter?: string
@@ -28,88 +29,243 @@ export type TeamMemberProfile = {
 export const teamData: TeamMemberProfile[] = [
   {
     name: "Sanan Qulamov",
-    role: "Full‑Stack Engineer / Founder",
+    role: "Founder / Full‑Stack Engineer",
     image: "/images/mine/me4.png",
     about: [
-      "Product‑minded engineer focusing on DX & maintainability",
-      "Blend of Laravel + React/Next.js + Java experience",
-      "Enjoys shaping 0→1 MVPs and hardening them for scale",
+      "Passionate about building scalable products from concept to production",
+      "Strong advocate for clean architecture and developer experience",
+      "Experienced in leading cross-functional teams and technical decision-making",
     ],
     skills: [
-      "Next.js","React","TypeScript","Laravel","PHP","Node.js","MySQL","Tailwind","CI/CD","Systems Design"
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Laravel",
+      "PHP",
+      "Node.js",
+      "MySQL",
+      "PostgreSQL",
+      "Tailwind CSS",
+      "REST APIs",
+      "CI/CD",
+      "System Architecture"
     ],
     projects: [
-      { title: "Passmate", projectId: 1, contribution: "Architecture & full stack", description: "Password manager MVP" },
-      { title: "CustomAdmin", projectId: 5, contribution: "Core data layer", description: "Universal multi‑startup admin" },
-      { title: "NeoSphere", projectId: 6, contribution: "Backend & feature delivery" },
-      { title: "BidBary", projectId: 7, contribution: "Real‑time bidding flows" },
+      {
+        title: "Passmate",
+        projectId: 1,
+        contribution: "Led full-stack development and architecture",
+        description: "Secure password management platform with end-to-end encryption"
+      },
+      {
+        title: "CustomAdmin",
+        projectId: 5,
+        contribution: "Designed core data layer and multi-tenancy system",
+        description: "Universal admin panel supporting multiple startup projects"
+      },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Backend development and feature implementation"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Real-time bidding system and WebSocket integration"
+      },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/example",
-      github: "https://github.com/example",
-      email: "mailto:founder@example.com",
-      portfolio: "https://example.com"
+      linkedin: "https://linkedin.com/in/sananqulamov",
+      github: "https://github.com/sananqulamov",
+      email: "mailto:sanan@example.com",
+      portfolio: "https://sananqulamov.com"
     },
     order: 1,
     timezone: "UTC+4"
   },
   {
-    name: "Jane Smith",
-    role: "Product Designer",
-    image: "/images/mine/me2.png",
+    name: "Emin Baghirov",
+    role: "Senior Graphic Designer",
+    image: "/images/team/emin.jpg",
     about: [
-      "Design systems advocate",
-      "Accessibility-first approach",
-      "Cross-functional collaboration",
+      "Creating visually compelling designs that enhance user engagement",
+      "Expertise in brand identity and visual storytelling",
+      "Focus on modern design trends and pixel-perfect execution",
     ],
-    skills: ["Figma", "Design Systems", "UX Research", "Prototyping", "Design Tokens"],
+    skills: [
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Figma",
+      "Brand Identity",
+      "Typography",
+      "Print Design",
+      "Digital Illustration",
+      "Color Theory",
+      "Layout Design"
+    ],
     projects: [
-      { title: "NeoSphere", projectId: 6, contribution: "Information architecture" },
-      { title: "BidBary", projectId: 7, contribution: "Auction interaction patterns" },
-      { title: "Allrent.io", projectId: 9, contribution: "Conversion oriented redesign" },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Visual identity and marketing materials"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Brand design and promotional graphics"
+      },
+      {
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "Campaign visuals and social media assets"
+      },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/janesmith",
-      github: "https://github.com/janesmith",
-      email: "mailto:jane@example.com",
+      linkedin: "https://linkedin.com/in/eminbaghirov",
+      behance: "https://behance.net/eminbaghirov"
     },
     order: 2,
   },
   {
-    name: "Ali Rahman",
-    role: "Full‑Stack Engineer",
-    image: "/images/mine/me3.jpg",
-    about: ["API-first thinker", "TDD practitioner", "DevOps and CI/CD"],
-    skills: ["Next.js", "Prisma", "PostgreSQL", "AWS", "Docker", "Testing"],
+    name: "Javid Manafov",
+    role: "Lead UI/UX Designer",
+    image: "/images/team/javid.jpg",
+    about: [
+      "User-centered design approach with emphasis on research and testing",
+      "Skilled in transforming complex requirements into intuitive interfaces",
+      "Bridging the gap between user needs and business goals",
+    ],
+    skills: [
+      "Figma",
+      "Adobe XD",
+      "User Research",
+      "Wireframing",
+      "Prototyping",
+      "Usability Testing",
+      "Information Architecture",
+      "Design Systems",
+      "Interaction Design",
+      "UI Animation"
+    ],
     projects: [
-      { title: "Passmate", projectId: 1, contribution: "Encryption & security" },
-      { title: "SchoolExam", projectId: 2, contribution: "Exam logic & auto-grading" },
-      { title: "JavaLearningApp", projectId: 3, contribution: "Backend API" },
-      { title: "Otomall.az", projectId: 12, contribution: "Performance & hardening" },
+      {
+        title: "Passmate",
+        projectId: 1,
+        contribution: "Complete UI/UX design and user flow optimization"
+      },
+      {
+        title: "SchoolExam",
+        projectId: 2,
+        contribution: "Interface design and student experience refinement"
+      },
+      {
+        title: "JavaLearningApp",
+        projectId: 3,
+        contribution: "Learning interface and interactive components"
+      },
+      {
+        title: "Otomall.az",
+        projectId: 12,
+        contribution: "E-commerce UX and checkout flow redesign"
+      },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/alirahman",
-      github: "https://github.com/alirahman",
-      email: "mailto:ali@example.com",
+      linkedin: "https://linkedin.com/in/javidmanafov",
+      behance: "https://behance.net/javidmanafov",
+      email: "mailto:javid@example.com",
     },
     order: 3,
   },
   {
-    name: "Maria Garcia",
-    role: "QA Engineer",
-    image: "/images/mine/me1.webp",
-    about: ["Automation frameworks", "Exploratory testing", "Shift-left QA"],
-    skills: ["Playwright", "Cypress", "API Testing", "Monitoring", "Accessibility"],
+    name: "Banu Ibrahimova",
+    role: "Product Owner / QA Engineer",
+    image: "/images/team/banu.jpeg",
+    about: [
+      "Ensuring product quality through rigorous testing methodologies",
+      "Strong focus on user acceptance and business requirement validation",
+      "Experienced in Agile product management and sprint planning",
+    ],
+    skills: [
+      "Manual Testing",
+      "Test Case Design",
+      "Regression Testing",
+      "User Acceptance Testing",
+      "Bug Tracking",
+      "Product Management",
+      "Agile/Scrum",
+      "Requirements Analysis",
+      "Jira",
+      "TestRail"
+    ],
     projects: [
-      { title: "CustomAdmin", projectId: 5, contribution: "E2E regression suite" },
-      { title: "BidBary", projectId: 7, contribution: "Load & concurrency tests" },
-      { title: "LuckyHolidays.az", projectId: 16, contribution: "Checkout reliability" },
+      {
+        title: "CustomAdmin",
+        projectId: 5,
+        contribution: "Comprehensive testing and quality assurance"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Product roadmap and feature testing coordination"
+      },
+      {
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "End-to-end testing and product requirement management"
+      },
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Quality assurance and user story validation"
+      },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/mariagarcia",
-      github: "https://github.com/mariagarcia",
-      email: "mailto:maria@example.com",
+      linkedin: "https://linkedin.com/in/banuibrahimova",
+      email: "mailto:banu@example.com",
     },
     order: 4,
+  },
+  {
+    name: "Nazanin",
+    role: "Graphic Designer",
+    image: "/images/team/naza.JPG",
+    about: [
+      "Crafting engaging visual content for digital and print media",
+      "Strong eye for detail and contemporary design aesthetics",
+      "Collaborative approach to bringing creative concepts to life",
+    ],
+    skills: [
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Canva",
+      "Social Media Graphics",
+      "Banner Design",
+      "Image Editing",
+      "Logo Design",
+      "Presentation Design",
+      "Marketing Collateral"
+    ],
+    projects: [
+      {
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "Social media content and promotional designs"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "UI graphics and visual assets"
+      },
+      {
+        title: "Otomall.az",
+        projectId: 12,
+        contribution: "Product banners and marketing visuals"
+      },
+    ],
+    socials: {
+      behance: "https://behance.net/nazanin",
+      email: "mailto:nazanin@example.com",
+    },
+    order: 5,
   },
 ]

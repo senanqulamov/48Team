@@ -3,9 +3,9 @@
 import * as React from "react"
 import { motion, Variants } from "framer-motion"
 import TeamCard from "@/components/team/TeamCard"
-import { TeamMemberExpandedModal } from "@/components/team/TeamMemberExpandedModal"
-import type { TeamMemberProfile } from "@/data/teamData"
+import TeamMemberModal from "@/components/ui/TeamMemberModal"
 import { useTeamMemberRoute } from "@/hooks/useTeamMemberRoute"
+import type { TeamMemberProfile } from "@/data/teamData"
 
 export type TeamGridProps = {
   members: TeamMemberProfile[]
@@ -23,26 +23,12 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
   const {
     slug: memberSlug,
     selected,
-    index,
-    slugify,
-    hasNext,
-    hasPrev,
     open: openMember,
     close: closeMember,
-    navigate
   } = useTeamMemberRoute({ members })
 
   // Precompute layout ids for cards (stable memo)
-  const layoutIds = React.useMemo(() => new Map(members.map(m => [m.name, slugify(m.name)])), [members, slugify])
-
-  // Determine neighbor images for prefetch (next & prev if exist)
-  const neighborImages = React.useMemo(() => {
-    if (index === -1) return [] as string[]
-    const arr: string[] = []
-    if (hasPrev && index - 1 >= 0) arr.push(members[index - 1].image)
-    if (hasNext && index + 1 < members.length) arr.push(members[index + 1].image)
-    return arr.filter(Boolean)
-  }, [index, hasPrev, hasNext, members])
+  const layoutIds = React.useMemo(() => new Map(members.map(m => [m.name, m.name])), [members])
 
   const open = Boolean(memberSlug)
 
@@ -83,7 +69,7 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
         >
           {members.map((m) => {
-            const layoutId = layoutIds.get(m.name) || slugify(m.name)
+            const layoutId = layoutIds.get(m.name) || m.name
             return (
               <li key={`${m.name}-${m.role}`} className="list-none">
                 <TeamCard member={m} onOpen={openMember} layoutId={layoutId} />
@@ -93,16 +79,11 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
         </motion.ul>
       </div>
 
-      <TeamMemberExpandedModal
+      <TeamMemberModal
         open={open}
         onCloseAction={closeMember}
         member={selected}
-        layoutId={memberSlug || undefined}
-        onExited={handleExited}
-        onNavigate={navigate}
-        hasNext={hasNext}
-        hasPrev={hasPrev}
-        neighborImages={neighborImages}
+        modalId={memberSlug || undefined}
       />
     </section>
   )
