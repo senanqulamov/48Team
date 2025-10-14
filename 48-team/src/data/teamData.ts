@@ -151,6 +151,11 @@ export const teamData: TeamMemberProfile[] = [
         projectId: 16,
         contribution: "Campaign visuals and social media assets"
       },
+      {
+        title: "CTSA.az",
+        projectId: 17,
+        contribution: "Enterprise solutions with Laravel backend and React frontend."
+      },
     ],
     socials: {
       linkedin: "https://linkedin.com/in/javidmanafov",
@@ -247,6 +252,55 @@ export const teamData: TeamMemberProfile[] = [
     order: 5,
   },
   {
+    name: "Nihal",
+    role: "Middle App Developer (Flutter)",
+    image: "/images/team/nihal.jpeg",
+    about: [
+      "Creating beautiful and smooth cross-platform mobile experiences with Flutter",
+      "Expertise in state management and scalable app architecture",
+      "Passionate about pixel-perfect UI and native performance",
+    ],
+    skills: [
+      "Flutter",
+      "Dart",
+      "Firebase",
+      "REST APIs",
+      "State Management (Bloc, Riverpod)",
+      "Material Design",
+      "iOS & Android",
+      "Git",
+      "Push Notifications",
+      "Local Storage",
+      "App Store Deployment",
+      "Google Play Deployment",
+      "CI/CD",
+      "Animation"
+    ],
+    projects: [
+      {
+        title: "NeoSphere App",
+        projectId: 6,
+        contribution: "Cross-platform mobile application architecture"
+      },
+      {
+        title: "BidBary Mobile",
+        projectId: 7,
+        contribution: "Real-time bidding features and push notifications"
+      },
+      {
+        title: "JVD CLI mobile",
+        projectId: 2,
+        contribution: "Java Command-Line Interface Toolkit"
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/leyla",
+      github: "https://github.com/leyla",
+      email: "mailto:leyla@example.com",
+    },
+    order: 6,
+  },
+  {
     name: "Khayal",
     role: "Senior DevOps Engineer",
     image: "/images/team/manplaceholder1.png",
@@ -291,7 +345,110 @@ export const teamData: TeamMemberProfile[] = [
       github: "https://github.com/khayal",
       email: "mailto:khayal@example.com",
     },
-    order: 6,
+    order: 7,
+  },
+  {
+    name: "Zeynal",
+    role: "Middle Front-End Developer (Next.js)",
+    image: "/images/team/manplaceholder1.png",
+    about: [
+      "Building performant and scalable web applications with Next.js and React",
+      "Strong focus on user experience, accessibility, and modern web standards",
+      "Experienced in server-side rendering and static site generation",
+    ],
+    skills: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "JavaScript (ES6+)",
+      "Tailwind CSS",
+      "CSS/SCSS",
+      "REST APIs",
+      "GraphQL",
+      "Git",
+      "Responsive Design",
+      "Web Performance",
+      "SEO Optimization",
+      "Vercel",
+      "Server Components"
+    ],
+    projects: [
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Next.js architecture and core feature development"
+      },
+      {
+        title: "BidBary",
+        projectId: 7,
+        contribution: "Responsive interface and real-time bidding system"
+      },
+      {
+        title: "LuckyHolidays.az",
+        projectId: 16,
+        contribution: "Campaign visuals and social media assets"
+      },
+      {
+        title: "CTSA.az",
+        projectId: 17,
+        contribution: "Enterprise solutions with Laravel backend and React frontend."
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/aydan",
+      github: "https://github.com/aydan",
+      email: "mailto:aydan@example.com",
+    },
+    order: 8,
+  },
+  {
+    name: "Rashad",
+    role: "Kotlin Android Developer",
+    image: "/images/team/manplaceholder2.png",
+    about: [
+      "Developing native Android applications with modern Kotlin and Jetpack Compose",
+      "Strong knowledge of Android SDK and Material Design principles",
+      "Focused on clean architecture and maintainable code",
+    ],
+    skills: [
+      "Kotlin",
+      "Android SDK",
+      "Jetpack Compose",
+      "MVVM Architecture",
+      "Coroutines",
+      "Room Database",
+      "Retrofit",
+      "Dagger/Hilt",
+      "Git",
+      "Material Design 3",
+      "Firebase",
+      "RESTful APIs",
+      "Google Play Services",
+      "Unit Testing"
+    ],
+    projects: [
+      {
+        title: "Otomall Android",
+        projectId: 16,
+        contribution: "Native Android app development and optimization"
+      },
+      {
+        title: "NeoSphere Android",
+        projectId: 17,
+        contribution: "Jetpack Compose UI and offline-first architecture"
+      },
+      {
+        title: "BidBary Android",
+        projectId: 18,
+        contribution: "Real-time features and Android-specific optimizations"
+      },
+    ],
+    socials: {
+      linkedin: "https://linkedin.com/in/rashad",
+      github: "https://github.com/rashad",
+      email: "mailto:rashad@example.com",
+    },
+    order: 9,
   },
   {
     name: "Shahla",
@@ -337,7 +494,7 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://linkedin.com/in/shahla",
       email: "mailto:shahla@example.com",
     },
-    order: 7,
+    order: 10,
   },
   {
     name: "Cafar",
@@ -383,6 +540,6 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://linkedin.com/in/cafar",
       email: "mailto:cafar@example.com",
     },
-    order: 8,
+    order: 11,
   },
 ]
