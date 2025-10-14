@@ -308,6 +308,24 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
     const [lightboxOpen, setLightboxOpen] = React.useState(false);
     const [lightboxIndex, setLightboxIndex] = React.useState(0);
 
+    const gradientColors = React.useMemo(() => {
+        if (!member?.name) return { from: 'from-primary/20', via: 'via-accent/15', to: 'to-primary/10', radial1: 'rgba(139,92,246,0.15)', radial2: 'rgba(59,130,246,0.12)' };
+
+        // Use member name as seed for consistent but unique colors
+        const seed = member.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const hue1 = (seed * 137.508) % 360; // Golden angle for good distribution
+        const hue2 = (hue1 + 60 + (seed % 120)) % 360;
+        const hue3 = (hue2 + 60 + (seed % 100)) % 360;
+
+        return {
+            from: `from-[hsl(${hue1},70%,60%,0.2)]`,
+            via: `via-[hsl(${hue2},65%,65%,0.15)]`,
+            to: `to-[hsl(${hue3},75%,55%,0.1)]`,
+            radial1: `hsla(${hue1},70%,60%,0.15)`,
+            radial2: `hsla(${hue2},65%,65%,0.12)`,
+        };
+    }, [member?.name]);
+
     // Get project images
     const projectImages = React.useMemo<string[]>(() => {
         if (!member?.projects) return [];
@@ -374,6 +392,20 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
                             {/* Sticky Header */}
                             <div className="sticky top-0 z-[10005] flex items-center justify-between px-6 sm:px-10 py-4 md:py-5 bg-background/60 backdrop-blur-lg rounded-t-3xl border-b border-primary/10">
                                 <div className="flex items-center gap-3">
+                                    {/* Member Image */}
+                                    {member?.image && (
+                                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0">
+                                            <Image
+                                                src={member.image}
+                                                alt={member.name}
+                                                fill
+                                                className="object-cover"
+                                                placeholder="blur"
+                                                blurDataURL={BLUR_DATA_URL}
+                                                quality={70}
+                                            />
+                                        </div>
+                                    )}
                                     <h3 id={titleId} className="text-2xl md:text-3xl font-bold text-foreground font-display truncate max-w-[60vw]">
                                         {member?.name}
                                     </h3>
@@ -383,24 +415,13 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
 
                             {/* Scrollable area inside the sheet */}
                             <div className="relative w-full h-[calc(90vh-76px)] overflow-y-auto scroll-smooth">
-                                {/* Hero image under header */}
-                                {member?.image && (
-                                    <div className="relative w-full h-[40vh] -mx-4 sm:-mx-6">
-                                        <Image
-                                            src={member.image}
-                                            alt={member.name}
-                                            fill
-                                            priority
-                                            decoding="async"
-                                            className="object-cover rounded-t-3xl"
-                                            placeholder="blur"
-                                            blurDataURL={BLUR_DATA_URL}
-                                            quality={70}
-                                            sizes="100vw"
-                                        />
-                                        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,10,14,0.15),rgba(8,10,14,0.35)_45%,rgba(8,10,14,0.7))]" />
-                                    </div>
-                                )}
+                                {/* Hero gradient banner under header */}
+                                <div
+                                    className={`relative w-full h-[25vh] -mx-4 sm:-mx-6 bg-gradient-to-br ${gradientColors.from} ${gradientColors.via} ${gradientColors.to} rounded-t-3xl overflow-hidden`}
+                                    style={{
+                                        backgroundImage: `radial-gradient(circle at top right, ${gradientColors.radial1}, transparent 50%), radial-gradient(circle at bottom left, ${gradientColors.radial2}, transparent 50%), linear-gradient(to bottom, rgba(8,10,14,0.1), rgba(8,10,14,0.3) 45%, rgba(8,10,14,0.6))`
+                                    }}
+                                />
 
                                 {/* Two-column content */}
                                 {member && (

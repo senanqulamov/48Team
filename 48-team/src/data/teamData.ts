@@ -202,8 +202,8 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/banuibrahimova",
-      email: "mailto:banu@example.com",
+      linkedin: "https://www.linkedin.com/in/banu-ibrahimova-aa8bbb242/",
+      email: "mailto:banuibrahimova2002@gmail.com",
     },
     order: 4,
   },
