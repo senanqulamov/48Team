@@ -220,6 +220,16 @@ const DetailsLeft = React.memo(function DetailsLeft({ member }: { member: TeamMe
                             Behance
                         </a>
                     )}
+                    {member.socials.dribbble && (
+                        <a
+                            href={member.socials.dribbble}
+                            target="_blank"
+                            rel="noopener"
+                            className="px-5 py-2 rounded-full bg-accent/10 text-accent font-semibold text-base border border-accent/20 hover:bg-accent/20 transition-all"
+                        >
+                            Dribbble
+                        </a>
+                    )}
                     {member.socials.github && (
                         <a
                             href={member.socials.github}

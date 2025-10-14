@@ -8,6 +8,7 @@ export type TeamProject = {
 export type TeamSocials = {
   linkedin?: string
   behance?: string
+  dribbble?: string
   github?: string
   email?: string
   twitter?: string
@@ -68,10 +69,9 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/sananqulamov",
-      github: "https://github.com/sananqulamov",
-      email: "mailto:sanan@example.com",
-      portfolio: "https://sananqulamov.com"
+      linkedin: "https://www.linkedin.com/in/senan-qulamov/",
+      github: "https://github.com/senanqulamov",
+      email: "mailto:qulamovsenan@gmail.com"
     },
     order: 1,
     timezone: "UTC+4"
@@ -109,8 +109,8 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/eminbaghirov",
-      behance: "https://behance.net/eminbaghirov"
+      linkedin: "https://www.linkedin.com/in/slarpec",
+      behance: "https://behance.net/slarpec"
     },
     order: 2,
   },
@@ -158,9 +158,8 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/javidmanafov",
-      behance: "https://behance.net/javidmanafov",
-      email: "mailto:javid@example.com",
+      linkedin: "https://www.linkedin.com/in/cavidmanafov18/",
+      dribbble: "https://dribbble.com/Javid18",
     },
     order: 3,
   },
@@ -209,7 +208,7 @@ export const teamData: TeamMemberProfile[] = [
     order: 4,
   },
   {
-    name: "Nazanin",
+    name: "Nazanin Azimova",
     role: "Graphic Designer",
     image: "/images/team/naza.JPG",
     about: [
@@ -246,13 +245,13 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      behance: "https://behance.net/nazanin",
-      email: "mailto:nazanin@example.com",
+      linkedin: "https://www.linkedin.com/in/nazanin-azimova-0b0a872b1/",
+      behance: "https://www.behance.net/nazeninazimova"
     },
     order: 5,
   },
   {
-    name: "Nihal",
+    name: "Nihal Mammad",
     role: "Middle App Developer (Flutter)",
     image: "/images/team/nihal.jpeg",
     about: [
@@ -294,11 +293,48 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/leyla",
-      github: "https://github.com/leyla",
-      email: "mailto:leyla@example.com",
+      linkedin: "https://www.linkedin.com/in/mammadnihal/",
+      github: "https://github.com/mammadnihal",
     },
     order: 6,
+  },
+  {
+    name: "Sama Safarli",
+    role: "Digital Marketing Specialist",
+    image: "/images/team/sema.png",
+    about: [
+      "Performance-driven digital marketing expert with proven expertise in PPC, SEO, and analytics",
+      "Data-driven strategist delivering measurable growth across e-commerce, construction, banking, and education",
+      "Specialized in campaign optimization and conversion tracking using GA4 and GTM",
+    ],
+    skills: [
+      "Google Ads",
+      "Meta Ads",
+      "PPC Campaign Management",
+      "SEO Strategy",
+      "Google Analytics 4 (GA4)",
+      "Google Tag Manager (GTM)",
+      "Conversion Tracking",
+      "A/B Testing",
+      "ROI Optimization",
+      "Market Research",
+      "Competitor Analysis",
+      "Social Media Marketing",
+      "Performance Marketing",
+      "Data Analysis"
+    ],
+    projects: [
+      {
+        title: "NeoSphere",
+        projectId: 6,
+        contribution: "Visual identity and marketing materials"
+      },
+    ],
+    socials: {
+      linkedin: "https://www.linkedin.com/in/sama-safarli-digital-marketing/",
+      portfolio: "https://samasafarliportfolio.vise.page/",
+    },
+    order: 7,
   },
   {
     name: "Khayal",
@@ -341,14 +377,12 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/khayal",
-      github: "https://github.com/khayal",
-      email: "mailto:khayal@example.com",
+      // linkedin: "https://linkedin.com/in/khayal",
     },
-    order: 7,
+    order: 8,
   },
   {
-    name: "Zeynal",
+    name: "Zeynal Zeynalov",
     role: "Middle Front-End Developer (Next.js)",
     image: "/images/team/manplaceholder1.png",
     about: [
@@ -395,16 +429,16 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/aydan",
-      github: "https://github.com/aydan",
-      email: "mailto:aydan@example.com",
+      // linkedin: "https://linkedin.com/in/aydan",
+      // github: "https://github.com/aydan",
+      // email: "mailto:aydan@example.com",
     },
-    order: 8,
+    order: 9,
   },
   {
     name: "Rashad",
     role: "Kotlin Android Developer",
-    image: "/images/team/manplaceholder2.png",
+    image: "/images/team/manplaceholder1.png",
     about: [
       "Developing native Android applications with modern Kotlin and Jetpack Compose",
       "Strong knowledge of Android SDK and Material Design principles",
@@ -444,16 +478,16 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/rashad",
-      github: "https://github.com/rashad",
-      email: "mailto:rashad@example.com",
+      // linkedin: "https://linkedin.com/in/rashad",
+      // github: "https://github.com/rashad",
+      // email: "mailto:rashad@example.com",
     },
-    order: 9,
+    order: 10,
   },
   {
     name: "Shahla",
     role: "SMM",
-    image: "/images/team/manplaceholder.png",
+    image: "/images/team/woman.png",
     about: [
       "Building brand presence through strategic social media campaigns",
       "Data-driven approach to content planning and audience engagement",
@@ -491,15 +525,15 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/shahla",
-      email: "mailto:shahla@example.com",
+      // linkedin: "https://linkedin.com/in/shahla",
+      // email: "mailto:shahla@example.com",
     },
-    order: 10,
+    order: 11,
   },
   {
     name: "Cafar",
     role: "SEO Specialist",
-    image: "/images/team/manplaceholder2.png",
+    image: "/images/team/manplaceholder1.png",
     about: [
       "Driving organic traffic growth through technical and on-page optimization",
       "Deep understanding of search algorithms and ranking factors",
@@ -537,9 +571,9 @@ export const teamData: TeamMemberProfile[] = [
       },
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/cafar",
-      email: "mailto:cafar@example.com",
+      // linkedin: "https://linkedin.com/in/cafar",
+      // email: "mailto:cafar@example.com",
     },
-    order: 11,
+    order: 12,
   },
 ]
