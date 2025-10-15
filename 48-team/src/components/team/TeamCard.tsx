@@ -24,24 +24,40 @@ const itemVariants: Variants = {
 export default function TeamCard({ member, className, onOpen, layoutId }: TeamCardProps) {
   const open = React.useCallback(() => onOpen?.(member), [member, onOpen])
   const [hovered, setHovered] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(false)
+
+  // Detect mobile on mount
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const onIconClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.stopPropagation()
   }
 
-  const activate = () => setHovered(true)
-  const deactivate = () => setHovered(false)
+  const activate = () => {
+    if (!isMobile) setHovered(true)
+  }
+  const deactivate = () => {
+    if (!isMobile) setHovered(false)
+  }
 
   return (
     <motion.div
       variants={itemVariants}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: isMobile ? 1 : 1.02 }}
       transition={{ type: "spring", stiffness: 220, damping: 20, mass: 0.7 }}
       data-team-card-id={layoutId || undefined}
       className={cn(
         "group/canvas-card group relative rounded-2xl border border-border bg-card/80 shadow-md backdrop-blur-md overflow-hidden",
         "hover:shadow-lg hover:shadow-primary/20 hover:ring-1 hover:ring-primary/30 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none",
         "transition-all duration-300 cursor-pointer",
+        "w-full max-w-full min-w-0", // Fix mobile visibility
         className
       )}
       onClick={open}
@@ -54,9 +70,9 @@ export default function TeamCard({ member, className, onOpen, layoutId }: TeamCa
       onBlur={deactivate}
       {...(layoutId ? { layoutId: `card-${layoutId}` } : {})}
     >
-      {/* Canvas Reveal Overlay */}
+      {/* Canvas Reveal Overlay - Hidden on mobile */}
       <AnimatePresence>
-        {hovered && (
+        {hovered && !isMobile && (
           <motion.div
             key="reveal"
             initial={{ opacity: 0 }}
@@ -144,7 +160,7 @@ export default function TeamCard({ member, className, onOpen, layoutId }: TeamCa
             fill
             className={cn(
               "object-cover transition-all duration-500",
-              hovered ? "opacity-0 scale-105" : "opacity-100"
+              hovered && !isMobile ? "opacity-0 scale-105" : "opacity-100"
             )}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
@@ -152,15 +168,15 @@ export default function TeamCard({ member, className, onOpen, layoutId }: TeamCa
           <div
             className={cn(
               "absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent transition-opacity duration-500",
-              hovered ? "opacity-0" : "opacity-60"
+              hovered && !isMobile ? "opacity-0" : "opacity-60"
             )}
           />
         </div>
 
-        {/* Name/Role (hidden on hover) */}
+        {/* Name/Role (hidden on hover on desktop only) */}
         <div className={cn(
           "mt-3 relative transition-all duration-300",
-          hovered && "opacity-0 -translate-y-1"
+          hovered && !isMobile && "opacity-0 -translate-y-1"
         )}>
           <div className="text-base md:text-lg font-semibold leading-tight tracking-tight" {...(layoutId ? { layoutId: `title-${layoutId}` } : {})}>{member.name}</div>
           <div className="text-sm text-muted-foreground" {...(layoutId ? { layoutId: `role-${layoutId}` } : {})}>{member.role}</div>

@@ -32,29 +32,25 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
 
   const open = Boolean(memberSlug)
 
-  const handleExited = React.useCallback(() => {
-    // No extra clearing logic required; hook manages invalid state cleanup.
-  }, [])
-
   return (
-    <section aria-labelledby="team-grid-title" className="py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-4">
+    <section aria-labelledby="team-grid-title" className="py-12 md:py-16 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Hero Section */}
-        <section className="relative overflow-hidden md:overflow-visible pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+        <section className="relative pt-20 md:pt-32 pb-12 md:pb-16">
           <div className="max-w-6xl mx-auto">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8 }}
-                className="text-center mb-16 relative z-10"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6 }}
+                className="text-center mb-12 md:mb-16 relative z-10"
             >
-              <h1 ref={titleRef} id="featured-timeline-title" className="text-5xl md:text-7xl font-bold mb-6">
+              <h1 ref={titleRef} id="featured-timeline-title" className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 md:mb-6">
                   <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     {title}
                   </span>
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
                 {subtitle}
               </p>
             </motion.div>
@@ -64,14 +60,13 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
         <motion.ul
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full pb-12"
         >
           {members.map((m) => {
             const layoutId = layoutIds.get(m.name) || m.name
             return (
-              <li key={`${m.name}-${m.role}`} className="list-none">
+              <li key={`${m.name}-${m.role}`} className="list-none w-full">
                 <TeamCard member={m} onOpen={openMember} layoutId={layoutId} />
               </li>
             )

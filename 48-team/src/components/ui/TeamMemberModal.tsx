@@ -309,7 +309,15 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
     const [lightboxIndex, setLightboxIndex] = React.useState(0);
 
     const gradientColors = React.useMemo(() => {
-        if (!member?.name) return { from: 'from-primary/20', via: 'via-accent/15', to: 'to-primary/10', radial1: 'rgba(139,92,246,0.15)', radial2: 'rgba(59,130,246,0.12)' };
+        if (!member?.name) {
+            return {
+                hsl1: 'hsl(270, 70%, 60%)',
+                hsl2: 'hsl(220, 65%, 65%)',
+                hsl3: 'hsl(180, 75%, 55%)',
+                radial1: 'hsla(270, 70%, 60%, 0.3)',
+                radial2: 'hsla(220, 65%, 65%, 0.25)',
+            };
+        }
 
         // Use member name as seed for consistent but unique colors
         const seed = member.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -318,11 +326,11 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
         const hue3 = (hue2 + 60 + (seed % 100)) % 360;
 
         return {
-            from: `from-[hsl(${hue1},70%,60%,0.2)]`,
-            via: `via-[hsl(${hue2},65%,65%,0.15)]`,
-            to: `to-[hsl(${hue3},75%,55%,0.1)]`,
-            radial1: `hsla(${hue1},70%,60%,0.15)`,
-            radial2: `hsla(${hue2},65%,65%,0.12)`,
+            hsl1: `hsl(${hue1}, 70%, 60%)`,
+            hsl2: `hsl(${hue2}, 65%, 65%)`,
+            hsl3: `hsl(${hue3}, 75%, 55%)`,
+            radial1: `hsla(${hue1}, 70%, 60%, 0.3)`,
+            radial2: `hsla(${hue2}, 65%, 65%, 0.25)`,
         };
     }, [member?.name]);
 
@@ -389,12 +397,13 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
                             }}
                             data-cursor="drag"
                         >
-                            {/* Sticky Header */}
-                            <div className="sticky top-0 z-[10005] flex items-center justify-between px-6 sm:px-10 py-4 md:py-5 bg-background/60 backdrop-blur-lg rounded-t-3xl border-b border-primary/10">
+                            {/* Sticky Header with gradient background */}
+                            <div
+                                className="sticky top-0 z-[10005] flex items-center justify-between px-6 sm:px-10 py-4 md:py-5 backdrop-blur-lg rounded-t-3xl border-b border-primary/10">
                                 <div className="flex items-center gap-3">
                                     {/* Member Image */}
                                     {member?.image && (
-                                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0">
+                                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-white/20">
                                             <Image
                                                 src={member.image}
                                                 alt={member.name}
@@ -415,14 +424,6 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
 
                             {/* Scrollable area inside the sheet */}
                             <div className="relative w-full h-[calc(90vh-76px)] overflow-y-auto scroll-smooth">
-                                {/* Hero gradient banner under header */}
-                                <div
-                                    className={`relative w-full h-[25vh] -mx-4 sm:-mx-6 bg-gradient-to-br ${gradientColors.from} ${gradientColors.via} ${gradientColors.to} rounded-t-3xl overflow-hidden`}
-                                    style={{
-                                        backgroundImage: `radial-gradient(circle at top right, ${gradientColors.radial1}, transparent 50%), radial-gradient(circle at bottom left, ${gradientColors.radial2}, transparent 50%), linear-gradient(to bottom, rgba(8,10,14,0.1), rgba(8,10,14,0.3) 45%, rgba(8,10,14,0.6))`
-                                    }}
-                                />
-
                                 {/* Two-column content */}
                                 {member && (
                                     <div className="px-4 sm:px-6 md:px-10 py-8 md:py-10">
