@@ -164,6 +164,40 @@ export const teamData: TeamMemberProfile[] = [
     order: 3,
   },
   {
+    name: "Tabriz Gulmammadov",
+    role: "Senior Software Engineer",
+    image: "/images/team/tabriz.jpg",
+    about: [
+      "Full-stack developer with expertise in modern web technologies and frameworks",
+      "Experienced in building scalable applications from concept to deployment",
+      "Strong focus on clean code, performance optimization, and best practices",
+    ],
+    skills: [
+      "C#",
+      ".NET Core",
+      "Python",
+      "Go",
+      "Vue.js",
+      "ASP.NET MVC",
+      "PostgreSQL",
+      "SQL Server",
+      "RESTful APIs",
+      "Microservices"
+    ],
+    projects: [
+      {
+        title: "JVD CLI",
+        projectId: 2,
+        contribution: "Java Command-Line Interface Toolkit"
+      },
+    ],
+    socials: {
+      linkedin: "https://www.linkedin.com/in/tabriz-gulmammadov-bb876715a/",
+      github: "https://github.com/tabrizgulmammadov",
+    },
+    order: 4,
+  },
+  {
     name: "Banu Ibrahimova",
     role: "Product Owner / QA Engineer",
     image: "/images/team/banu.jpeg",
@@ -205,7 +239,7 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://www.linkedin.com/in/banu-ibrahimova-aa8bbb242/",
       email: "mailto:banuibrahimova2002@gmail.com",
     },
-    order: 4,
+    order: 5,
   },
   {
     name: "Nazanin Azimova",
@@ -248,7 +282,7 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://www.linkedin.com/in/nazanin-azimova-0b0a872b1/",
       behance: "https://www.behance.net/nazeninazimova"
     },
-    order: 5,
+    order: 6,
   },
   {
     name: "Nihal Mammad",
@@ -296,7 +330,7 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://www.linkedin.com/in/mammadnihal/",
       github: "https://github.com/mammadnihal",
     },
-    order: 6,
+    order: 7,
   },
   {
     name: "Sama Safarli",
@@ -334,7 +368,7 @@ export const teamData: TeamMemberProfile[] = [
       linkedin: "https://www.linkedin.com/in/sama-safarli-digital-marketing/",
       portfolio: "https://samasafarliportfolio.vise.page/",
     },
-    order: 7,
+    order: 8,
   },
   {
     name: "Khayal",
@@ -379,7 +413,7 @@ export const teamData: TeamMemberProfile[] = [
     socials: {
       // linkedin: "https://linkedin.com/in/khayal",
     },
-    order: 8,
+    order: 9,
   },
   {
     name: "Zeynal Zeynalov",
@@ -433,7 +467,7 @@ export const teamData: TeamMemberProfile[] = [
       // github: "https://github.com/aydan",
       // email: "mailto:aydan@example.com",
     },
-    order: 9,
+    order: 10,
   },
   {
     name: "Rashad",
@@ -482,7 +516,7 @@ export const teamData: TeamMemberProfile[] = [
       // github: "https://github.com/rashad",
       // email: "mailto:rashad@example.com",
     },
-    order: 10,
+    order: 11,
   },
   {
     name: "Shahla",
@@ -528,7 +562,7 @@ export const teamData: TeamMemberProfile[] = [
       // linkedin: "https://linkedin.com/in/shahla",
       // email: "mailto:shahla@example.com",
     },
-    order: 11,
+    order: 12,
   },
   {
     name: "Cafar",
@@ -574,6 +608,6 @@ export const teamData: TeamMemberProfile[] = [
       // linkedin: "https://linkedin.com/in/cafar",
       // email: "mailto:cafar@example.com",
     },
-    order: 12,
+    order: 13,
   },
 ]
