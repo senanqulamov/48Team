@@ -133,14 +133,43 @@ function StructuredData() {
   return <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
 }
 
+function KnowledgeGraph() {
+  const personLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Senan Qulamov",
+    "alternateName": "Sanan Gulamov",
+    "url": "https://48team.space",
+    "image": "https://48team.space/images/mine/me4.png",
+    "jobTitle": "Programmer, Therapist & Founder",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "48Team",
+      "url": "https://48team.space"
+    },
+    "sameAs": [
+      "https://www.instagram.com/senanqulamov",
+      "https://www.linkedin.com/in/senan-qulamov",
+      "https://github.com/senanqulamov"
+    ]
+  }
+  return (
+    <script
+      type="application/ld+json"
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
+    />
+  )
+}
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
       <head>
         <title>{siteConfig.defaultTitle}</title>
         <link rel="alternate" type="application/rss+xml" title={`${siteConfig.siteName} RSS Feed`} href="/rss.xml" />
-        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <StructuredData />
+        <KnowledgeGraph />
       </head>
       <body className="font-sans antialiased">
         <PerformanceGuard />
