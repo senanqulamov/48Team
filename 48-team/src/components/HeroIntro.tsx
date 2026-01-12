@@ -22,7 +22,7 @@ const HeroIntro = () => {
   if (!mounted) return null
 
   return (
-    <div className="relative z-20 h-screen flex items-center justify-center px-4">
+    <div className="relative z-20 h-screen flex items-center justify-center px-4 mt-10">
       <div className="text-center max-w-6xl mx-auto">
         {/* Animated greeting */}
         <motion.div

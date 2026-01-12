@@ -1,323 +1,112 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import * as THREE from "three"
 
-export default function NeonStarfieldBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const req = useRef<number | null>(null)
+export default function EnhancedGradientBackground() {
+    const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  useEffect(() => {
-    if (!canvasRef.current) return
+    useEffect(() => {
+        const canvas = canvasRef.current
+        if (!canvas) return
 
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
-    const lowEnd = (window.__LOW_END__ === true) || prefersReducedMotion
+        const ctx = canvas.getContext("2d", { alpha: false })
+        if (!ctx) return
 
-    // Create reusable circle texture
-    const createCircleTexture = () => {
-      const size = 64
-      const canvas = document.createElement("canvas")
-      canvas.width = canvas.height = size
-      const ctx = canvas.getContext("2d")!
-      const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-      gradient.addColorStop(0, "white")
-      gradient.addColorStop(0.2, "rgba(255,255,255,0.9)")
-      gradient.addColorStop(0.4, "rgba(255,255,255,0.5)")
-      gradient.addColorStop(1, "rgba(255,255,255,0)")
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, size, size)
-      return new THREE.CanvasTexture(canvas)
-    }
-
-    const circleTexture = createCircleTexture()
-
-    // Setup renderer (lower DPR on low-end)
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current!,
-      antialias: !lowEnd,
-      alpha: true,
-      powerPreference: lowEnd ? "low-power" : "high-performance",
-    })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(lowEnd ? 1 : Math.min(window.devicePixelRatio, 2))
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
-    camera.position.z = 30
-
-    // Mouse-based parallax (skip on low-end)
-    const mouse = new THREE.Vector2()
-    const target = new THREE.Vector2()
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
-    }
-    if (!lowEnd) document.addEventListener("mousemove", handleMouseMove, { passive: true })
-
-    // Scroll-based velocity tracking (skip on low-end)
-    let lastScrollY = window.scrollY
-    let scrollSpeed = 0
-    let smoothedScrollSpeed = 0
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      scrollSpeed = currentScrollY - lastScrollY
-      lastScrollY = currentScrollY
-    }
-    if (!lowEnd) window.addEventListener("scroll", handleScroll, { passive: true })
-
-    // Starfield (fewer on low-end)
-    const starsCount = lowEnd ? 250 : 800
-    const starsGeometry = new THREE.BufferGeometry()
-    const positions = new Float32Array(starsCount * 3)
-    const colors = new Float32Array(starsCount * 3)
-    const sizes = new Float32Array(starsCount)
-
-    const planetColors = [
-      new THREE.Color(0x00ffff),
-      new THREE.Color(0xff00ff),
-      new THREE.Color(0xffff00),
-      new THREE.Color(0x00ff00),
-      new THREE.Color(0xff6600),
-    ]
-    const planetIndices = new Set<number>()
-    while (planetIndices.size < starsCount * (lowEnd ? 0.02 : 0.05)) {
-      planetIndices.add(Math.floor(Math.random() * starsCount))
-    }
-
-    for (let i = 0; i < starsCount; i++) {
-      const radius = 50 * Math.random()
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
-
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta)
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
-      positions[i * 3 + 2] = radius * Math.cos(phi)
-
-      if (planetIndices.has(i)) {
-        sizes[i] = 0.5 + Math.random() * 0.5
-        const color = planetColors[Math.floor(Math.random() * planetColors.length)]
-        colors[i * 3] = color.r
-        colors[i * 3 + 1] = color.g
-        colors[i * 3 + 2] = color.b
-      } else {
-        sizes[i] = 0.1 + Math.random() * 0.2
-        const intensity = 0.5 + Math.random() * 0.5
-        colors[i * 3] = intensity
-        colors[i * 3 + 1] = intensity
-        colors[i * 3 + 2] = 1.0
-      }
-    }
-
-    starsGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
-    starsGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3))
-    starsGeometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1))
-
-    const starsMaterial = new THREE.PointsMaterial({
-      size: lowEnd ? 0.25 : 0.3,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.75,
-      blending: THREE.AdditiveBlending,
-      sizeAttenuation: true,
-      map: circleTexture,
-      depthWrite: false,
-    })
-
-    const starfield = new THREE.Points(starsGeometry, starsMaterial)
-    scene.add(starfield)
-
-    // Shooting stars (disable on low-end)
-    class ShootingStar {
-      line: THREE.Line
-      positions: Float32Array
-      speed: number
-      direction: THREE.Vector3
-      age: number
-      maxAge: number
-      length: number
-      color: THREE.Color
-      currentPosition: THREE.Vector3
-
-      constructor() {
-        this.length = 15
-        this.positions = new Float32Array(this.length * 3)
-        const geometry = new THREE.BufferGeometry()
-        geometry.setAttribute("position", new THREE.BufferAttribute(this.positions, 3))
-        const lineColors = new Float32Array(this.length * 3)
-        this.color = new THREE.Color().setHSL(Math.random(), 1, 0.7)
-
-        for (let i = 0; i < this.length; i++) {
-          const ratio = i / this.length
-          const intensity = Math.pow(1 - ratio, 2)
-          lineColors[i * 3] = this.color.r * intensity
-          lineColors[i * 3 + 1] = this.color.g * intensity
-          lineColors[i * 3 + 2] = this.color.b * intensity
+        const resize = () => {
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
         }
-        geometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3))
+        resize()
+        window.addEventListener("resize", resize)
 
-        const material = new THREE.LineBasicMaterial({
-          vertexColors: true,
-          transparent: true,
-          opacity: 0.9,
-          blending: THREE.AdditiveBlending,
-          linewidth: 2,
-        })
+        // Multiple gradient orbs with smoother colors
+        const orbs = [
+            { x: 0.2, y: 0.3, radius: 0.4, color: [6, 182, 212], speed: 0.3, phaseX: 0, phaseY: 0 },
+            { x: 0.8, y: 0.6, radius: 0.45, color: [20, 184, 166], speed: 0.25, phaseX: 2, phaseY: 3 },
+            { x: 0.5, y: 0.5, radius: 0.35, color: [14, 165, 233], speed: 0.35, phaseX: 4, phaseY: 1 },
+            { x: 0.1, y: 0.8, radius: 0.3, color: [34, 211, 238], speed: 0.28, phaseX: 1, phaseY: 5 },
+        ]
 
-        this.line = new THREE.Line(geometry, material)
-        this.currentPosition = new THREE.Vector3()
-        this.speed = 0
-        this.direction = new THREE.Vector3()
-        this.age = 0
-        this.maxAge = 0
+        let time = 0
+        let animationId: number
 
-        this.reset()
-      }
+        const animate = () => {
+            time += 0.003
 
-      reset() {
-        const angle = Math.random() * Math.PI * 2
-        const radius = 50
-        const startX = Math.cos(angle) * radius
-        const startY = Math.sin(angle) * radius
-        const startZ = (Math.random() - 0.5) * radius
+            // Base dark background
+            ctx.fillStyle = "#000000"
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-        this.direction
-          .set(
-            -startX * 0.01 + (Math.random() - 0.5) * 0.05,
-            -startY * 0.01 + (Math.random() - 0.5) * 0.05,
-            (Math.random() - 0.5) * 0.05,
-          )
-          .normalize()
+            // Draw each orb with smooth movement
+            orbs.forEach((orb) => {
+                const centerX = canvas.width * orb.x + Math.sin(time * orb.speed + orb.phaseX) * canvas.width * 0.1
+                const centerY = canvas.height * orb.y + Math.cos(time * orb.speed + orb.phaseY) * canvas.height * 0.1
+                const radius = Math.min(canvas.width, canvas.height) * orb.radius
 
-        this.speed = 0.2 + Math.random() * 0.1
-        this.age = 0
-        this.maxAge = 250 + Math.random() * 100
+                // Pulsing effect
+                const pulse = 0.85 + Math.sin(time * 2 + orb.phaseX) * 0.15
+                const finalRadius = radius * pulse
 
-        this.currentPosition.set(startX, startY, startZ)
-        for (let i = 0; i < this.length; i++) {
-          const offset = i * 0.5
-          this.positions[i * 3] = startX + this.direction.x * offset
-          this.positions[i * 3 + 1] = startY + this.direction.y * offset
-          this.positions[i * 3 + 2] = startZ + this.direction.z * offset
+                // Create radial gradient with better blending
+                const gradient = ctx.createRadialGradient(
+                    centerX, centerY, 0,
+                    centerX, centerY, finalRadius
+                )
+
+                const [r, g, b] = orb.color
+                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.4)`)
+                gradient.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.25)`)
+                gradient.addColorStop(0.6, `rgba(${r}, ${g}, ${b}, 0.1)`)
+                gradient.addColorStop(1, "rgba(0, 0, 0, 0)")
+
+                ctx.fillStyle = gradient
+                ctx.fillRect(
+                    centerX - finalRadius,
+                    centerY - finalRadius,
+                    finalRadius * 2,
+                    finalRadius * 2
+                )
+            })
+
+            // Add subtle animated noise texture
+            if (Math.random() > 0.7) {
+                ctx.fillStyle = `rgba(6, 182, 212, ${Math.random() * 0.03})`
+                for (let i = 0; i < 20; i++) {
+                    const x = Math.random() * canvas.width
+                    const y = Math.random() * canvas.height
+                    ctx.fillRect(x, y, 1, 1)
+                }
+            }
+
+            // Add flowing light streaks
+            ctx.strokeStyle = `rgba(6, 182, 212, ${0.08 + Math.sin(time * 3) * 0.04})`
+            ctx.lineWidth = 2
+            ctx.beginPath()
+            for (let x = 0; x < canvas.width; x += 10) {
+                const y = canvas.height * 0.5 + Math.sin(x * 0.01 + time * 2) * canvas.height * 0.15
+                if (x === 0) ctx.moveTo(x, y)
+                else ctx.lineTo(x, y)
+            }
+            ctx.stroke()
+
+            animationId = requestAnimationFrame(animate)
         }
 
-        ;(this.line.geometry as THREE.BufferGeometry).attributes.position.needsUpdate = true
-      }
+        animate()
 
-      update() {
-        this.age++
-        const movement = this.direction.clone().multiplyScalar(this.speed)
-        this.currentPosition.add(movement)
-
-        for (let i = this.length - 1; i > 0; i--) {
-          this.positions[i * 3] = this.positions[(i - 1) * 3]
-          this.positions[i * 3 + 1] = this.positions[(i - 1) * 3 + 1]
-          this.positions[i * 3 + 2] = this.positions[(i - 1) * 3 + 2]
+        return () => {
+            window.removeEventListener("resize", resize)
+            cancelAnimationFrame(animationId)
         }
+    }, [])
 
-        this.positions[0] = this.currentPosition.x
-        this.positions[1] = this.currentPosition.y
-        this.positions[2] = this.currentPosition.z
-
-        ;(this.line.geometry as THREE.BufferGeometry).attributes.position.needsUpdate = true
-
-        if (
-          this.age > this.maxAge ||
-          Math.abs(this.currentPosition.x) > 70 ||
-          Math.abs(this.currentPosition.y) > 70 ||
-          Math.abs(this.currentPosition.z) > 70
-        ) {
-          this.reset()
-        }
-      }
-    }
-
-    const shootingStars: ShootingStar[] = []
-    const shootingStarsCount = lowEnd ? 0 : 8
-    for (let i = 0; i < shootingStarsCount; i++) {
-      const star = new ShootingStar()
-      scene.add(star.line)
-      shootingStars.push(star)
-    }
-
-    const clock = new THREE.Clock()
-    let last = 0
-    const targetFps = lowEnd ? 24 : 45
-    const interval = 1000 / targetFps
-
-    const animate = (now: number) => {
-      const deltaMs = now - last
-      if (deltaMs < interval) {
-        req.current = requestAnimationFrame(animate)
-        return
-      }
-      last = now
-
-      const time = clock.getElapsedTime()
-
-      // Mouse-based parallax
-      if (!lowEnd) {
-        target.x += (mouse.x * 10 - target.x) * 0.05
-        target.y += (mouse.y * 10 - target.y) * 0.05
-        camera.position.x = target.x
-        camera.position.y = target.y
-
-        // Scroll-driven forward/backward motion
-        smoothedScrollSpeed += (scrollSpeed - smoothedScrollSpeed) * 0.1
-        camera.position.z -= smoothedScrollSpeed * 0.05
-        camera.position.z = THREE.MathUtils.clamp(camera.position.z, 5, 100)
-      }
-
-      camera.lookAt(scene.position)
-
-      // Animate elements
-      starfield.rotation.x = time * (lowEnd ? 0.01 : 0.02)
-      starfield.rotation.y = time * (lowEnd ? 0.005 : 0.01)
-
-      if (!lowEnd) shootingStars.forEach((star) => star.update())
-
-      renderer.render(scene, camera)
-      req.current = requestAnimationFrame(animate)
-    }
-
-    if (lowEnd) {
-      // Render once for static background
-      renderer.render(scene, camera)
-    } else {
-      req.current = requestAnimationFrame(animate)
-    }
-
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
-    }
-    window.addEventListener("resize", handleResize)
-
-    return () => {
-      if (req.current) cancelAnimationFrame(req.current)
-      if (!lowEnd) {
-        document.removeEventListener("mousemove", handleMouseMove)
-        window.removeEventListener("scroll", handleScroll)
-      }
-      window.removeEventListener("resize", handleResize)
-      renderer.dispose()
-    }
-  }, [])
-
-  return (
-    <canvas
-      className="fixed inset-0 -z-10"
-      ref={canvasRef}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: -1,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "black",
-        display: "block",
-        opacity: 0.6,
-      }}
-    />
-  )
+    return (
+        <canvas
+            ref={canvasRef}
+            className="fixed inset-0 -z-10"
+            style={{
+                backgroundColor: "#000000"
+            }}
+        />
+    )
 }
