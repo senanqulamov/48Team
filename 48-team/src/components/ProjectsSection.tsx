@@ -360,7 +360,7 @@ const ProjectsSection = () => {
                       user="senanqulamov"
                       limit={10}
                       compact
-                      onLoaded={(info) => {
+                      onLoadedAction={(info) => {
                         setCommitCount(info.count)
                         setCommitError(info.error || null)
                       }}

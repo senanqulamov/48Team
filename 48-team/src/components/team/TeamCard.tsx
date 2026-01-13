@@ -12,7 +12,7 @@ import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect"
 export type TeamCardProps = {
   member: TeamMemberProfile
   className?: string
-  onOpen?: (member: TeamMemberProfile) => void
+  onOpenAction?: (member: TeamMemberProfile) => void
   layoutId?: string // optional for shared layout animation
 }
 
@@ -21,8 +21,8 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 }
 
-export default function TeamCard({ member, className, onOpen, layoutId }: TeamCardProps) {
-  const open = React.useCallback(() => onOpen?.(member), [member, onOpen])
+export default function TeamCard({ member, className, onOpenAction, layoutId }: TeamCardProps) {
+  const open = React.useCallback(() => onOpenAction?.(member), [member, onOpenAction])
   const [hovered, setHovered] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(false)
 

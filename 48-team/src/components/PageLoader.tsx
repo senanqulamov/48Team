@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion"
 
 type PageLoaderProps = {
   loadingComplete?: boolean
-  onComplete?: () => void
+  onCompleteAction?: () => void
   duration?: number
 }
 
-export default function PageLoader({ loadingComplete = false, onComplete, duration = 2200 }: PageLoaderProps) {
+export default function PageLoader({ loadingComplete = false, onCompleteAction, duration = 2200 }: PageLoaderProps) {
   const [progress, setProgress] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -31,7 +31,7 @@ export default function PageLoader({ loadingComplete = false, onComplete, durati
   useEffect(() => {
     if (loadingComplete) {
       setIsComplete(true)
-      onComplete?.()
+      onCompleteAction?.()
       return
     }
 
@@ -48,7 +48,7 @@ export default function PageLoader({ loadingComplete = false, onComplete, durati
       } else {
         setTimeout(() => {
           setIsComplete(true)
-          onComplete?.()
+          onCompleteAction?.()
         }, 300)
       }
     }
@@ -56,7 +56,7 @@ export default function PageLoader({ loadingComplete = false, onComplete, durati
     animationFrame = requestAnimationFrame(animate)
 
     return () => cancelAnimationFrame(animationFrame)
-  }, [loadingComplete, onComplete, duration])
+  }, [loadingComplete, onCompleteAction, duration])
 
   return (
     <AnimatePresence>

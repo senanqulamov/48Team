@@ -67,7 +67,7 @@ export default function TeamGrid({ members, title = "The -48- Team", subtitle }:
             const layoutId = layoutIds.get(m.name) || m.name
             return (
               <li key={`${m.name}-${m.role}`} className="list-none w-full">
-                <TeamCard member={m} onOpen={openMember} layoutId={layoutId} />
+                <TeamCard member={m} onOpenAction={openMember} layoutId={layoutId} />
               </li>
             )
           })}

@@ -151,19 +151,19 @@ export default function LatestCommits({
   user = "senanqulamov",
   limit = 10,
   compact = false,
-  onLoaded,
+  onLoadedAction,
 }: {
   user?: string
   limit?: number
   compact?: boolean
-  onLoaded?: (info: LoadedInfo) => void
+  onLoadedAction?: (info: LoadedInfo) => void
 }) {
   const { data, error, loading } = useCommits(user, limit)
 
   useEffect(() => {
     if (loading) return
-    if (onLoaded) {
-      onLoaded({ count: Array.isArray(data) ? data.length : 0, error })
+    if (onLoadedAction) {
+      onLoadedAction({ count: Array.isArray(data) ? data.length : 0, error })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, data, error])

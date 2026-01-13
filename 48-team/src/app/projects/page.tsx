@@ -19,7 +19,7 @@ export default function ProjectsRoutePage() {
 
     return (
         <div className="relative text-foreground min-h-screen" id="scroll-container">
-            {isLoading && <PageLoader onComplete={handleComplete} />}
+            {isLoading && <PageLoader onCompleteAction={handleComplete} />}
 
             {/*<AnimatedMeshBackground />*/}
             <ProgressiveBlurNoise show={isLoading} />
