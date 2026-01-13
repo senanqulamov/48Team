@@ -166,10 +166,8 @@ export default function NewPageClient() {
         </section>
 
         {/* VERTICAL SECTION: Section 4 (native vertical scroll) */}
-        <section className="vertical-section min-h-[300vh] relative">
-          <div className="vertical-sticky sticky top-0 h-screen">
-            <Section4 width="100vw" />
-          </div>
+        <section className="vertical-section relative">
+          <Section4 width="100vw" />
         </section>
 
         {/* HORIZONTAL TRACK 2: Section 5 */}

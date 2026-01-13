@@ -11,6 +11,7 @@ export { default as StackedCardsNew } from "./StackedCardsNew"
 export { HeroIntro } from "./HeroIntro"
 export { AboutSection } from "./AboutSection"
 export { SkillsSection } from "./SkillsSection"
+export { default as ProjectShowcaseTimeline } from "./ProjectShowcaseTimeline"
 export type { CardData, CardProps } from "./types"
 export type { StackedCardData } from "./StackedCardsNew"
 
