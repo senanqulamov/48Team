@@ -25,7 +25,7 @@ export function AboutSection() {
   return (
     <div className="relative h-full flex items-center px-4 py-12">
       <div className="max-w-7xl mx-auto w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16 items-center">
           {/* Left side - Image and floating elements */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -102,40 +102,48 @@ export function AboutSection() {
                 behavior, or brainstorming the next big idea that could make a difference in people&apos;s lives.
               </p>
             </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-6">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-white/5 border border-cyan-400/20 rounded-xl p-6 text-center backdrop-blur-sm hover:border-cyan-400/40 hover:bg-white/10 transition-all group"
-                >
-                  <stat.icon className="w-8 h-8 text-cyan-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
-                  <div className="text-2xl font-bold text-white mb-1">{stat.number}</div>
-                  <div className="text-sm text-cyan-100/60">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Highlights */}
-            <div className="flex flex-wrap gap-3">
-              {highlights.map(({ icon: Icon, label }, index) => (
-                <motion.div
-                  key={label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + index * 0.1 }}
-                  className="flex items-center gap-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full px-4 py-2 text-sm font-medium text-cyan-400 hover:bg-cyan-500/20 hover:scale-105 transition-all cursor-pointer"
-                >
-                  <Icon className="w-4 h-4" />
-                  {label}
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
+
+            <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-8"
+            >
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-6">
+                    {stats.map((stat, index) => (
+                        <motion.div
+                            key={stat.label}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="bg-white/5 border border-cyan-400/20 rounded-xl p-6 text-center backdrop-blur-sm hover:border-cyan-400/40 hover:bg-white/10 transition-all group"
+                        >
+                            <stat.icon className="w-8 h-8 text-cyan-400 mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                            <div className="text-2xl font-bold text-white mb-1">{stat.number}</div>
+                            <div className="text-sm text-cyan-100/60">{stat.label}</div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Highlights */}
+                <div className="flex flex-wrap gap-3">
+                    {highlights.map(({ icon: Icon, label }, index) => (
+                        <motion.div
+                            key={label}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.8 + index * 0.1 }}
+                            className="flex items-center gap-2 bg-cyan-500/10 border border-cyan-400/30 rounded-full px-4 py-2 text-sm font-medium text-cyan-400 hover:bg-cyan-500/20 hover:scale-105 transition-all cursor-pointer"
+                        >
+                            <Icon className="w-4 h-4" />
+                            {label}
+                        </motion.div>
+                    ))}
+                </div>
+            </motion.div>
         </div>
       </div>
     </div>

@@ -92,7 +92,7 @@ export function SkillsSection() {
         </motion.div>
 
         {/* Main Content Grid - 3 columns */}
-        <div className="grid grid-cols-3 gap-6 items-start">
+        <div className="flex flex-row items-center justify-center gap-25">
 
           {/* LEFT: Technical Skills Stacked Cards */}
           <motion.div
@@ -127,7 +127,7 @@ export function SkillsSection() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="space-y-4"
+            className="space-y-4 w-full max-w-[40vw]"
           >
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-2 gap-3">

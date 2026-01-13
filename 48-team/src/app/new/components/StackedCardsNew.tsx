@@ -25,9 +25,8 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
 
     const getTransform = () => {
         if (isExpanded) {
-            // When expanded: same scale for ALL cards
-            const offset = index * 84; // Spread out vertically
-            const scale = 0.85; // Same scale for all cards
+            const offset = index * 95;
+            const scale = 0.85;
             return `translate3d(0, ${offset}px, 0) scale(${scale})`;
         } else {
             // When stacked: slightly scaled for depth effect
@@ -51,19 +50,15 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                 zIndex: totalCards - index,
                 transition: 'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1)',
                 transformOrigin: 'center top',
-                width: '320px', // Fixed width
-                margin: '0 auto' // Center the card
+                width: '320px',
+                margin: '0 auto'
             }}
             onClick={onClick}
         >
-            {/* Card container with fixed width */}
             <div className="w-full">
-                {/* Enhanced glass container with iPhone 17 inspired effects */}
                 <div className="relative rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
-                    {/* Ultra-thin border effect */}
                     <div className="absolute inset-0 rounded-2xl border border-white/30 pointer-events-none"></div>
 
-                    {/* Main glass layer */}
                     <div
                         className="relative backdrop-blur-3xl bg-gradient-to-br from-white/20 to-white/5"
                         style={{
@@ -75,7 +70,6 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                             `
                         }}
                     >
-                        {/* Dynamic gradient overlay */}
                         <div
                             className="absolute inset-0 opacity-30 mix-blend-overlay"
                             style={{
@@ -83,15 +77,11 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                             }}
                         ></div>
 
-                        {/* Subtle radial gradient */}
                         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
 
-                        {/* Reflective top edge */}
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
 
-                        {/* Card content */}
-                        <div className="relative px-5 py-4 flex items-center gap-4">
-                            {/* Icon container with enhanced glass */}
+                        <div className="relative px-5 py-4 flex items-center gap-4 h-[100px]">
                             <div
                                 className="relative rounded-xl p-3 backdrop-blur-2xl"
                                 style={{
@@ -103,7 +93,6 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                                     `
                                 }}
                             >
-                                {/* Icon gradient */}
                                 <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${card.color} opacity-20`}></div>
                                 <Icon
                                     className="relative text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
@@ -112,7 +101,6 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                                 />
                             </div>
 
-                            {/* Text content */}
                             <div className="flex-1 min-w-0">
                                 <h3 className="text-white font-semibold text-[15px] tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
                                     {card.title}
@@ -122,7 +110,6 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                                 </p>
                             </div>
 
-                            {/* Subtle chevron indicator */}
                             <div className="text-white/40">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M9 18l6-6-6-6"/>
@@ -130,7 +117,6 @@ function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
                             </div>
                         </div>
 
-                        {/* Bottom glow */}
                         <div className="absolute bottom-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                     </div>
                 </div>
@@ -152,7 +138,10 @@ export default function StackedCardsNew({ cards, title, showHint = true }: Stack
         setIsExpanded(!isExpanded);
     };
 
-    const containerHeight = isExpanded ? cards.length * 84 + 60 : 90;
+    // Calculate container height based on state
+    const containerHeight = isExpanded
+        ? cards.length * 80 + 20 // 80px per card + some padding
+        : 90; // Collapsed height
 
     return (
         <div className="relative w-full">
@@ -160,7 +149,6 @@ export default function StackedCardsNew({ cards, title, showHint = true }: Stack
                 <h3 className="text-lg font-bold text-white mb-4 text-center">{title}</h3>
             )}
 
-            {/* Fixed width container to prevent full-width cards */}
             <div className="relative mx-auto" style={{ width: '320px' }}>
                 <div
                     className="relative"
@@ -184,7 +172,6 @@ export default function StackedCardsNew({ cards, title, showHint = true }: Stack
                 </div>
             </div>
 
-            {/* Instruction hint */}
             {showHint && (
                 <div className="text-center mt-6">
                     <p className="text-white/50 text-xs">
@@ -195,4 +182,3 @@ export default function StackedCardsNew({ cards, title, showHint = true }: Stack
         </div>
     );
 }
-

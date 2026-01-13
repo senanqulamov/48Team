@@ -1,9 +1,26 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, Calendar, FileText, Image, Music } from 'lucide-react';
+import { Mail, Calendar, FileText, Image, Music, LucideIcon } from 'lucide-react';
 
-const cardData = [
+interface CardData {
+    id: number;
+    icon: LucideIcon;
+    title: string;
+    subtitle: string;
+    color: string;
+    bgColor: string;
+}
+
+interface CardProps {
+    card: CardData;
+    index: number;
+    isExpanded: boolean;
+    totalCards: number;
+    onClick: () => void;
+}
+
+const cardData: CardData[] = [
     {
         id: 1,
         icon: Mail,
@@ -46,7 +63,7 @@ const cardData = [
     }
 ];
 
-function Card({ card, index, isExpanded, totalCards, onClick }) {
+function Card({ card, index, isExpanded, totalCards, onClick }: CardProps) {
     const Icon = card.icon;
 
     const getTransform = () => {

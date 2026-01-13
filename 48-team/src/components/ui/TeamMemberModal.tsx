@@ -308,31 +308,6 @@ export default function TeamMemberModal({ open, onCloseAction, member, modalId }
     const [lightboxOpen, setLightboxOpen] = React.useState(false);
     const [lightboxIndex, setLightboxIndex] = React.useState(0);
 
-    const gradientColors = React.useMemo(() => {
-        if (!member?.name) {
-            return {
-                hsl1: 'hsl(270, 70%, 60%)',
-                hsl2: 'hsl(220, 65%, 65%)',
-                hsl3: 'hsl(180, 75%, 55%)',
-                radial1: 'hsla(270, 70%, 60%, 0.3)',
-                radial2: 'hsla(220, 65%, 65%, 0.25)',
-            };
-        }
-
-        // Use member name as seed for consistent but unique colors
-        const seed = member.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const hue1 = (seed * 137.508) % 360; // Golden angle for good distribution
-        const hue2 = (hue1 + 60 + (seed % 120)) % 360;
-        const hue3 = (hue2 + 60 + (seed % 100)) % 360;
-
-        return {
-            hsl1: `hsl(${hue1}, 70%, 60%)`,
-            hsl2: `hsl(${hue2}, 65%, 65%)`,
-            hsl3: `hsl(${hue3}, 75%, 55%)`,
-            radial1: `hsla(${hue1}, 70%, 60%, 0.3)`,
-            radial2: `hsla(${hue2}, 65%, 65%, 0.25)`,
-        };
-    }, [member?.name]);
 
     // Get project images
     const projectImages = React.useMemo<string[]>(() => {

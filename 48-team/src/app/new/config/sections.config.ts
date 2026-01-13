@@ -16,7 +16,7 @@ export const SECTION_CONFIG = {
   sections: [
     { id: 1, width: "small", component: "Section1" },
     { id: 2, width: "small", component: "Section2" },
-    { id: 3, width: "medium", component: "Section3" },
+    { id: 3, width: "small", component: "Section3" },
     { id: 4, width: "small", component: "Section4" },
   ] as const,
 
