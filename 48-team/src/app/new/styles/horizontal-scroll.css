@@ -1,64 +1,109 @@
 /* ========================================
-   Horizontal Scroll Styles
-   Optimized for performance
+   PROPER SCROLL ARCHITECTURE
+   - Browser scrolls vertically (native)
+   - Lenis smooths vertical scroll
+   - Horizontal: translated via GSAP ScrollTrigger
+   - No wheel hijacking
    ======================================== */
 
-/* Prevent overflow on html and body */
+/* Reset and base - FORCE scroll to top */
 html {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 body {
-  overflow: hidden;
-  background: transparent;
+  overflow-x: hidden;
+  background: #000;
 }
 
-/* Performance optimizations */
-.horizontal-container {
-  will-change: scroll-position;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+/* Prevent scroll restoration - multiple approaches */
+html,
+body {
+  overscroll-behavior: none;
+  scroll-behavior: auto !important;
 }
 
-.horizontal-section {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: layout style paint;
+/* Force page to start at top */
+html::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
 }
 
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+#lenis-root {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* ========================================
-   Custom Scrollbar Styles
+   HORIZONTAL TRACKS
+   Pinned sections that translate on X
    ======================================== */
 
-/* WebKit browsers (Chrome, Safari, Edge) */
+.horizontal-track {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.horizontal-inner {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.panel {
+  position: relative;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* ========================================
+   VERTICAL SECTION (Section 4)
+   Real native vertical scrolling
+   ======================================== */
+
+.vertical-section {
+  position: relative;
+  width: 100vw;
+  /* Height is set by content (300vh) */
+}
+
+.vertical-sticky {
+  /* Sticky container - stays in view while scrolling */
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: visible;
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+
+/* WebKit browsers */
 ::-webkit-scrollbar {
-  height: 10px;
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #06b6d4, #14b8a6);
+  background: linear-gradient(180deg, #06b6d4, #14b8a6);
   border-radius: 8px;
-  transition: background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(90deg, #0891b2, #0d9488);
+  background: linear-gradient(180deg, #0891b2, #0d9488);
 }
 
 /* Firefox */
@@ -68,11 +113,20 @@ body {
 }
 
 /* ========================================
-   Glass Effect
+   PERFORMANCE
    ======================================== */
 
-.glass-effect {
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
+.horizontal-track,
+.panel,
+.vertical-section {
+  contain: layout style paint;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 

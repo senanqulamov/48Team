@@ -56,6 +56,9 @@ export const THEME_CONFIG = {
     section4: {
       gradient: "from-black/40 via-teal-950/30 to-black/40",
     },
+    section5: {
+      gradient: "from-black/40 via-purple-950/30 to-black/40",
+    },
   },
 
   // Progress indicator

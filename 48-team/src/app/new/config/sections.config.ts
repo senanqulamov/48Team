@@ -6,6 +6,7 @@
 export const SECTION_CONFIG = {
   // Section width presets
   widths: {
+    xsmall: "50vw",
     small: "100vw",
     medium: "150vw",
     large: "200vw",
@@ -18,6 +19,7 @@ export const SECTION_CONFIG = {
     { id: 2, width: "small", component: "Section2" },
     { id: 3, width: "small", component: "Section3" },
     { id: 4, width: "small", component: "Section4" },
+    { id: 5, width: "small", component: "Section5" },
   ] as const,
 
   // Glass effect settings
