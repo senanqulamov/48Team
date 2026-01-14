@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Space_Grotesk } from "next/font/google"
-import "./globals.css"
+import "../globals.css"
 import CustomCursor from "@/components/CustomCursor"
 import PerformanceGuard from "@/components/PerformanceGuard"
 import { siteConfig, absoluteUrl } from "@/lib/seo"
