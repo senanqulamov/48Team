@@ -41,24 +41,24 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                 delay: index ? index * 0.1 : 0,
                 ease: [0.43, 0.13, 0.23, 0.96]
             }}
-            className="blog-card group relative overflow-hidden rounded-xl border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-500 bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-emerald-500/10"
+            className="blog-card group relative overflow-hidden rounded-xl border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-500 bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-emerald-500/10 w-full"
         >
-            <Link href={`/blogs/${post.slug}`} className="block">
-        <div className="relative overflow-hidden aspect-[4/5]">
-          <motion.div
-            className="relative w-full h-full"
-            whileHover={{ scale: 1.12 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <OptimizedImage
-              src={post.coverImage || "/images/null/null_1.png"}
-              alt={post.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              priority={index !== undefined && index < 6}
-            />
-          </motion.div>
+            <Link href={`/blogs/${post.slug}`} className="block w-full">
+                <div className="relative overflow-hidden aspect-[4/5] sm:aspect-[4/5] w-full">
+                    <motion.div
+                        className="relative w-full h-full"
+                        whileHover={{ scale: 1.12 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <OptimizedImage
+                            src={post.coverImage || "/images/null/null_1.png"}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                            priority={index !== undefined && index < 6}
+                        />
+                    </motion.div>
 
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
@@ -93,25 +93,25 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                     </motion.div>
 
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-10">
                         {/* Meta */}
-                        <div className="flex items-center gap-4 text-xs text-gray-300 mb-3">
+                        <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-300 mb-2 sm:mb-3">
                             <div className="flex items-center gap-1.5">
-                                <Calendar className="w-3.5 h-3.5" />
-                                <span>{formatDate(post.publishedAt)}</span>
+                                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                <span className="text-xs">{formatDate(post.publishedAt)}</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <Clock className="w-3.5 h-3.5" />
-                                <span>{post.readingTime} min</span>
+                                <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                <span className="text-xs">{post.readingTime} min</span>
                             </div>
                         </div>
 
-                        <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors duration-300 line-clamp-2">
+                        <h3 className="text-lg sm:text-xl font-display font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors duration-300 line-clamp-2">
                             {post.title}
                         </h3>
 
                         {post.excerpt && (
-                            <p className="text-sm text-gray-300 line-clamp-2 mb-3 group-hover:text-white transition-colors duration-300">
+                            <p className="text-xs sm:text-sm text-gray-300 line-clamp-2 mb-2 sm:mb-3 group-hover:text-white transition-colors duration-300">
                                 {post.excerpt}
                             </p>
                         )}
@@ -122,8 +122,8 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                                 <OptimizedImage
                                     src={post.author.avatar}
                                     alt={post.author.name}
-                                    width={28}
-                                    height={28}
+                                    width={24}
+                                    height={24}
                                     className="rounded-full border-2 border-emerald-500/30 group-hover:border-emerald-400/60 transition-colors duration-300"
                                 />
                                 <div className="absolute inset-0 rounded-full bg-emerald-400/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -345,20 +345,20 @@ export default function BlogsPageClient() {
                     </section>
 
                     {/* Blog Posts Grid */}
-                    <section className="py-12 md:py-24 px-4 md:px-8">
+                    <section className="py-8 md:py-12 lg:py-24 px-4 md:px-8">
                         <div className="max-w-7xl mx-auto">
                             {/* Featured Posts */}
                             {!searchQuery && !selectedTag && featuredPosts.length > 0 && (
-                                <div className="mb-16">
+                                <div className="mb-12 md:mb-16">
                                     <motion.h2
                                         initial={{ opacity: 0, x: -30 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.6 }}
-                                        className="text-3xl font-bold mb-8 text-emerald-400"
+                                        className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-emerald-400"
                                     >
                                         Featured Articles
                                     </motion.h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                                         {featuredPosts.map((post, index) => (
                                             <BlogCard key={post.slug} post={post} index={index} />
                                         ))}
@@ -372,14 +372,14 @@ export default function BlogsPageClient() {
                                     initial={{ opacity: 0, x: -30 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     transition={{ duration: 0.6 }}
-                                    className="text-3xl font-bold mb-8"
+                                    className="text-2xl md:text-3xl font-bold mb-6 md:mb-8"
                                 >
                                     {searchQuery || selectedTag ? "Search Results" : "All Articles"}
                                 </motion.h2>
 
                                 {filteredPosts.length === 0 ? (
-                                    <div className="text-center py-16">
-                                        <p className="text-xl text-gray-400 mb-4">No articles found</p>
+                                    <div className="text-center py-12 md:py-16">
+                                        <p className="text-lg md:text-xl text-gray-400 mb-4">No articles found</p>
                                         <Button
                                             onClick={() => {
                                                 setSearchQuery("")
@@ -397,7 +397,7 @@ export default function BlogsPageClient() {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 0.5 }}
-                                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8"
                                     >
                                         {filteredPosts.map((post, index) => (
                                             <BlogCard key={post.slug} post={post} index={index} />

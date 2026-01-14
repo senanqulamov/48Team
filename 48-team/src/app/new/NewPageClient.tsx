@@ -9,6 +9,7 @@ import { ProgressIndicator, FixedBackground } from "./components"
 import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
+import { useIsMobile } from "@/hooks/use-mobile"
 import "./styles/horizontal-scroll.css"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -23,12 +24,14 @@ if (typeof window !== 'undefined') {
 
 /**
  * New Page Client Component
- * ARCHITECTURE: Proper vertical scroll driving horizontal translation
+ * ARCHITECTURE: Proper vertical scroll driving horizontal translation on desktop
+ * Mobile: Fully vertical scroll with no horizontal animation
  */
 export default function NewPageClient() {
   const [activeSection, setActiveSection] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const isMobile = useIsMobile()
 
   const handleLoadingComplete = () => {
     setIsLoading(false)
@@ -62,8 +65,10 @@ export default function NewPageClient() {
       wheelMultiplier: 1.8,
     })
 
-    // Connect Lenis to ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update)
+    // Connect Lenis to ScrollTrigger (only on desktop)
+    if (!isMobile) {
+      lenis.on("scroll", ScrollTrigger.update)
+    }
 
     // RAF loop
     const rafCallback = (time: number) => {
@@ -72,97 +77,105 @@ export default function NewPageClient() {
     gsap.ticker.add(rafCallback)
     gsap.ticker.lagSmoothing(0)
 
-    // Wait for layout to settle before creating ScrollTriggers
-    const setupTimeout = setTimeout(() => {
-      // HORIZONTAL TRACK 1: Sections 1, 2, 3
-      const track1 = document.querySelector(".horizontal-track-1")
-      const inner1 = track1?.querySelector(".horizontal-inner")
-      const panels1 = track1?.querySelectorAll(".panel")
+    // Only setup horizontal scroll on desktop
+    if (!isMobile) {
+      // Wait for layout to settle before creating ScrollTriggers
+      const setupTimeout = setTimeout(() => {
+        // HORIZONTAL TRACK 1: Sections 1, 2, 3
+        const track1 = document.querySelector(".horizontal-track-1")
+        const inner1 = track1?.querySelector(".horizontal-inner")
+        const panels1 = track1?.querySelectorAll(".panel")
 
-      if (track1 && inner1 && panels1) {
-        const numPanels1 = panels1.length
-        const scrollWidth1 = numPanels1 * window.innerWidth
+        if (track1 && inner1 && panels1) {
+          const numPanels1 = panels1.length
+          const scrollWidth1 = numPanels1 * window.innerWidth
 
-        gsap.to(inner1, {
-          x: -scrollWidth1 + window.innerWidth,
-          ease: "none",
-          scrollTrigger: {
-            trigger: track1,
-            start: "top top",
-            end: () => `+=${scrollWidth1}`,
-            pin: true,
-            scrub: 1.5,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const progress = self.progress
-              const panelIndex = Math.min(
-                Math.floor(progress * numPanels1),
-                numPanels1 - 1
-              )
-              setActiveSection(panelIndex)
+          gsap.to(inner1, {
+            x: -scrollWidth1 + window.innerWidth,
+            ease: "none",
+            scrollTrigger: {
+              trigger: track1,
+              start: "top top",
+              end: () => `+=${scrollWidth1}`,
+              pin: true,
+              scrub: 1.5,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                const progress = self.progress
+                const panelIndex = Math.min(
+                  Math.floor(progress * numPanels1),
+                  numPanels1 - 1
+                )
+                setActiveSection(panelIndex)
+              },
             },
-          },
-        })
-      }
+          })
+        }
 
-      // Track when Section 4 (vertical) is active
-      const verticalSection = document.querySelector(".vertical-section")
-      if (verticalSection) {
-        ScrollTrigger.create({
-          trigger: verticalSection,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => setActiveSection(3),
-          onEnterBack: () => setActiveSection(3),
-        })
-      }
+        // Track when Section 4 (vertical) is active
+        const verticalSection = document.querySelector(".vertical-section")
+        if (verticalSection) {
+          ScrollTrigger.create({
+            trigger: verticalSection,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => setActiveSection(3),
+            onEnterBack: () => setActiveSection(3),
+          })
+        }
 
-      // HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally)
-      const track2 = document.querySelector(".horizontal-track-2")
-      const inner2 = track2?.querySelector(".horizontal-inner")
-      const panels2 = track2?.querySelectorAll(".panel")
+        // HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally)
+        const track2 = document.querySelector(".horizontal-track-2")
+        const inner2 = track2?.querySelector(".horizontal-inner")
+        const panels2 = track2?.querySelectorAll(".panel")
 
-      if (track2 && inner2 && panels2) {
-        // Calculate total width: Section 5 (content-based) + Section 6 (100vw)
-        const section5Width = (panels2[0] as HTMLElement).offsetWidth
-        const section6Width = window.innerWidth // 100vw
-        const totalWidth = section5Width + section6Width
-        const scrollDistance = totalWidth - window.innerWidth
+        if (track2 && inner2 && panels2) {
+          // Calculate total width: Section 5 (content-based) + Section 6 (100vw)
+          const section5Width = (panels2[0] as HTMLElement).offsetWidth
+          const section6Width = window.innerWidth // 100vw
+          const totalWidth = section5Width + section6Width
+          const scrollDistance = totalWidth - window.innerWidth
 
-        gsap.to(inner2, {
-          x: -scrollDistance,
-          ease: "none",
-          scrollTrigger: {
-            trigger: track2,
-            start: "top top",
-            end: () => `+=${scrollDistance}`,
-            pin: true,
-            scrub: 1.5,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const progress = self.progress
-              // Section 5 shows until halfway, then Section 6
-              const section = progress < 0.5 ? 4 : 5
-              setActiveSection(section)
+          gsap.to(inner2, {
+            x: -scrollDistance,
+            ease: "none",
+            scrollTrigger: {
+              trigger: track2,
+              start: "top top",
+              end: () => `+=${scrollDistance}`,
+              pin: true,
+              scrub: 1.5,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                const progress = self.progress
+                // Section 5 shows until halfway, then Section 6
+                const section = progress < 0.5 ? 4 : 5
+                setActiveSection(section)
+              },
+              onEnter: () => setActiveSection(4),
+              onEnterBack: () => setActiveSection(4),
             },
-            onEnter: () => setActiveSection(4),
-            onEnterBack: () => setActiveSection(4),
-          },
-        })
+          })
+        }
+
+        ScrollTrigger.refresh()
+      }, 100)
+
+      // Cleanup
+      return () => {
+        clearTimeout(setupTimeout)
+        lenis.destroy()
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        gsap.ticker.remove(rafCallback)
       }
-
-
-      ScrollTrigger.refresh()
-    }, 100)
-
-    // Cleanup
-    return () => {
-      clearTimeout(setupTimeout)
-      lenis.destroy()
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-      gsap.ticker.remove(rafCallback)
+    } else {
+      // Mobile cleanup
+      return () => {
+        lenis.destroy()
+        gsap.ticker.remove(rafCallback)
+      }
     }
-  }, [isLoading])
+  }, [isLoading, isMobile])
 
   return (
     <>
@@ -178,42 +191,71 @@ export default function NewPageClient() {
       <main id="lenis-root" className="relative bg-transparent text-white">
         <FixedBackground />
 
-        <div className="relative z-50">
-          <ProgressIndicator activeSection={activeSection} />
-        </div>
+        {!isMobile && (
+          <div className="relative z-50">
+            <ProgressIndicator activeSection={activeSection} />
+          </div>
+        )}
 
-      <div className="relative z-10">
-        <section className="horizontal-track horizontal-track-1 h-screen overflow-hidden">
-          <div className="horizontal-inner flex h-full">
-            <section className="panel w-screen h-full flex-shrink-0">
+        {/* Mobile Version - Fully Vertical */}
+        {isMobile && (
+          <div className="relative z-10">
+            <section className="min-h-screen w-full">
               <Section1 width="100vw" />
             </section>
-            <section className="panel w-screen h-full flex-shrink-0">
+            <section className="min-h-screen w-full">
               <Section2 width="100vw" />
             </section>
-            <section className="panel w-screen h-full flex-shrink-0">
+            <section className="min-h-screen w-full">
               <Section3 width="100vw" />
             </section>
-          </div>
-        </section>
-
-        <section className="vertical-section relative">
-          <Section4 width="100vw" />
-        </section>
-
-        {/* HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally) */}
-        <section className="horizontal-track horizontal-track-2 h-screen overflow-hidden">
-          <div className="horizontal-inner flex h-full">
-            <section className="panel h-full flex-shrink-0" style={{ minWidth: '100vw', width: 'max-content' }}>
-              <Section5 width="auto" />
+            <section className="relative w-full">
+              <Section4 width="100vw" />
             </section>
-            <section className="panel w-screen h-full flex-shrink-0">
+            <section className="min-h-screen w-full">
+              <Section5 width="100vw" />
+            </section>
+            <section className="min-h-screen w-full">
               <Section6 width="100vw" />
             </section>
           </div>
-        </section>
-      </div>
-    </main>
+        )}
+
+        {/* Desktop Version - Horizontal Scroll */}
+        {!isMobile && (
+          <div className="relative z-10">
+            <section className="horizontal-track horizontal-track-1 h-screen overflow-hidden">
+              <div className="horizontal-inner flex h-full">
+                <section className="panel w-screen h-full flex-shrink-0">
+                  <Section1 width="100vw" />
+                </section>
+                <section className="panel w-screen h-full flex-shrink-0">
+                  <Section2 width="100vw" />
+                </section>
+                <section className="panel w-screen h-full flex-shrink-0">
+                  <Section3 width="100vw" />
+                </section>
+              </div>
+            </section>
+
+            <section className="vertical-section relative">
+              <Section4 width="100vw" />
+            </section>
+
+            {/* HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally) */}
+            <section className="horizontal-track horizontal-track-2 h-screen overflow-hidden">
+              <div className="horizontal-inner flex h-full">
+                <section className="panel h-full flex-shrink-0" style={{ minWidth: '100vw', width: 'max-content' }}>
+                  <Section5 width="auto" />
+                </section>
+                <section className="panel w-screen h-full flex-shrink-0">
+                  <Section6 width="100vw" />
+                </section>
+              </div>
+            </section>
+          </div>
+        )}
+      </main>
     </>
   )
 }

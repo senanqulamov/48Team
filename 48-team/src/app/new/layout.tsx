@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     creator: siteConfig.author.name,
     publisher: siteConfig.author.name,
     generator: "Next.js",
+    viewport: {
+        width: "device-width",
+        initialScale: 1,
+        maximumScale: 5,
+    },
     openGraph: {
         type: "website",
         url: siteConfig.baseUrl,

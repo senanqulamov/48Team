@@ -135,6 +135,47 @@ html::before {
 }
 
 /* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Ensure proper vertical scrolling on mobile */
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Disable horizontal tracks on mobile */
+  .horizontal-track {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    overflow: visible;
+  }
+
+  .horizontal-inner {
+    width: 100%;
+    transform: none !important;
+  }
+
+  .panel {
+    width: 100vw !important;
+    min-width: 100vw;
+    display: block;
+  }
+
+  /* Ensure sections stack vertically on mobile */
+  #lenis-root {
+    overflow-x: hidden;
+  }
+}
+
+/* ========================================
    Project Showcase Animations
    ======================================== */
 
