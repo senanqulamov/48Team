@@ -73,7 +73,7 @@ export function SkillsSection() {
   ];
 
   return (
-    <div className="relative h-full flex items-center justify-center px-6 py-6">
+    <div className="relative h-full flex items-center justify-center px-4 md:px-6 py-6 md:py-8">
       <div className="w-full max-w-[135vw] mx-auto">
 
         {/* Header */}
@@ -81,18 +81,18 @@ export function SkillsSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-6"
+          className="text-center mb-6 md:mb-8"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">
             Skills & Expertise
           </h2>
-          <p className="text-sm text-cyan-100/70">
+          <p className="text-xs md:text-sm text-cyan-100/70">
             Technical prowess meets human insight
           </p>
         </motion.div>
 
-        {/* Main Content Grid - 3 columns */}
-        <div className="flex flex-row items-center justify-center gap-25">
+        {/* Main Content Grid - 3 columns on desktop, stacked on mobile */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-25">
 
           {/* LEFT: Technical Skills Stacked Cards */}
           <motion.div
@@ -102,8 +102,8 @@ export function SkillsSection() {
             className="flex flex-col items-center"
           >
             <div className="flex items-center gap-2 mb-3">
-              <Code2 className="w-5 h-5 text-cyan-400" />
-              <h3 className="text-lg font-bold text-white">Technical Skills</h3>
+              <Code2 className="w-4 h-4 md:w-5 md:h-5 text-cyan-400" />
+              <h3 className="text-base md:text-lg font-bold text-white">Technical Skills</h3>
             </div>
             <StackedCardsNew cards={techSkillCards} showHint={true} />
           </motion.div>
@@ -116,8 +116,8 @@ export function SkillsSection() {
             className="flex flex-col items-center"
           >
             <div className="flex items-center gap-2 mb-3">
-              <Brain className="w-5 h-5 text-teal-400" />
-              <h3 className="text-lg font-bold text-white">Human Skills</h3>
+              <Brain className="w-4 h-4 md:w-5 md:h-5 text-teal-400" />
+              <h3 className="text-base md:text-lg font-bold text-white">Human Skills</h3>
             </div>
             <StackedCardsNew cards={humanSkillCards} showHint={true} />
           </motion.div>
@@ -127,10 +127,10 @@ export function SkillsSection() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="space-y-4 w-full max-w-[40vw]"
+            className="space-y-3 md:space-y-4 w-full lg:max-w-[40vw]"
           >
             {/* Quick Stats Grid */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
               {[
                 { icon: Code2, label: "Technical", count: "15+", color: "text-cyan-400" },
                 { icon: Brain, label: "Human", count: "10+", color: "text-teal-400" },
@@ -139,26 +139,26 @@ export function SkillsSection() {
               ].map(({ icon: Icon, label, count, color }) => (
                 <div
                   key={label}
-                  className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-3 text-center hover:border-white/20 transition-all"
+                  className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-2 md:p-3 text-center hover:border-white/20 transition-all"
                 >
-                  <Icon className={`w-4 h-4 ${color} mx-auto mb-1`} />
-                  <div className="text-xl font-bold text-white">{count}</div>
-                  <div className="text-xs text-cyan-100/60">{label}</div>
+                  <Icon className={`w-3 h-3 md:w-4 md:h-4 ${color} mx-auto mb-1`} />
+                  <div className="text-lg md:text-xl font-bold text-white">{count}</div>
+                  <div className="text-[10px] md:text-xs text-cyan-100/60">{label}</div>
                 </div>
               ))}
             </div>
 
             {/* Technology Stack */}
-            <div className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-4">
-              <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-cyan-400" />
+            <div className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-3 md:p-4">
+              <h4 className="text-white font-semibold text-xs md:text-sm mb-2 md:mb-3 flex items-center gap-2">
+                <Code2 className="w-3 h-3 md:w-4 md:h-4 text-cyan-400" />
                 Technology Stack
               </h4>
-              <div className="flex flex-wrap gap-1.5 max-h-[320px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-cyan-400/20 scrollbar-track-transparent">
+              <div className="flex flex-wrap gap-1 md:gap-1.5 max-h-[200px] md:max-h-[320px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-cyan-400/20 scrollbar-track-transparent">
                 {allTechnologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-1 bg-white/5 border border-white/10 rounded-md text-xs text-cyan-100/70 hover:bg-white/10 hover:border-cyan-400/30 transition-all whitespace-nowrap"
+                    className="px-1.5 py-0.5 md:px-2 md:py-1 bg-white/5 border border-white/10 rounded-md text-[10px] md:text-xs text-cyan-100/70 hover:bg-white/10 hover:border-cyan-400/30 transition-all whitespace-nowrap"
                   >
                     {tech}
                   </span>
@@ -167,16 +167,16 @@ export function SkillsSection() {
             </div>
 
             {/* Additional Info Card */}
-            <div className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-4">
-              <h4 className="text-white font-semibold text-sm mb-2">Core Strengths</h4>
-              <div className="space-y-2">
+            <div className="relative rounded-xl overflow-hidden bg-white/5 border border-white/10 p-3 md:p-4">
+              <h4 className="text-white font-semibold text-xs md:text-sm mb-2">Core Strengths</h4>
+              <div className="space-y-1.5 md:space-y-2">
                 {[
                   { icon: Server, label: "Backend Expert", color: "text-green-400" },
                   { icon: Palette, label: "Frontend Pro", color: "text-pink-400" },
                   { icon: Brain, label: "Therapist", color: "text-cyan-400" },
                   { icon: Users, label: "Team Leader", color: "text-teal-400" },
                 ].map(({ icon: Icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-2 text-sm">
+                  <div key={label} className="flex items-center gap-2 text-xs md:text-sm">
                     <Icon className={`w-3 h-3 ${color}`} />
                     <span className="text-cyan-100/70">{label}</span>
                   </div>

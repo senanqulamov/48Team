@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import {ExternalLink, Github, ArrowRight, Zap, Brain, Globe, ArrowDown} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
@@ -281,12 +282,12 @@ const ProjectsSection = () => {
                     className="px-4 py-2 bg-card border border-primary/20 rounded-full text-sm md:text-base font-medium text-primary backdrop-blur-sm"
                     asChild
                 >
-                  <a href="/projects">
+                  <Link href="/projects">
                   <span className="flex items-center gap-2">
                     See All Projects
                     <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
-                  </a>
+                  </Link>
                 </Button>
               </div>
             </div>

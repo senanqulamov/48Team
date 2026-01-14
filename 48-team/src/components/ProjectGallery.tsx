@@ -5,7 +5,6 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ZoomIn } from "lucide-react"
 import FullscreenGallery from "@/components/ui/fullscreen-gallery"
 
 gsap.registerPlugin(ScrollTrigger)

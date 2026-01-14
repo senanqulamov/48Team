@@ -107,21 +107,21 @@ export default function AllProjectsPageClient() {
 
   return (
     <main className="relative bg-black text-white min-h-screen overflow-hidden">
-      {/* Fixed Animated Background */}
+      {/* Fixed Animated Background - Matching /new page */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0" style={{ backgroundColor: "#000000" }}>
-          {/* Animated gradient orbs */}
-          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse"
+          {/* Animated gradient orbs using CSS */}
+          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/30 rounded-full blur-[120px] animate-pulse"
                style={{ animationDuration: '8s' }} />
-          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px] animate-pulse"
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-teal-500/30 rounded-full blur-[120px] animate-pulse"
                style={{ animationDuration: '10s', animationDelay: '2s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[100px] animate-pulse"
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-sky-500/25 rounded-full blur-[100px] animate-pulse"
                style={{ animationDuration: '12s', animationDelay: '4s' }} />
 
           {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-5"
+          <div className="absolute inset-0 opacity-10"
                style={{
-                 backgroundImage: 'linear-gradient(to right, rgba(124, 58, 237, 0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(124, 58, 237, 0.3) 1px, transparent 1px)',
+                 backgroundImage: 'linear-gradient(to right, #06b6d4 1px, transparent 1px), linear-gradient(to bottom, #06b6d4 1px, transparent 1px)',
                  backgroundSize: '4rem 4rem'
                }} />
         </div>
@@ -131,57 +131,49 @@ export default function AllProjectsPageClient() {
       <div className="relative z-10">
         {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.2),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.2),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(236,72,153,0.2),transparent_50%)]" />
-          </div>
-        </div>
 
         {/* Back Button */}
         <Link
           href="/"
-          className="absolute top-8 left-8 z-50 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-300"
+          className="absolute top-4 left-4 md:top-8 md:left-8 z-50 flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 text-sm md:text-base bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-all duration-300"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Home</span>
+          <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" />
+          <span>Back</span>
         </Link>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center px-8 max-w-5xl">
+        <div className="relative z-10 text-center px-4 md:px-8 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="w-6 h-6 text-primary" />
-              <p className="text-primary text-sm md:text-base uppercase tracking-wider">
+              <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              <p className="text-primary text-xs md:text-sm uppercase tracking-wider">
                 My Work
               </p>
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              All Projects <span className="text-sm">v2.0.0</span>
+            <h1 className="text-4xl md:text-6xl lg:text-8xl font-display font-bold mb-4 md:mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              All Projects <span className="text-xs md:text-sm">v2.0.0</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-4">
               Explore our complete portfolio of innovative solutions, from startups to enterprise applications
             </p>
 
             {/* Stats */}
-            <div className="flex items-center justify-center gap-8 md:gap-12 mt-12">
+            <div className="flex items-center justify-center gap-6 md:gap-8 lg:gap-12 mt-8 md:mt-12">
               <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-primary">{completeProjects.length}+</p>
-                <p className="text-sm text-muted-foreground mt-2">Projects (public)</p>
+                <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary">{completeProjects.length}+</p>
+                <p className="text-xs md:text-sm text-muted-foreground mt-1 md:mt-2">Projects</p>
               </div>
               <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-accent">{categories.length - 1}</p>
-                <p className="text-sm text-muted-foreground mt-2">Categories</p>
+                <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-accent">{categories.length - 1}</p>
+                <p className="text-xs md:text-sm text-muted-foreground mt-1 md:mt-2">Categories</p>
               </div>
               <div className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-primary">5+</p>
-                <p className="text-sm text-muted-foreground mt-2">Years</p>
+                <p className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary">5+</p>
+                <p className="text-xs md:text-sm text-muted-foreground mt-1 md:mt-2">Years</p>
               </div>
             </div>
           </motion.div>
@@ -192,21 +184,21 @@ export default function AllProjectsPageClient() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-muted-foreground text-sm"
+          className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 text-muted-foreground text-xs md:text-sm"
         >
           <p>Scroll to explore</p>
         </motion.div>
       </section>
 
       {/* Filter Section */}
-      <section className="sticky top-0 z-40 backdrop-blur-xl border-b border-white/10 py-6 px-8">
+      <section className="sticky top-0 z-40 backdrop-blur-xl border-b border-white/10 py-4 md:py-6 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 md:gap-4 overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category as string)}
-                className={`px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all duration-300 ${
+                className={`px-4 md:px-6 py-1.5 md:py-2 text-sm md:text-base rounded-full font-medium whitespace-nowrap transition-all duration-300 ${
                   activeCategory === category
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50"
                     : "bg-white/5 text-muted-foreground hover:bg-white/10"
@@ -220,13 +212,13 @@ export default function AllProjectsPageClient() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-24 px-8">
+      <section className="py-12 md:py-24 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
           >
             {filteredProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
@@ -234,8 +226,8 @@ export default function AllProjectsPageClient() {
           </motion.div>
 
           {filteredProjects.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-muted-foreground text-lg">No projects found in this category.</p>
+            <div className="text-center py-16 md:py-20">
+              <p className="text-muted-foreground text-base md:text-lg">No projects found in this category.</p>
             </div>
           )}
         </div>

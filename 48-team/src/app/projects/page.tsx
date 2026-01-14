@@ -1,59 +1,45 @@
-"use client"
+import AllProjectsPageClient from "./all/AllProjectsPageClient"
+import type { Metadata } from "next"
+import { siteConfig, absoluteUrl } from "@/lib/seo"
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import Navigation from "@/components/Navigation"
-import PageWrapper from "@/components/PageWrapper"
-import PageLoader from "@/components/PageLoader"
-import ProgressiveBlurNoise from "@/components/ProgressiveBlurNoise"
-// import AnimatedMeshBackground from "@/components/AnimatedMeshBackground"
-import ScrollDownIndicator from "@/components/ScrollDownIndicator"
-import Footer from "@/components/Footer"
+export const metadata: Metadata = {
+  title: "Projects Portfolio",
+  description: "Explore our complete portfolio of innovative web & mobile solutions, from startups to enterprise applications. See how we build cutting-edge technology.",
+  keywords: [
+    ...siteConfig.keywords,
+    "portfolio",
+    "web projects",
+    "mobile apps",
+    "enterprise applications",
+    "startups",
+    "software development",
+    "full-stack projects"
+  ],
+  openGraph: {
+    title: "Projects Portfolio | The 48 Team",
+    description: "Explore our complete portfolio of innovative web & mobile solutions, from startups to enterprise applications.",
+    url: absoluteUrl("/projects"),
+    type: "website",
+    images: [
+      {
+        url: absoluteUrl(siteConfig.socialBanner),
+        width: 1200,
+        height: 630,
+        alt: "48 Team Projects Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects Portfolio | The 48 Team",
+    description: "Explore our complete portfolio of innovative web & mobile solutions, from startups to enterprise applications.",
+    images: [absoluteUrl(siteConfig.socialBanner)],
+  },
+  alternates: {
+    canonical: absoluteUrl("/projects"),
+  },
+}
 
-import ProjectsPage from "@/components/ProjectsTimeLine"
-import FeaturedTimeline from "@/components/featured-timeline/FeaturedTimeline"
-
-export default function ProjectsRoutePage() {
-    const [isLoading, setIsLoading] = useState(true)
-
-    const handleComplete = () => setIsLoading(false)
-
-    return (
-        <div className="relative text-foreground min-h-screen" id="scroll-container">
-            {isLoading && <PageLoader onCompleteAction={handleComplete} />}
-
-            {/*<AnimatedMeshBackground />*/}
-            <ProgressiveBlurNoise show={isLoading} />
-
-            {!isLoading && (
-                <>
-                    <Navigation />
-                    <PageWrapper>
-                        <div>
-                            <div className="space-y-16 md:space-y-24">
-                                <FeaturedTimeline />
-
-                                {/* View All Projects CTA */}
-                                <div className="flex justify-center py-8">
-                                    <Link
-                                        href="/projects/all"
-                                        className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-accent rounded-full font-semibold text-primary-foreground hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105"
-                                    >
-                                        View All Projects
-                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </Link>
-                                </div>
-
-                                <ProjectsPage />
-                            </div>
-                        </div>
-                    </PageWrapper>
-
-                    <ScrollDownIndicator />
-                    <Footer />
-                </>
-            )}
-        </div>
-    )
+export default function ProjectsPage() {
+  return <AllProjectsPageClient />
 }
