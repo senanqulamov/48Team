@@ -47,7 +47,7 @@ html::before {
 
 .horizontal-track {
   position: relative;
-  width: 100vw;
+  width: 200vw;
   height: 100vh;
   overflow: hidden;
 }
@@ -56,12 +56,16 @@ html::before {
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  width: max-content;
+  height: 100%;
 }
 
 .panel {
   position: relative;
   will-change: transform;
   transform: translateZ(0);
+  display: inline-block;
+  vertical-align: top;
 }
 
 /* ========================================

@@ -19,7 +19,8 @@ export const SECTION_CONFIG = {
     { id: 2, width: "small", component: "Section2" },
     { id: 3, width: "small", component: "Section3" },
     { id: 4, width: "small", component: "Section4" },
-    { id: 5, width: "small", component: "Section5" },
+    { id: 5, width: "large", component: "Section5" },
+    { id: 6, width: "small", component: "Section6" },
   ] as const,
 
   // Glass effect settings

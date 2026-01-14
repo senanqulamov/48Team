@@ -1,4 +1,4 @@
-import { Section1, Section2, Section3, Section4, Section5 } from "../sections"
+import { Section1, Section2, Section3, Section4, Section5, Section6 } from "../sections"
 import { SECTION_CONFIG } from "../config"
 import { RefObject } from "react"
 
@@ -20,6 +20,7 @@ export function SectionsContainer({ containerRef }: SectionsContainerProps) {
     Section3,
     Section4,
     Section5,
+    Section6,
   }
 
   return (

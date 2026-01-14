@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Lenis from "lenis"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Section1, Section2, Section3, Section4, Section5 } from "./sections"
+import { Section1, Section2, Section3, Section4, Section5, Section6 } from "./sections"
 import { ProgressIndicator, FixedBackground } from "./components"
 import "./styles/horizontal-scroll.css"
 
@@ -105,26 +105,40 @@ export default function NewPageClient() {
         })
       }
 
-      // HORIZONTAL TRACK 2: Section 5
+      // HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally)
       const track2 = document.querySelector(".horizontal-track-2")
       const inner2 = track2?.querySelector(".horizontal-inner")
+      const panels2 = track2?.querySelectorAll(".panel")
 
-      if (track2 && inner2) {
+      if (track2 && inner2 && panels2) {
+        // Calculate total width: Section 5 (content-based) + Section 6 (100vw)
+        const section5Width = (panels2[0] as HTMLElement).offsetWidth
+        const section6Width = window.innerWidth // 100vw
+        const totalWidth = section5Width + section6Width
+        const scrollDistance = totalWidth - window.innerWidth
+
         gsap.to(inner2, {
-          x: -window.innerWidth,
+          x: -scrollDistance,
           ease: "none",
           scrollTrigger: {
             trigger: track2,
             start: "top top",
-            end: () => `+=${window.innerWidth}`,
+            end: () => `+=${scrollDistance}`,
             pin: true,
             scrub: 1.5,
             invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const progress = self.progress
+              // Section 5 shows until halfway, then Section 6
+              const section = progress < 0.5 ? 4 : 5
+              setActiveSection(section)
+            },
             onEnter: () => setActiveSection(4),
             onEnterBack: () => setActiveSection(4),
           },
         })
       }
+
 
       ScrollTrigger.refresh()
     }, 100)
@@ -140,17 +154,13 @@ export default function NewPageClient() {
 
   return (
     <main id="lenis-root" className="relative bg-transparent text-white">
-      {/* Fixed Background - z-0 */}
       <FixedBackground />
 
-      {/* Section Progress Indicator - z-50 */}
       <div className="relative z-50">
         <ProgressIndicator activeSection={activeSection} />
       </div>
 
-      {/* All sections - z-10 to be above background but below indicator */}
       <div className="relative z-10">
-        {/* HORIZONTAL TRACK 1: Sections 1, 2, 3 */}
         <section className="horizontal-track horizontal-track-1 h-screen overflow-hidden">
           <div className="horizontal-inner flex h-full">
             <section className="panel w-screen h-full flex-shrink-0">
@@ -165,16 +175,18 @@ export default function NewPageClient() {
           </div>
         </section>
 
-        {/* VERTICAL SECTION: Section 4 (native vertical scroll) */}
         <section className="vertical-section relative">
           <Section4 width="100vw" />
         </section>
 
-        {/* HORIZONTAL TRACK 2: Section 5 */}
+        {/* HORIZONTAL TRACK 2: Section 5 & 6 (scroll together horizontally) */}
         <section className="horizontal-track horizontal-track-2 h-screen overflow-hidden">
           <div className="horizontal-inner flex h-full">
+            <section className="panel h-full flex-shrink-0" style={{ minWidth: '100vw', width: 'max-content' }}>
+              <Section5 width="auto" />
+            </section>
             <section className="panel w-screen h-full flex-shrink-0">
-              <Section5 width="100vw" />
+              <Section6 width="100vw" />
             </section>
           </div>
         </section>

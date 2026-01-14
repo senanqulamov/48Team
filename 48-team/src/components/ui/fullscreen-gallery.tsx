@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 
@@ -29,10 +29,21 @@ export default function FullscreenGallery({
 }: FullscreenGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [direction, setDirection] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCurrentIndex(initialIndex);
   }, [initialIndex]);
+
+  // Reset zoom and position when image changes
+  useEffect(() => {
+    setZoom(1);
+    setPosition({ x: 0, y: 0 });
+  }, [currentIndex]);
 
   const handlePrevious = useCallback(() => {
     setDirection(-1);
@@ -44,23 +55,82 @@ export default function FullscreenGallery({
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, [images.length]);
 
+  const handleZoomIn = useCallback(() => {
+    setZoom((prev) => Math.min(prev + 0.5, 4));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setZoom((prev) => {
+      const newZoom = Math.max(prev - 0.5, 1);
+      if (newZoom === 1) {
+        setPosition({ x: 0, y: 0 });
+      }
+      return newZoom;
+    });
+  }, []);
+
+  const handleWheel = useCallback((e: WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      setZoom((prev) => {
+        const newZoom = Math.max(1, Math.min(prev + delta, 4));
+        if (newZoom === 1) {
+          setPosition({ x: 0, y: 0 });
+        }
+        return newZoom;
+      });
+    }
+  }, []);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (zoom > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    }
+  }, [zoom, position]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (isDragging && zoom > 1) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  }, [isDragging, dragStart, zoom]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onCloseAction();
-      if (e.key === "ArrowLeft") handlePrevious();
-      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft" && zoom === 1) handlePrevious();
+      if (e.key === "ArrowRight" && zoom === 1) handleNext();
+      if (e.key === "+" || e.key === "=") handleZoomIn();
+      if (e.key === "-" || e.key === "_") handleZoomOut();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
 
+    // Add wheel event listener for zoom
+    const container = imageContainerRef.current;
+    if (container) {
+      container.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      if (container) {
+        container.removeEventListener("wheel", handleWheel);
+      }
     };
-  }, [isOpen, onCloseAction, handlePrevious, handleNext]);
+  }, [isOpen, onCloseAction, handlePrevious, handleNext, handleZoomIn, handleZoomOut, handleWheel, zoom]);
 
   if (!isOpen) return null;
 
@@ -101,12 +171,37 @@ export default function FullscreenGallery({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white text-sm font-medium"
+              className="flex items-center gap-3"
             >
-              <span className="text-white/60">Image</span>{" "}
-              <span className="text-white font-semibold">{currentIndex + 1}</span>
-              <span className="text-white/40"> / </span>
-              <span className="text-white/60">{images.length}</span>
+              <div className="px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white text-sm font-medium">
+                <span className="text-white/60">Image</span>{" "}
+                <span className="text-white font-semibold">{currentIndex + 1}</span>
+                <span className="text-white/40"> / </span>
+                <span className="text-white/60">{images.length}</span>
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10">
+                <button
+                  onClick={handleZoomOut}
+                  disabled={zoom <= 1}
+                  className="p-1 rounded-full hover:bg-white/10 text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  aria-label="Zoom out"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+                <span className="text-white text-xs font-medium min-w-[3rem] text-center">
+                  {Math.round(zoom * 100)}%
+                </span>
+                <button
+                  onClick={handleZoomIn}
+                  disabled={zoom >= 4}
+                  className="p-1 rounded-full hover:bg-white/10 text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  aria-label="Zoom in"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+              </div>
             </motion.div>
 
             {/* Close Button */}
@@ -122,8 +217,8 @@ export default function FullscreenGallery({
             </motion.button>
           </div>
 
-          {/* Navigation Buttons */}
-          {images.length > 1 && (
+          {/* Navigation Buttons - Only show when not zoomed */}
+          {images.length > 1 && zoom === 1 && (
             <>
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
@@ -149,8 +244,16 @@ export default function FullscreenGallery({
             </>
           )}
 
-          {/* Image Container with improved sliding */}
-          <div className="absolute inset-0 flex items-center justify-center p-4 md:p-8 pt-20 pb-32">
+          {/* Image Container with zoom and pan */}
+          <div
+            ref={imageContainerRef}
+            className="absolute inset-0 flex items-center justify-center p-4 md:p-8 pt-20 pb-32"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            style={{ cursor: zoom > 1 ? (isDragging ? "grabbing" : "grab") : "default" }}
+          >
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={currentIndex}
@@ -166,21 +269,31 @@ export default function FullscreenGallery({
                 }}
                 className="relative max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center"
               >
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <Image
-                    src={currentImage.src}
-                    alt={currentImage.alt || `Image ${currentIndex + 1}`}
-                    fill
-                    className="object-contain rounded-lg"
-                    placeholder="blur"
-                    blurDataURL={BLUR_DATA_URL}
-                    quality={90}
-                    sizes="100vw"
-                    priority
-                    unoptimized
-                  />
+                <div
+                  className="relative w-full h-full flex items-center justify-center"
+                  style={{
+                    transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
+                    transition: isDragging ? "none" : "transform 0.2s ease-out",
+                    transformOrigin: "center center",
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={currentImage.src}
+                      alt={currentImage.alt || `Image ${currentIndex + 1}`}
+                      fill
+                      className="object-contain rounded-lg"
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
+                      quality={90}
+                      sizes="100vw"
+                      priority
+                      unoptimized
+                      draggable={false}
+                    />
+                  </div>
                 </div>
-                {currentImage.caption && (
+                {currentImage.caption && zoom === 1 && (
                   <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -194,8 +307,8 @@ export default function FullscreenGallery({
             </AnimatePresence>
           </div>
 
-          {/* Modern Thumbnail Breadcrumbs */}
-          {images.length > 1 && (
+          {/* Modern Thumbnail Breadcrumbs - Only show when not zoomed */}
+          {images.length > 1 && zoom === 1 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -254,15 +367,16 @@ export default function FullscreenGallery({
             </motion.div>
           )}
 
-          {/* Swipe instruction hint (mobile) */}
-          {images.length > 1 && (
+          {/* Zoom instruction hint */}
+          {zoom === 1 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 text-white/40 text-xs md:text-sm pointer-events-none md:hidden"
+              className="absolute bottom-24 md:bottom-28 left-1/2 -translate-x-1/2 text-white/40 text-xs md:text-sm pointer-events-none text-center"
             >
-              Swipe or use arrows to navigate
+              <p className="mb-1">Ctrl/Cmd + Scroll to zoom • Click and drag when zoomed</p>
+              <p className="hidden md:block">Use arrow keys to navigate</p>
             </motion.div>
           )}
         </motion.div>
@@ -270,3 +384,5 @@ export default function FullscreenGallery({
     </AnimatePresence>
   );
 }
+
+

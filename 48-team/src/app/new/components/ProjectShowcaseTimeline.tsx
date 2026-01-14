@@ -1,9 +1,10 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion"
+import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion"
 import { ExternalLink, Github, Calendar, Sparkles, Laptop } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { projects } from "@/lib/projects"
 import type { Project } from "@/types/project"
 
@@ -155,17 +156,13 @@ const ProjectCard = ({ project, side, index }: ProjectCardProps) => {
 
         {/* Links */}
         <div className="flex gap-2 pt-2">
-          {project.demoUrl && project.demoUrl !== "#" && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105"
-            >
-              <ExternalLink className="w-4 h-4" />
-              Demo
-            </a>
-          )}
+          <Link
+            href={`/projects/${project.id}`}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105"
+          >
+            <ExternalLink className="w-4 h-4" />
+            View Project
+          </Link>
           {project.links?.github && project.links.github !== "#" && (
             <a
               href={project.links.github}
@@ -300,13 +297,13 @@ export default function ProjectShowcaseTimeline() {
         transition={{ duration: 0.8 }}
         className="text-center mt-12 md:mt-16"
       >
-        <a
+        <Link
           href="/projects"
           className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-medium hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105"
         >
           View All Projects
           <ExternalLink className="w-5 h-5" />
-        </a>
+        </Link>
       </motion.div>
     </div>
   )
