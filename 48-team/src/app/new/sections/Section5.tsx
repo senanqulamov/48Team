@@ -15,6 +15,7 @@ type Experience = {
     company: string
     location: string
     period: string
+    year: string
     description: string
     achievements: string[]
     icon: React.ComponentType<{ className?: string }>
@@ -29,6 +30,7 @@ const experiences: Experience[] = [
         company: "NeoSphere",
         location: "Remote",
         period: "2020 - Present",
+        year: "2020-Present",
         description:
             "Founder of NeoSphere, a workers' union hub and gig/job marketplace that connects freelancers, job seekers, and organizations. Driving product vision, architecture, and development using Laravel and React, with backend APIs extending into Java (Javalin).",
         achievements: [
@@ -46,6 +48,7 @@ const experiences: Experience[] = [
         company: "Inci Group of Companies LLC",
         location: "Baku, Azerbaijan",
         period: "May 2025 - Present",
+        year: "2025 - 2026",
         description:
             "Building scalable backend systems for enterprise projects using Laravel and modern PHP, while also introducing Java + Javalin APIs for microservices and integrations. Collaborating onsite in Baku Economic Zone with cross-functional teams.",
         achievements: [
@@ -65,6 +68,7 @@ const experiences: Experience[] = [
         company: "GlobalSoft",
         location: "Baku, Azerbaijan",
         period: "Mar 2025 - May 2025",
+        year: "2025",
         description:
             "Backend Developer focusing on Laravel/PHP applications and enterprise web solutions. Contributed to API development, integration, and performance improvements.",
         achievements: [
@@ -82,6 +86,7 @@ const experiences: Experience[] = [
         company: "Army Duty",
         location: "Azerbaijan",
         period: "Jan 2024 - Jan 2025",
+        year: "2024",
         description:
             "Completed mandatory military service. Built discipline, resilience, teamwork, and leadership that positively influence my engineering approach.",
         achievements: [
@@ -98,6 +103,7 @@ const experiences: Experience[] = [
         company: "Self-employed",
         location: "Remote",
         period: "Aug 2023 - Jan 2024",
+        year: "2023",
         description:
             "6-month freelancing period delivering web apps and APIs. Implemented features end-to-end, from UI to data models and deployments.",
         achievements: [
@@ -114,6 +120,7 @@ const experiences: Experience[] = [
         company: "ALLRENT",
         location: "Baku, Azerbaijan",
         period: "Nov 2022 - Jul 2023",
+        year: "2022",
         description:
             "Led the full development of Allrent.io from scratch, building an online rental marketplace with advanced features and optimized booking workflows.",
         achievements: [
@@ -131,6 +138,7 @@ const experiences: Experience[] = [
         company: "DEIRVLON Technologies",
         location: "Baku, Azerbaijan",
         period: "May 2022 - Oct 2022",
+        year: "2022",
         description:
             "Led Laravel and JavaScript development teams, delivering scalable solutions for logistics and enterprise projects.",
         achievements: [
@@ -148,6 +156,7 @@ const experiences: Experience[] = [
         company: "FERRUM CAPITAL",
         location: "Baku, Azerbaijan",
         period: "Mar 2021 - May 2022",
+        year: "2021",
         description:
             "Developed Laravel and React-based systems while serving as Cybersecurity Administrator. Introduced secure architecture patterns and began building Java APIs for internal systems.",
         achievements: [
@@ -160,29 +169,13 @@ const experiences: Experience[] = [
         color: "text-accent",
     },
     {
-        id: 9,
-        type: "work",
-        title: "Full-stack Web Developer Intern",
-        company: "ATL Tech",
-        location: "Baku, Azerbaijan",
-        period: "Jul 2019 - Oct 2019",
-        description:
-            "Internship focused on PHP/Laravel, backend development, and prototype building for partner companies.",
-        achievements: [
-            "Developed features for 'Student Library' project",
-            "Built an online course platform (similar to Udemy) as a final project",
-            "Strengthened Laravel backend and frontend skills",
-        ],
-        icon: Award,
-        color: "text-green-400",
-    },
-    {
         id: 10,
         type: "education",
         title: "Master of Computer Science",
         company: "Baku State University (SABAH Groups)",
         location: "Baku, Azerbaijan",
         period: "2021 - 2023",
+        year: "2021",
         description:
             "Focused on Cyber Security and Data Science with a GPA of 88.7. Research and coursework emphasized secure system design and scalable web platforms.",
         achievements: [
@@ -194,12 +187,31 @@ const experiences: Experience[] = [
         color: "text-green-400",
     },
     {
+        id: 9,
+        type: "work",
+        title: "Full-stack Web Developer Intern",
+        company: "ATL Tech",
+        location: "Baku, Azerbaijan",
+        period: "Jul 2019 - Oct 2019",
+        year: "2019",
+        description:
+            "Internship focused on PHP/Laravel, backend development, and prototype building for partner companies.",
+        achievements: [
+            "Developed features for 'Student Library' project",
+            "Built an online course platform (similar to Udemy) as a final project",
+            "Strengthened Laravel backend and frontend skills",
+        ],
+        icon: Award,
+        color: "text-green-400",
+    },
+    {
         id: 11,
         type: "education",
         title: "Bachelor of Computer Science",
         company: "Khazar University",
         location: "Baku, Azerbaijan",
         period: "2017 - 2021",
+        year: "2017",
         description:
             "Studied Computer Science with focus on Cyber Security, Web Development, Database Administration, Data Science, and Robotics. Graduated with GPA 89.",
         achievements: [
@@ -223,9 +235,10 @@ const HorizontalTimelineItem = ({ experience, index }: { experience: Experience;
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: index * 0.05 }}
-            className="relative flex-shrink-0 w-[500px] h-full flex flex-col justify-center"
+            className="relative flex-shrink-0 w-[85vw] sm:w-[400px] md:w-[450px] lg:w-[500px] h-full flex flex-col justify-center"
         >
             {/* Timeline Connector */}
+            <h1 className="absolute top-[20px] left-0 w-full text-center">{experience.year}</h1>
             <div className="absolute top-[50px] left-0 w-full h-[2px] bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20" />
 
             {/* Content Card */}
@@ -240,7 +253,7 @@ const HorizontalTimelineItem = ({ experience, index }: { experience: Experience;
                 {/* Card */}
                 <motion.div
                     whileHover={{ y: -5, scale: 1.02 }}
-                    className="bg-card/50 border border-primary/20 rounded-xl p-4 backdrop-blur-sm hover:border-primary/40 transition-all duration-300 h-[380px] overflow-y-auto shadow-xl"
+                    className="bg-card/50 border border-primary/20 rounded-xl p-4 backdrop-blur-sm hover:border-primary/40 transition-all duration-300 h-[320px] sm:h-[350px] md:h-[380px] overflow-y-auto shadow-xl"
                 >
                     <div className="mb-2.5">
                         <h3 className="text-base font-display font-bold text-foreground mb-1 group-hover:text-primary transition-colors">

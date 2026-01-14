@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
+import OptimizedImage from "@/components/OptimizedImage"
 import Lenis from "lenis"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -11,6 +11,9 @@ import { ArrowLeft, ExternalLink, Github, Calendar, Sparkles } from "lucide-reac
 import { projects } from "@/lib/projects"
 import type { Project } from "@/types/project"
 import Footer from "@/components/Footer"
+import MenuButton from "@/components/MenuButton"
+import FullScreenMenu from "@/components/FullScreenMenu"
+import NewPageLoader from "@/components/NewPageLoader"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,6 +22,23 @@ const completeProjects = projects.filter(project => {
   const hasImages = project.images && project.images.length > 0
   const hasDescription = project.shortDescription || project.description || project.longDescription
   return hasImages && hasDescription
+})
+
+// Sort projects: featured first (by featuredOrder), then non-featured
+const sortedProjects = [...completeProjects].sort((a, b) => {
+  // Featured projects come first
+  if (a.featured && !b.featured) return -1
+  if (!a.featured && b.featured) return 1
+
+  // Both featured: sort by featuredOrder
+  if (a.featured && b.featured) {
+    const orderA = a.featuredOrder ?? 999
+    const orderB = b.featuredOrder ?? 999
+    return orderA - orderB
+  }
+
+  // Both non-featured: maintain original order
+  return 0
 })
 
 // Immediate scroll to top - runs BEFORE React mounts
@@ -31,12 +51,21 @@ if (typeof window !== 'undefined') {
 
 export default function AllProjectsPageClient() {
   const [activeCategory, setActiveCategory] = useState<string>("All")
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(completeProjects)
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>(sortedProjects)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
 
   // Get unique categories from complete projects only
   const categories = ["All", ...Array.from(new Set(completeProjects.map(p => p.category).filter(Boolean)))] as string[]
 
   useEffect(() => {
+    // Don't initialize scroll if still loading
+    if (isLoading) return
+
     // AGGRESSIVE scroll to top on mount
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
@@ -95,20 +124,32 @@ export default function AllProjectsPageClient() {
       gsap.ticker.remove(rafCallback)
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
-  }, [filteredProjects])
+  }, [filteredProjects, isLoading])
 
   useEffect(() => {
     if (activeCategory === "All") {
-      setFilteredProjects(completeProjects)
+      setFilteredProjects(sortedProjects)
     } else {
-      setFilteredProjects(completeProjects.filter(p => p.category === activeCategory))
+      // Filter by category and maintain featured sorting
+      const filtered = sortedProjects.filter(p => p.category === activeCategory)
+      setFilteredProjects(filtered)
     }
   }, [activeCategory])
 
   return (
-    <main className="relative bg-black text-white min-h-screen overflow-hidden">
-      {/* Fixed Animated Background - Matching /new page */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <>
+      {/* Page Loader */}
+      {isLoading && <NewPageLoader onComplete={handleLoadingComplete} />}
+
+      {/* Menu Button - Only show when not loading */}
+      {!isLoading && <MenuButton onClick={() => setIsMenuOpen(true)} />}
+
+      {/* Full Screen Menu */}
+      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
+      <main className="relative bg-black text-white min-h-screen overflow-hidden">
+        {/* Fixed Animated Background - Matching /new page */}
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0" style={{ backgroundColor: "#000000" }}>
           {/* Animated gradient orbs using CSS */}
           <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-500/30 rounded-full blur-[120px] animate-pulse"
@@ -212,22 +253,77 @@ export default function AllProjectsPageClient() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-12 md:py-24 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-          >
-            {filteredProjects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </motion.div>
+      <section className="py-16 md:py-32 px-6 md:px-12">
+        <div className="max-w-[1800px] mx-auto">
+          {/* Featured Projects Section */}
+          {filteredProjects.some(p => p.featured) && (
+            <div className="mb-24">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="mb-14"
+              >
+                <h2 className="text-4xl md:text-6xl font-black mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  Featured Projects
+                </h2>
+                <p className="text-muted-foreground text-xl md:text-2xl font-medium">
+                  Highlighted projects showcasing exceptional work and innovation
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-10 md:gap-12"
+              >
+                {filteredProjects.filter(p => p.featured).map((project, index) => (
+                  <ProjectCard key={project.id} project={project} index={index} />
+                ))}
+              </motion.div>
+            </div>
+          )}
+
+          {/* All Other Projects Section */}
+          {filteredProjects.some(p => !p.featured) && (
+            <div>
+              {filteredProjects.some(p => p.featured) && (
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="mb-14"
+                >
+                  <h2 className="text-4xl md:text-6xl font-black mb-4">
+                    All Projects
+                  </h2>
+                  <p className="text-muted-foreground text-xl md:text-2xl font-medium">
+                    Explore our complete portfolio of work
+                  </p>
+                </motion.div>
+              )}
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 md:gap-10"
+              >
+                {filteredProjects.filter(p => !p.featured).map((project, index) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    index={index + filteredProjects.filter(p => p.featured).length}
+                  />
+                ))}
+              </motion.div>
+            </div>
+          )}
 
           {filteredProjects.length === 0 && (
-            <div className="text-center py-16 md:py-20">
-              <p className="text-muted-foreground text-base md:text-lg">No projects found in this category.</p>
+            <div className="text-center py-24 md:py-32">
+              <p className="text-muted-foreground text-xl md:text-2xl">No projects found in this category.</p>
             </div>
           )}
         </div>
@@ -237,6 +333,7 @@ export default function AllProjectsPageClient() {
       {/* Footer */}
       <Footer />
     </main>
+    </>
   )
 }
 
@@ -245,107 +342,156 @@ interface ProjectCardProps {
   index: number
 }
 
+// In the ProjectCard component, update the motion.div wrapper:
 function ProjectCard({ project, index }: ProjectCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="project-card group"
-    >
-      <Link href={`/projects/${project.id}`}>
-        <div className="relative aspect-video overflow-hidden rounded-xl border border-primary/20 hover:border-primary/40 transition-all duration-300 bg-card">
-          {/* Project Image */}
-          {project.image && (
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-          )}
+    return (
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: 80,
+                scale: 0.9, // Starting scale
+            }}
+            animate={{
+                opacity: 1,
+                y: 0,
+                scale: 0.95, // Scale down to 95% of original size
+            }}
+            transition={{
+                duration: 0.6,
+                delay: index * 0.08,
+                ease: [0.22, 1, 0.36, 1]
+            }}
+            whileHover={{
+                scale: 0.92, // Scale down to 92% on hover (even smaller)
+                transition: { duration: 0.3 }
+            }}
+            className="project-card group"
+            style={{
+                width: '100%',
+                maxWidth: '420px', // Limit maximum width
+                margin: '0 auto' // Center cards
+            }}
+        >
+            <Link href={`/projects/${project.id}`}>
+                <div className="relative h-full overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500">
+                    {/* Project Image */}
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                        <motion.div
+                            className="relative w-full h-full"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <OptimizedImage
+                                src={project.image || "/images/null/null_1.png"}
+                                alt={project.title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                                priority={index < 6}
+                            />
+                        </motion.div>
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                        {/* Subtle gradient overlay on image */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-          {/* Featured Badge */}
-          {project.featured && (
-            <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-semibold flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              Featured
-            </div>
-          )}
+                        {/* Featured Badge - Top Right */}
+                        {project.featured && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-2 shadow-lg"
+                            >
+                                <Sparkles className="w-3.5 h-3.5" />
+                                Featured
+                            </motion.div>
+                        )}
 
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <div className="flex gap-3">
-              {project.demoUrl && (
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all">
-                  <ExternalLink className="w-5 h-5 text-white" />
-                </div>
-              )}
-              {project.links?.github && (
-                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all">
-                  <Github className="w-5 h-5 text-white" />
-                </div>
-              )}
-            </div>
-          </div>
+                        {/* Category Badge - Top Left */}
+                        {project.category && (
+                            <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-semibold uppercase tracking-wider">
+                                {project.category}
+                            </div>
+                        )}
 
-          {/* Content */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-            {/* Category */}
-            {project.category && (
-              <p className="text-primary text-xs uppercase tracking-wider mb-2">
-                {project.category}
-              </p>
-            )}
+                        {/* Quick Action Buttons - Bottom Right on Hover */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileHover={{ opacity: 1, y: 0 }}
+                            className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                        >
+                            {project.demoUrl && (
+                                <motion.a
+                                    href={project.demoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg"
+                                >
+                                    <ExternalLink className="w-4 h-4 text-black" />
+                                </motion.a>
+                            )}
+                            {project.links?.github && (
+                                <motion.a
+                                    href={project.links.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg"
+                                >
+                                    <Github className="w-4 h-4 text-black" />
+                                </motion.a>
+                            )}
+                        </motion.div>
+                    </div>
 
-            {/* Title */}
-            <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-primary transition-colors">
-              {project.title}
-            </h3>
+                    {/* Content Section */}
+                    <div className="p-5 space-y-4">
+                        {/* Title */}
+                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300 line-clamp-1">
+                            {project.title}
+                        </h3>
 
-            {/* Subtitle */}
-            {project.subtitle && (
-              <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                {project.subtitle}
-              </p>
-            )}
+                        {/* Subtitle */}
+                        {project.subtitle && (
+                            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+                                {project.subtitle}
+                            </p>
+                        )}
 
-            {/* Meta */}
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              {project.yearRange && (
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  <span>{project.yearRange}</span>
-                </div>
-              )}
-            </div>
+                        {/* Year Range */}
+                        {project.yearRange && (
+                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                                <Calendar className="w-3.5 h-3.5" />
+                                <span>{project.yearRange}</span>
+                            </div>
+                        )}
 
-            {/* Tech Tags */}
-            {project.technologies && project.technologies.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {project.technologies.slice(0, 3).map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded text-xs text-white"
-                  >
+                        {/* Tech Stack */}
+                        {project.technologies && project.technologies.length > 0 && (
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {project.technologies.slice(0, 4).map((tech) => (
+                                    <span
+                                        key={tech}
+                                        className="px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-gray-300 font-medium transition-colors duration-200"
+                                    >
                     {tech}
                   </span>
-                ))}
-                {project.technologies.length > 3 && (
-                  <span className="px-2 py-1 bg-white/10 backdrop-blur-sm border border-white/20 rounded text-xs text-white">
-                    +{project.technologies.length - 3}
+                                ))}
+                                {project.technologies.length > 4 && (
+                                    <span className="px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-xs text-gray-400 font-medium">
+                    +{project.technologies.length - 4}
                   </span>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  )
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </Link>
+        </motion.div>
+    )
 }
-

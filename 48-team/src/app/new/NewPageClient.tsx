@@ -6,6 +6,9 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { Section1, Section2, Section3, Section4, Section5, Section6 } from "./sections"
 import { ProgressIndicator, FixedBackground } from "./components"
+import MenuButton from "@/components/MenuButton"
+import FullScreenMenu from "@/components/FullScreenMenu"
+import NewPageLoader from "@/components/NewPageLoader"
 import "./styles/horizontal-scroll.css"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -24,8 +27,17 @@ if (typeof window !== 'undefined') {
  */
 export default function NewPageClient() {
   const [activeSection, setActiveSection] = useState(0)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
 
   useEffect(() => {
+    // Don't initialize scroll if still loading
+    if (isLoading) return
+
     // AGGRESSIVE scroll to top on mount - multiple approaches
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
@@ -150,15 +162,25 @@ export default function NewPageClient() {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       gsap.ticker.remove(rafCallback)
     }
-  }, [])
+  }, [isLoading])
 
   return (
-    <main id="lenis-root" className="relative bg-transparent text-white">
-      <FixedBackground />
+    <>
+      {/* Page Loader */}
+      {isLoading && <NewPageLoader onComplete={handleLoadingComplete} />}
 
-      <div className="relative z-50">
-        <ProgressIndicator activeSection={activeSection} />
-      </div>
+      {/* Menu Button - Only show when not loading */}
+      {!isLoading && <MenuButton onClick={() => setIsMenuOpen(true)} />}
+
+      {/* Full Screen Menu */}
+      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
+      <main id="lenis-root" className="relative bg-transparent text-white">
+        <FixedBackground />
+
+        <div className="relative z-50">
+          <ProgressIndicator activeSection={activeSection} />
+        </div>
 
       <div className="relative z-10">
         <section className="horizontal-track horizontal-track-1 h-screen overflow-hidden">
@@ -192,5 +214,6 @@ export default function NewPageClient() {
         </section>
       </div>
     </main>
+    </>
   )
 }

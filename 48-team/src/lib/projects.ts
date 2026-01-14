@@ -4,7 +4,7 @@ import type { Project } from "@/types/project"
 // Contains fields required by Featured timeline (featured, featuredOrder) and Projects timeline (compat fields).
 export const projects: Project[] = [
   // 🚀 My Projects
-  {
+    {
     id: 1,
     title: "Passmate",
     subtitle: "Secure Password Manager",
@@ -43,8 +43,8 @@ export const projects: Project[] = [
     color: "from-blue-500 to-green-500",
     links: { demo: "https://github.com/senanqulamov/PassMate", github: "https://github.com/senanqulamov/PassMate" },
     features: ["End-to-End Encryption", "Multiple Vaults", "Cross-Device Sync", "Password Strength Analysis"],
-  },
-  {
+    },
+    {
     id: 2,
     title: "JVD CLI",
     subtitle: "Java Command-Line Interface Toolkit",
@@ -94,9 +94,9 @@ export const projects: Project[] = [
       "Fluent Logging API",
       "Extensible Command System"
     ]
-  },
-  {
-    id: 2,
+    },
+    {
+    id: 3,
     title: "SchoolExam",
     subtitle: "Exam & Quiz Platform",
     client: "Personal Project",
@@ -107,13 +107,10 @@ export const projects: Project[] = [
     blog: `<p>SchoolExam is an exam and quiz system built with Laravel, Inertia.js, and MySQL. It enables teachers to create exams, auto-grade answers, and provides performance reports for students.</p><p>The platform offers intuitive exam creation with multiple question types, automatic grading logic, and comprehensive analytics dashboards for tracking student progress over time.</p>`,
     techTags: ["Laravel", "Inertia.js", "Vue.js", "MySQL"],
     technologies: ["Laravel", "Inertia.js", "Vue.js", "MySQL"],
-    image: "/images/schoolexam/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/schoolexam/1.jpg",
-      "/images/schoolexam/2.jpg",
-      "/images/schoolexam/3.jpg",
-      "/images/schoolexam/4.jpg",
-      "/images/schoolexam/5.jpg",
+      "/images/null/null_1.png",
+      "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -134,9 +131,9 @@ export const projects: Project[] = [
     date: "2023",
     links: { demo: "#", github: "#" },
     features: ["Exam Creation", "Auto-grading", "Student Reports", "Analytics Dashboard"],
-  },
-  {
-    id: 3,
+    },
+    {
+    id: 4,
     title: "JavaLearningApp",
     subtitle: "Interactive Java Study Tool",
     client: "Personal Project",
@@ -147,13 +144,10 @@ export const projects: Project[] = [
     blog: `<p>JavaLearningApp helps users practice Java through exercises and mini-projects. Built with JavaFX, Javalin APIs, and MySQL backend.</p><p>The application features interactive coding challenges with real-time feedback, concept quizzes to reinforce learning, and a progression system that adapts to the user's skill level.</p>`,
     techTags: ["Java", "Javalin", "JavaFX", "MySQL"],
     technologies: ["Java", "Javalin", "JavaFX", "MySQL"],
-    image: "/images/javalearningapp/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/javalearningapp/1.jpg",
-      "/images/javalearningapp/2.jpg",
-      "/images/javalearningapp/3.jpg",
-      "/images/javalearningapp/4.jpg",
-      "/images/javalearningapp/5.jpg",
+        "/images/null/null_1.png",
+        "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -174,11 +168,11 @@ export const projects: Project[] = [
     date: "2024 - Present",
     links: { demo: "#", github: "#" },
     features: ["Java Quizzes", "Coding Challenges", "API Integration", "Progress Tracking"],
-  },
-  {
-    id: 4,
-    title: "MoneyBadge",
-    subtitle: "Gamified Productivity Tool",
+    },
+    {
+    id: 5,
+    title: "MonayBadge",
+    subtitle: "Event Badge Generator",
     client: "Personal Project",
     yearRange: "2023",
     shortDescription: "Gamified task management with badges and progress.",
@@ -187,13 +181,10 @@ export const projects: Project[] = [
     blog: `<p>MonayBadge combines task management with gamification. Users earn badges for consistency and progress. Built with Laravel, React, and Tailwind.</p><p>The application leverages behavioral psychology to increase motivation through visual rewards, achievement systems, and progress tracking. Users can create custom tasks, join challenges, and compete on leaderboards.</p>`,
     techTags: ["Laravel", "React", "MySQL", "Tailwind"],
     technologies: ["Laravel", "React", "MySQL", "Tailwind"],
-    image: "/images/monaybadge/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/monaybadge/1.jpg",
-      "/images/monaybadge/2.jpg",
-      "/images/monaybadge/3.jpg",
-      "/images/monaybadge/4.jpg",
-      "/images/monaybadge/5.jpg",
+      "/images/null/null_1.png",
+      "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -214,11 +205,11 @@ export const projects: Project[] = [
     date: "2023",
     links: { demo: "#", github: "#" },
     features: ["Badge Rewards", "Task Tracking", "Leaderboard", "User Profiles"],
-  },
-  {
-    id: 5,
+    },
+    {
+    id: 6,
     title: "CustomAdmin",
-    subtitle: "Universal Admin Panel",
+    subtitle: "Admin Panel Template",
     client: "Personal Project",
     yearRange: "2024 – Present",
     shortDescription: "Customizable admin for multiple startups with dynamic CRUD.",
@@ -227,13 +218,10 @@ export const projects: Project[] = [
     blog: `<p>CustomAdmin is a universal admin panel designed to support multiple startups (NeoSphere, BidBary, BorderMate). Built with Laravel + Next.js, it allows project/data context switching, translation management, and dynamic CRUD.</p><p>The system features a modular architecture that enables easy adaptation to different business requirements while maintaining consistent user experience and security standards across all projects.</p>`,
     techTags: ["Laravel", "Next.js", "Tailwind", "MySQL"],
     technologies: ["Laravel", "Next.js", "Tailwind", "MySQL"],
-    image: "/images/customadmin/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/customadmin/1.jpg",
-      "/images/customadmin/2.jpg",
-      "/images/customadmin/3.jpg",
-      "/images/customadmin/4.jpg",
-      "/images/customadmin/5.jpg",
+      "/images/null/null_1.png",
+      "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -254,11 +242,11 @@ export const projects: Project[] = [
     date: "2024 - Present",
     links: { demo: "#", github: "#" },
     features: ["User Management", "CRUD Tables", "Translation Management", "Settings Panel"],
-  },
+    },
 
   // 🚀 Startups
-  {
-    id: 6,
+    {
+    id: 7,
     title: "NeoSphere",
     subtitle: "Union Hub & Gig Marketplace",
     client: "Startup Venture",
@@ -301,11 +289,11 @@ export const projects: Project[] = [
       "Karma Reputation System",
       "Sponsored & Community Spheres",
     ],
-  },
-  {
-    id: 7,
-    title: "BidBary",
-    subtitle: "Collectors & Auction App",
+    },
+    {
+    id: 8,
+    title: "Bidbary",
+    subtitle: "Auction Platform",
     client: "Startup Venture",
     yearRange: "2024 – Present",
     shortDescription: "Modern auction marketplace with live bidding and collector engagement.",
@@ -341,11 +329,11 @@ export const projects: Project[] = [
     date: "2024 - Present",
     links: { demo: "#", github: "#" },
     features: ["Real-time Bidding", "Collector Profiles", "Auction History", "Modern Dark UI"],
-  },
-  {
-    id: 8,
+    },
+    {
+    id: 9,
     title: "BorderMate",
-    subtitle: "Travel & Border Crossing Assistant",
+    subtitle: "Cross-Border Delivery Service",
     client: "Startup Venture",
     yearRange: "2024",
     shortDescription: "Assist travelers with documents, customs info, and real-time border updates.",
@@ -354,13 +342,10 @@ export const projects: Project[] = [
     blog: `<p>BorderMate helps travelers with cross-border logistics. Features include document storage, customs information, and live updates about checkpoints.</p><p>The application streamlines international travel by providing country-specific entry requirements, secure document storage, and real-time updates about border conditions and wait times.</p>`,
     techTags: ["React Native", "Laravel", "MySQL", "REST APIs"],
     technologies: ["React Native", "Laravel", "MySQL", "REST APIs"],
-    image: "/images/bordermate/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/bordermate/1.jpg",
-      "/images/bordermate/2.jpg",
-      "/images/bordermate/3.jpg",
-      "/images/bordermate/4.jpg",
-      "/images/bordermate/5.jpg",
+      "/images/null/null_1.png",
+      "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -381,10 +366,10 @@ export const projects: Project[] = [
     date: "2024",
     links: { demo: "#", github: "#" },
     features: ["Travel Docs", "Customs Info", "Live Border Updates", "Journey Planner"],
-  },
-  {
-    id: 9,
-    title: "Allrent.io",
+    },
+    {
+    id: 10,
+    title: "AllRent",
     subtitle: "Online Rental Marketplace",
     client: "Startup Venture",
     yearRange: "2022 – 2023",
@@ -394,13 +379,10 @@ export const projects: Project[] = [
     blog: `<p>Allrent.io is a modern rental platform I built from the ground up, initially as a freelancer and later as the company's technical lead. It features online payments, review systems, interactive maps, and a custom reservation calendar. Stack: Laravel, React, MySQL.</p><p>The platform handles the entire rental lifecycle from discovery to booking to post-stay reviews, with custom workflows for different rental types and durations.</p>`,
     techTags: ["Laravel", "React", "MySQL", "Bootstrap"],
     technologies: ["Laravel", "React", "MySQL", "Bootstrap"],
-    image: "/images/allrent/1.jpg",
+    image: "/images/null/null_1.png",
     images: [
-      "/images/allrent/1.jpg",
-      "/images/allrent/2.jpg",
-      "/images/allrent/3.jpg",
-      "/images/allrent/4.jpg",
-      "/images/allrent/5.jpg",
+      "/images/null/null_1.png",
+      "/images/null/null_2.png"
     ],
     demoUrl: "#",
     featured: false,
@@ -421,11 +403,11 @@ export const projects: Project[] = [
     date: "2022 - 2023",
     links: { demo: "#", github: "#" },
     features: ["Online Payments", "Interactive Maps", "Custom Reservation Calendar", "Review System"],
-  },
+    },
 
   // 🏢 Client Projects (merged with case study data and featured flags)
-  {
-    id: 12,
+    {
+    id: 11,
     title: "Otomall.az",
     subtitle: "E-commerce Platform",
     client: "FerrumCapital",
@@ -465,10 +447,10 @@ export const projects: Project[] = [
     date: "2021 - 2022",
     links: { demo: "#", github: "#" },
     features: ["Corporate Website", "Payments", "Security Features", "Responsive UI"],
-  },
-  {
-    id: 10,
-    title: "Agagroup.az",
+    },
+    {
+    id: 12,
+    title: "AGA Group",
     subtitle: "Corporate Website",
     client: "FerrumCapital",
     yearRange: "2021 – 2022",
@@ -506,11 +488,11 @@ export const projects: Project[] = [
     date: "2021 - 2022",
     links: { demo: "https://agagroup.az", github: "#" },
     features: ["Corporate Website", "Content Management", "Security Hardening", "Performance Optimization"],
-  },
-  {
-    id: 11,
-    title: "Balli.az",
-    subtitle: "E-commerce Store",
+    },
+    {
+    id: 13,
+    title: "Balli",
+    subtitle: "Honey E-Commerce Platform",
     client: "FerrumCapital",
     yearRange: "2021 – 2022",
     shortDescription: "E‑commerce with secure payments and reliable order workflows.",
@@ -545,8 +527,8 @@ export const projects: Project[] = [
     date: "2021 - 2022",
     links: { demo: "https://balli.az", github: "#" },
     features: ["E-commerce Store", "Stripe Payments", "Optimized Checkout", "Product Catalog"],
-  },
-  {
+    },
+    {
     id: 14,
     title: "Shiplounge.co",
     subtitle: "Logistics Platform",
@@ -588,11 +570,11 @@ export const projects: Project[] = [
     date: "2022",
     links: { demo: "https://shiplounge.co", github: "#" },
     features: ["Shipment Tracking", "Tariff Management", "Automated Invoicing", "Role-Based Access Control"],
-  },
-  {
-    id: 16,
-    title: "LuckyHolidays.az",
-    subtitle: "Travel Booking Platform",
+    },
+    {
+    id: 15,
+    title: "Lucky Holidays",
+    subtitle: "Travel Agency Platform",
     client: "GlobalSoft",
     yearRange: "2025",
     shortDescription: "Travel booking platform with payments and optimized APIs.",
@@ -630,11 +612,11 @@ export const projects: Project[] = [
     date: "2025",
     links: { demo: "https://luckyholidays.az", github: "#" },
     features: ["Travel Booking", "Secure Payments", "Optimized Catalog", "Admin Dashboard"],
-  },
-  {
-    id: 17,
-    title: "CTSA.az",
-    subtitle: "Enterprise Platform",
+    },
+    {
+    id: 16,
+    title: "CTSA",
+    subtitle: "Construction Industry Platform",
     client: "GlobalSoft",
     yearRange: "2025",
     shortDescription: "Enterprise solutions with Laravel backend and React frontend.",
@@ -670,11 +652,11 @@ export const projects: Project[] = [
     date: "2025",
     links: { demo: "https://ctsa.az", github: "#" },
     features: ["Role-Based Access", "API Integrations", "CI/CD Pipeline", "Security Hardening"],
-  },
-  {
-    id: 18,
-    title: "GPSAI.az",
-    subtitle: "GPS Tracking Platform",
+    },
+    {
+    id: 17,
+    title: "GPS AI",
+    subtitle: "AI-Powered GPS Tracking",
     client: "INCI",
     yearRange: "2025",
     shortDescription: "GPS tracking and AI‑enhanced telemetry with a custom admin panel.",
@@ -708,10 +690,10 @@ export const projects: Project[] = [
     date: "2025",
     links: { demo: "https://gpsai.az", github: "#" },
     features: ["GPS Tracking", "AI Analysis", "Real-time Monitoring", "Custom Admin Interface"],
-  },
-  {
-    id: 19,
-    title: "LMS",
+    },
+    {
+    id: 18,
+    title: "LMS Maffin",
     subtitle: "Learning Management System",
     client: "INCI",
     yearRange: "2025 – Present",
@@ -748,11 +730,11 @@ export const projects: Project[] = [
     date: "2025 - Present",
     links: { demo: "https://lms.maffin.az", github: "#" },
     features: ["Course Authoring", "Enrollment Management", "Quiz System", "Certificate Generation"],
-  },
-  {
-    id: 20,
-    title: "Ofisait.az",
-    subtitle: "Office Supplies E-commerce",
+    },
+    {
+    id: 19,
+    title: "Ofisait",
+    subtitle: "Office Management System",
     client: "INCI",
     yearRange: "2025 – Present",
     shortDescription: "Office supplies e‑commerce with OpenCard + PHP + MySql backend.",
@@ -787,11 +769,11 @@ export const projects: Project[] = [
     date: "2025 - Present",
     links: { demo: "https://ofisait.az", github: "#" },
     features: ["Product Catalog", "Order Processing", "Inventory Management", "Business Accounts"],
-  },
-  {
-    id: 21,
-    title: "Chat2Desk.az",
-    subtitle: "Unified Communication Tool",
+    },
+    {
+    id: 20,
+    title: "Chat2 Maffin",
+    subtitle: "Real-Time Chat Application",
     client: "INCI",
     yearRange: "2025 – Present",
     shortDescription: "Unified communication tool with Laravel backend and external APIs.",
@@ -824,9 +806,9 @@ export const projects: Project[] = [
     date: "2025 - Present",
     links: { demo: "https://chat2desk.az", github: "#" },
     features: ["Channel Integration", "Message Routing", "Agent Workflows", "Customer Context"],
-  },
-  {
-    id: 22,
+    },
+    {
+    id: 21,
     title: "HBNgroup.az",
     subtitle: "Enterprise Platform",
     client: "INCI",
@@ -868,7 +850,7 @@ export const projects: Project[] = [
     date: "2025 - Present",
     links: { demo: "https://hbngroup.az", github: "#" },
     features: ["Secure APIs", "Role-Based Access", "Automated CI/CD", "Enterprise Monitoring"],
-  },
+    },
 ]
 
 export function getProjects(): Project[] {
