@@ -40,10 +40,10 @@ export function AboutSection() {
                 transition={{ duration: 0.3 }}
               >
                 <Image
-                  src="/images/mine/me4.png"
+                  src="/images/mine/me_2025_loft.png"
                   alt="Senan The 48"
                   fill
-                  className="object-cover object-top"
+                  className="object-cover object-[center_top_20%]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </motion.div>

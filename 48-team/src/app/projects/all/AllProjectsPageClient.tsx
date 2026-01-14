@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import OptimizedImage from "@/components/OptimizedImage"
 import Lenis from "lenis"
 import gsap from "gsap"
@@ -199,7 +200,7 @@ export default function AllProjectsPageClient() {
               All Projects <span className="text-xs md:text-sm">v2.0.0</span>
             </h1>
             <p className="text-base md:text-xl lg:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-              Explore our complete portfolio of innovative solutions, from startups to enterprise applications
+              Explore my complete portfolio of innovative solutions, from startups to enterprise applications
             </p>
 
             {/* Stats */}
@@ -344,17 +345,27 @@ interface ProjectCardProps {
 
 // In the ProjectCard component, update the motion.div wrapper:
 function ProjectCard({ project, index }: ProjectCardProps) {
+    const router = useRouter()
+
+    const handleCardClick = (e: React.MouseEvent) => {
+        // Only navigate if clicking on the card itself, not on links
+        if ((e.target as HTMLElement).closest('a')) {
+            return
+        }
+        router.push(`/projects/${project.id}`)
+    }
+
     return (
         <motion.div
             initial={{
                 opacity: 0,
                 y: 80,
-                scale: 0.9, // Starting scale
+                scale: 0.9,
             }}
             animate={{
                 opacity: 1,
                 y: 0,
-                scale: 0.95, // Scale down to 95% of original size
+                scale: 0.95,
             }}
             transition={{
                 duration: 0.6,
@@ -362,18 +373,18 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                 ease: [0.22, 1, 0.36, 1]
             }}
             whileHover={{
-                scale: 0.92, // Scale down to 92% on hover (even smaller)
+                scale: 0.92,
                 transition: { duration: 0.3 }
             }}
-            className="project-card group"
+            className="project-card group cursor-pointer"
             style={{
                 width: '100%',
-                maxWidth: '420px', // Limit maximum width
-                margin: '0 auto' // Center cards
+                maxWidth: '420px',
+                margin: '0 auto'
             }}
+            onClick={handleCardClick}
         >
-            <Link href={`/projects/${project.id}`}>
-                <div className="relative h-full overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500">
+            <div className="relative h-full overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500">
                     {/* Project Image */}
                     <div className="relative aspect-[16/9] overflow-hidden">
                         <motion.div
@@ -428,7 +439,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                                     onClick={(e) => e.stopPropagation()}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg"
+                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
                                 >
                                     <ExternalLink className="w-4 h-4 text-black" />
                                 </motion.a>
@@ -441,7 +452,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                                     onClick={(e) => e.stopPropagation()}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg"
+                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
                                 >
                                     <Github className="w-4 h-4 text-black" />
                                 </motion.a>
@@ -491,7 +502,6 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                         )}
                     </div>
                 </div>
-            </Link>
         </motion.div>
     )
 }

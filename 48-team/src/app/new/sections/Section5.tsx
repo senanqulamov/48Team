@@ -44,7 +44,7 @@ const experiences: Experience[] = [
     {
         id: 2,
         type: "work",
-        title: "Middle Backend Developer",
+        title: "Strong Middle Backend Developer",
         company: "Inci Group of Companies LLC",
         location: "Baku, Azerbaijan",
         period: "May 2025 - Present",
@@ -238,7 +238,7 @@ const HorizontalTimelineItem = ({ experience, index }: { experience: Experience;
             className="relative flex-shrink-0 w-[85vw] sm:w-[400px] md:w-[450px] lg:w-[500px] h-full flex flex-col justify-center"
         >
             {/* Timeline Connector */}
-            <h1 className="absolute top-[20px] left-0 w-full text-center">{experience.year}</h1>
+            <h1 className="absolute top-0 left-0 w-full text-center">{experience.year}</h1>
             <div className="absolute top-[50px] left-0 w-full h-[2px] bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20" />
 
             {/* Content Card */}

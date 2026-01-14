@@ -33,11 +33,10 @@ const Footer = () => {
   ]
 
   const quickLinks = [
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "" },
+    { label: "Projects", href: "projects" },
+    { label: "Team", href: "team" },
+    { label: "Blogs", href: "blogs" },
   ]
 
   return (
@@ -92,7 +91,7 @@ const Footer = () => {
               {quickLinks.map((link) => (
                 <button
                   key={link.label}
-                  onClick={() => document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => window.location.href = `/${link.href}`}
                   className="text-muted-foreground hover:text-primary transition-colors duration-200 text-left"
                 >
                   {link.label}
@@ -120,7 +119,7 @@ const Footer = () => {
         <div className="pt-8 border-t border-primary/20">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <span>© 2025 Senan Qulamov - The 48. All rights reserved.</span>
+              <span>© 2026 Senan Qulamov - The 48. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <span>Made with</span>

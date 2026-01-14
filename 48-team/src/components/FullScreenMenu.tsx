@@ -19,39 +19,39 @@ const menuItems = [
         images: [
             "/images/neosphere/1.png",
             "/images/passmate/1.png",
-            "/images/shiplounge.co/1.png",
+            "/images/demo1/5.jpg",
         ]
     },
-  {
-    label: "Projects",
-    href: "/projects",
-    color: "#3b82f6",
-    images: [
-      "/images/balli.az/demo1.png",
-      "/images/balli.az/demo2.png",
-      "/images/balli.az/demo3.png",
-    ]
-  },
-  {
-    label: "Blogs",
-    href: "/blogs",
-    color: "#10b981",
-    images: [
-      "/images/neosphere/1.png",
-      "/images/bidbary/1.png",
-      "/images/demo1/3.jpg",
-    ]
-  },
-  {
-    label: "Team",
-    href: "/team",
-    color: "#8b5cf6",
-    images: [
-        "/images/team/javid.jpg",
-        "/images/team/sema.png",
-        "/images/team/naza.JPG",
-    ]
-  },
+    {
+        label: "Projects",
+        href: "/projects",
+        color: "#3b82f6",
+        images: [
+          "/images/luckyholidays.az/5.png",
+          "/images/balli.az/demo2.png",
+          "/images/ctsa.az/3.png",
+        ]
+    },
+    {
+        label: "Blogs",
+        href: "/blogs",
+        color: "#10b981",
+        images: [
+          "/images/neosphere/1.png",
+          "/images/bidbary/1.png",
+          "/images/demo1/3.jpg",
+        ]
+    },
+    {
+        label: "Team",
+        href: "/team",
+        color: "#8b5cf6",
+        images: [
+            "/images/team/javid.jpg",
+            "/images/team/sema.png",
+            "/images/team/naza.JPG",
+        ]
+    },
 ]
 
 export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
@@ -267,7 +267,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
                         className="absolute inset-0"
                     >
                         <div className="grid grid-cols-2 gap-4 w-full h-full">
-                            {["/images/mine/me1.webp", "/images/mine/me2.png", "/images/mine/me3.jpg"].map((image, idx) => (
+                            {["/images/mine/me_2025_loft(3).jpg", "/images/mine/me_2025_loft(2).png", "/images/mine/me_2026.jpg"].map((image, idx) => (
                                 <motion.div
                                     key={`placeholder-${idx}`}
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -312,7 +312,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
             transition={{ duration: 0.5, delay: 0.5 }}
             className="absolute bottom-8 left-8 text-white/40 text-sm"
           >
-            <p>The 48 Team</p>
+            <p>Senan Qulamov</p>
           </motion.div>
 
           <motion.div

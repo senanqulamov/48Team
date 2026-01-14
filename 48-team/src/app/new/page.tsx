@@ -3,40 +3,47 @@ import type { Metadata } from "next"
 import { siteConfig, absoluteUrl } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: "Horizontal Experience | Interactive Portfolio",
-  description: "Experience an innovative horizontal scrolling portfolio showcase featuring projects, skills, and insights. Immersive web design by Senan Qulamov.",
-  keywords: [
-    ...siteConfig.keywords,
-    "horizontal scroll",
-    "interactive portfolio",
-    "web experience",
-    "GSAP animations",
-    "creative design",
-    "scroll experience"
-  ],
-  openGraph: {
-    title: "Horizontal Experience | The 48 Team",
-    description: "Experience an innovative horizontal scrolling portfolio showcase featuring projects, skills, and insights.",
-    url: absoluteUrl("/new"),
-    type: "website",
-    images: [
-      {
-        url: absoluteUrl(siteConfig.socialBanner),
-        width: 1200,
-        height: 630,
-        alt: "48 Team Horizontal Portfolio Experience",
-      },
+    title: "The 48 Team | Senan Qulamov",
+    description: "Innovative web development and design team. Explore our portfolio of cutting-edge projects, from AI-powered platforms to immersive web experiences. Led by Senan Qulamov.",
+    keywords: [
+        ...siteConfig.keywords,
+        "portfolio",
+        "web development",
+        "software engineer",
+        "full stack developer",
+        "react developer",
+        "nextjs developer",
+        "UI/UX design",
+        "interactive portfolio",
+        "creative development",
+        "GSAP animations",
+        "horizontal scroll",
+        "immersive web design"
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Horizontal Experience | The 48 Team",
-    description: "Experience an innovative horizontal scrolling portfolio showcase featuring projects, skills, and insights.",
-    images: [absoluteUrl(siteConfig.socialBanner)],
-  },
-  alternates: {
-    canonical: absoluteUrl("/new"),
-  },
+    openGraph: {
+        title: "The 48 Team | Senan Qulamov",
+        description: "Innovative web development and design team. Explore our portfolio of cutting-edge projects, from AI-powered platforms to immersive web experiences.",
+        url: absoluteUrl("/"),
+        type: "website",
+        images: [
+            {
+                url: absoluteUrl(siteConfig.socialBanner),
+                width: 1200,
+                height: 630,
+                alt: "48 Team - Senan Qulamov Portfolio & Development Team",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "The 48 Team | Senan Qulamov",
+        description: "Innovative web development and design team. Explore our portfolio of cutting-edge projects, from AI-powered platforms to immersive web experiences.",
+        images: [absoluteUrl(siteConfig.socialBanner)],
+        creator: "@senanqulamov",
+    },
+    alternates: {
+        canonical: absoluteUrl("/"),
+    },
 }
 
 export default function NewPage() {

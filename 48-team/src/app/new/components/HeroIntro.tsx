@@ -40,7 +40,7 @@ export function HeroIntro() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-wrap justify-center gap-2 md:gap-4 mb-6 md:mb-8"
         >
-          {["Programmer", "Therapist", "Founder"].map((role, index) => (
+          {["Full-stack DEV", "Therapist", "Founder"].map((role, index) => (
             <motion.span
               key={role}
               initial={{ opacity: 0, scale: 0.9 }}

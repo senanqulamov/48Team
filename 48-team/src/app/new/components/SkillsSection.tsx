@@ -132,8 +132,8 @@ export function SkillsSection() {
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-2 gap-2 md:gap-3">
               {[
-                { icon: Code2, label: "Technical", count: "15+", color: "text-cyan-400" },
-                { icon: Brain, label: "Human", count: "10+", color: "text-teal-400" },
+                { icon: Code2, label: "Technical Languages", count: "10+", color: "text-cyan-400" },
+                { icon: Brain, label: "Books", count: "200+", color: "text-teal-400" },
                 { icon: Rocket, label: "Years", count: "7+", color: "text-blue-400" },
                 { icon: Lightbulb, label: "Projects", count: "100+", color: "text-purple-400" },
               ].map(({ icon: Icon, label, count, color }) => (
