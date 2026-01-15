@@ -963,14 +963,16 @@ export const projects: Project[] = [
 <p>Key efforts focused on clean modular services, database scaling, secure payment pipelines, and flexible vendor management tools to handle varied commercial operations.</p>`,
         techTags: ["Laravel", "PHP 8+", "MySQL", "E-Commerce APIs", "Marketplace"],
         technologies: ["Laravel", "PHP 8+", "MySQL", "Redis", "Docker", "REST API"],
-        image: "/images/ofisait10.az/3.png",
+        image: "/images/ofisait10.az/ofisait10_banner.png",
         images: [
             "/images/ofisait10.az/1.png",
             "/images/ofisait10.az/2.png",
             "/images/ofisait10.az/3.png",
             "/images/ofisait10.az/4.png",
             "/images/ofisait10.az/5.png",
-            "/images/ofisait10.az/6.png"
+            "/images/ofisait10.az/6.png",
+            "/images/ofisait10.az/8.png",
+            "/images/ofisait10.az/7.png"
         ],
         demoUrl: "https://ofisait10.az",
         featured: true,
