@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ScrollIndicator } from "@/components/ScrollIndicator"
 
 /**
  * HeroIntro Component
@@ -66,15 +66,7 @@ export function HeroIntro() {
         </motion.p>
 
         {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="flex justify-center items-center gap-2 text-cyan-400/60 text-xs md:text-sm"
-        >
-          <span>Scroll to explore</span>
-          <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-        </motion.div>
+        <ScrollIndicator className="mt-4" direction={"right"} />
       </div>
     </div>
   )

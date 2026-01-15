@@ -279,10 +279,10 @@ export default function NewPageLoader({ onComplete, duration = 2500, destination
 
                     {/* Enhanced Corner Decorations from second version */}
                     {[
-                        { position: "top-8 left-8", border: "border-t-2 border-l-2" },
-                        { position: "top-8 right-8", border: "border-t-2 border-r-2" },
-                        { position: "bottom-8 left-8", border: "border-b-2 border-l-2" },
-                        { position: "bottom-8 right-8", border: "border-b-2 border-r-2" },
+                        { position: "top-8 left-8", border: "border-t-2 border-l-2", dotPos: "bottom-0 right-0" },
+                        { position: "top-8 right-8", border: "border-t-2 border-r-2", dotPos: "bottom-0 left-0" },
+                        { position: "bottom-8 left-8", border: "border-b-2 border-l-2", dotPos: "top-0 right-0" },
+                        { position: "bottom-8 right-8", border: "border-b-2 border-r-2", dotPos: "top-0 left-0" },
                     ].map((corner, index) => (
                         <motion.div
                             key={index}
@@ -292,13 +292,7 @@ export default function NewPageLoader({ onComplete, duration = 2500, destination
                             transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
                         >
                             <motion.div
-                                className="absolute w-2 h-2 bg-blue-500 rounded-full"
-                                style={{
-                                    left: corner.border.includes("left") ? "-0.25rem" : "auto",
-                                    right: corner.border.includes("right") ? "-0.25rem" : "auto",
-                                    top: corner.border.includes("top") ? "-0.25rem" : "auto",
-                                    bottom: corner.border.includes("bottom") ? "-0.25rem" : "auto",
-                                }}
+                                className={`absolute w-2 h-2 bg-blue-500 rounded-full ${corner.dotPos} translate-x-0 translate-y-0`}
                                 animate={{
                                     scale: [1, 1.5, 1],
                                     opacity: [0.5, 1, 0.5],

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { Calendar, MapPin, Award, GraduationCap, Briefcase, Rocket, Axis3d } from "lucide-react"
 import { SectionLayout } from "../components/SectionLayout"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface SectionProps {
     width: string
@@ -226,6 +227,77 @@ const experiences: Experience[] = [
 
 const reversedExperiences = [...experiences].reverse()
 
+// Vertical Timeline Item for Mobile
+const VerticalTimelineItem = ({ experience, index }: { experience: Experience; index: number }) => {
+    const Icon = experience.icon
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: index * 0.05 }}
+            className="relative pl-8 pb-8"
+        >
+            {/* Timeline line */}
+            <div className="absolute left-4 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
+
+            {/* Icon Circle */}
+            <div
+                className={`absolute left-0 top-0 w-8 h-8 rounded-full border-2 border-primary/30 bg-card flex items-center justify-center ${experience.color} z-10 shadow-lg`}
+            >
+                <Icon className="w-4 h-4" />
+            </div>
+
+            {/* Year Badge */}
+            <div className="mb-3">
+                <span className="inline-block px-3 py-1 text-xs font-semibold bg-primary/20 text-primary rounded-full border border-primary/30">
+                    {experience.year}
+                </span>
+            </div>
+
+            {/* Card */}
+            <motion.div
+                whileHover={{ y: -5 }}
+                className="bg-card/50 border border-primary/20 rounded-xl p-4 backdrop-blur-sm hover:border-primary/40 transition-all duration-300 shadow-lg"
+            >
+                <div className="mb-3">
+                    <h3 className="text-base font-display font-bold text-foreground mb-1">
+                        {experience.title}
+                    </h3>
+                    <p className="text-accent font-medium mb-2 text-sm">{experience.company}</p>
+
+                    <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                            <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span>{experience.period}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span>{experience.location}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p className="text-muted-foreground text-xs leading-relaxed mb-3">{experience.description}</p>
+
+                <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-foreground">Key Achievements:</h4>
+                    <ul className="space-y-1.5">
+                        {experience.achievements.map((achievement, i) => (
+                            <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                                <span className="w-1 h-1 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                                <span>{achievement}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </motion.div>
+        </motion.div>
+    )
+}
+
+// Horizontal Timeline Item for Desktop
 const HorizontalTimelineItem = ({ experience, index }: { experience: Experience; index: number }) => {
     const Icon = experience.icon
 
@@ -293,10 +365,46 @@ const HorizontalTimelineItem = ({ experience, index }: { experience: Experience;
 }
 
 /**
- * Section 5 Component - Horizontal Experience Timeline
- * Width: auto (content-based with min 100vw)
+ * Section 5 Component - Experience Timeline
+ * Desktop: Horizontal scrolling timeline
+ * Mobile: Fully vertical timeline
  */
 export function Section5({ width }: SectionProps) {
+    const isMobile = useIsMobile()
+
+    // Mobile version - Vertical timeline
+    if (isMobile) {
+        return (
+            <SectionLayout width={width}>
+                <div className="relative w-full py-12 px-4">
+                    {/* Section Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-12"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-display font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            Experience & Education
+                        </h2>
+                        <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
+                            A journey combining technical expertise, leadership, and continuous learning.
+                        </p>
+                    </motion.div>
+
+                    {/* Vertical Timeline */}
+                    <div className="max-w-2xl mx-auto">
+                        {reversedExperiences.map((experience, index) => (
+                            <VerticalTimelineItem key={experience.id} experience={experience} index={index} />
+                        ))}
+                    </div>
+                </div>
+            </SectionLayout>
+        )
+    }
+
+    // Desktop version - Horizontal timeline
     return (
         <SectionLayout width={width}>
             <div className="relative h-full flex flex-col justify-center py-8" style={{ minWidth: '100vw', width: 'max-content' }}>

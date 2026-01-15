@@ -300,7 +300,7 @@ export default function AllProjectsPageClient() {
                     All Projects
                   </h2>
                   <p className="text-muted-foreground text-xl md:text-2xl font-medium">
-                    Explore our complete portfolio of work
+                    Explore my complete portfolio of work
                   </p>
                 </motion.div>
               )}
@@ -365,16 +365,12 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             animate={{
                 opacity: 1,
                 y: 0,
-                scale: 0.95,
+                scale: 1,
             }}
             transition={{
                 duration: 0.6,
                 delay: index * 0.08,
                 ease: [0.22, 1, 0.36, 1]
-            }}
-            whileHover={{
-                scale: 0.92,
-                transition: { duration: 0.3 }
             }}
             className="project-card group cursor-pointer"
             style={{
@@ -385,123 +381,123 @@ function ProjectCard({ project, index }: ProjectCardProps) {
             onClick={handleCardClick}
         >
             <div className="relative h-full overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500">
-                    {/* Project Image */}
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                {/* Project Image */}
+                <div className="relative aspect-[16/9] overflow-hidden">
+                    <motion.div
+                        className="relative w-full h-full"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <OptimizedImage
+                            src={project.image || "/images/null/null_1.png"}
+                            alt={project.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                            priority={index < 6}
+                        />
+                    </motion.div>
+
+                    {/* Subtle gradient overlay on image */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                    {/* Featured Badge - Top Right */}
+                    {project.featured && (
                         <motion.div
-                            className="relative w-full h-full"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.6 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.3 }}
+                            className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-2 shadow-lg"
                         >
-                            <OptimizedImage
-                                src={project.image || "/images/null/null_1.png"}
-                                alt={project.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                                priority={index < 6}
-                            />
+                            <Sparkles className="w-3.5 h-3.5" />
+                            Featured
                         </motion.div>
+                    )}
 
-                        {/* Subtle gradient overlay on image */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    {/* Category Badge - Top Left */}
+                    {project.category && (
+                        <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-semibold uppercase tracking-wider">
+                            {project.category}
+                        </div>
+                    )}
 
-                        {/* Featured Badge - Top Right */}
-                        {project.featured && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.3 }}
-                                className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-2 shadow-lg"
+                    {/* Quick Action Buttons - Bottom Right on Hover */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileHover={{ opacity: 1, y: 0 }}
+                        className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    >
+                        {project.demoUrl && (
+                            <motion.a
+                                href={project.demoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
                             >
-                                <Sparkles className="w-3.5 h-3.5" />
-                                Featured
-                            </motion.div>
+                                <ExternalLink className="w-4 h-4 text-black" />
+                            </motion.a>
                         )}
-
-                        {/* Category Badge - Top Left */}
-                        {project.category && (
-                            <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-semibold uppercase tracking-wider">
-                                {project.category}
-                            </div>
+                        {project.links?.github && (
+                            <motion.a
+                                href={project.links.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
+                            >
+                                <Github className="w-4 h-4 text-black" />
+                            </motion.a>
                         )}
-
-                        {/* Quick Action Buttons - Bottom Right on Hover */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileHover={{ opacity: 1, y: 0 }}
-                            className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                        >
-                            {project.demoUrl && (
-                                <motion.a
-                                    href={project.demoUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={(e) => e.stopPropagation()}
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
-                                >
-                                    <ExternalLink className="w-4 h-4 text-black" />
-                                </motion.a>
-                            )}
-                            {project.links?.github && (
-                                <motion.a
-                                    href={project.links.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={(e) => e.stopPropagation()}
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
-                                >
-                                    <Github className="w-4 h-4 text-black" />
-                                </motion.a>
-                            )}
-                        </motion.div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-5 space-y-4">
-                        {/* Title */}
-                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300 line-clamp-1">
-                            {project.title}
-                        </h3>
-
-                        {/* Subtitle */}
-                        {project.subtitle && (
-                            <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
-                                {project.subtitle}
-                            </p>
-                        )}
-
-                        {/* Year Range */}
-                        {project.yearRange && (
-                            <div className="flex items-center gap-2 text-xs text-gray-500">
-                                <Calendar className="w-3.5 h-3.5" />
-                                <span>{project.yearRange}</span>
-                            </div>
-                        )}
-
-                        {/* Tech Stack */}
-                        {project.technologies && project.technologies.length > 0 && (
-                            <div className="flex flex-wrap gap-2 pt-2">
-                                {project.technologies.slice(0, 4).map((tech) => (
-                                    <span
-                                        key={tech}
-                                        className="px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-gray-300 font-medium transition-colors duration-200"
-                                    >
-                    {tech}
-                  </span>
-                                ))}
-                                {project.technologies.length > 4 && (
-                                    <span className="px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-xs text-gray-400 font-medium">
-                    +{project.technologies.length - 4}
-                  </span>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                    </motion.div>
                 </div>
+
+                {/* Content Section */}
+                <div className="p-5 space-y-4">
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300 line-clamp-1">
+                        {project.title}
+                    </h3>
+
+                    {/* Subtitle */}
+                    {project.subtitle && (
+                        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+                            {project.subtitle}
+                        </p>
+                    )}
+
+                    {/* Year Range */}
+                    {project.yearRange && (
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>{project.yearRange}</span>
+                        </div>
+                    )}
+
+                    {/* Tech Stack */}
+                    {project.technologies && project.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-2 pt-2">
+                            {project.technologies.slice(0, 4).map((tech) => (
+                                <span
+                                    key={tech}
+                                    className="px-2 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs text-gray-300 font-medium transition-colors duration-200"
+                                >
+                                        {tech}
+                                    </span>
+                            ))}
+                            {project.technologies.length > 4 && (
+                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-xs text-gray-400 font-medium">
+                                        +{project.technologies.length - 4}
+                                    </span>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
         </motion.div>
     )
 }

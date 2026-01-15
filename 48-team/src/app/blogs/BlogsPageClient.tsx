@@ -13,6 +13,7 @@ import Footer from "@/components/Footer"
 import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
+import { ScrollIndicator } from "@/components/ScrollIndicator"
 
 // Immediate scroll to top - runs BEFORE React mounts
 if (typeof window !== 'undefined') {
@@ -35,7 +36,7 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                 y: 0,
                 clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
             }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "0px" }}
             transition={{
                 duration: 0.8,
                 delay: index ? index * 0.1 : 0,
@@ -43,7 +44,7 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
             }}
             className="blog-card group relative overflow-hidden rounded-xl border border-emerald-500/20 hover:border-emerald-500/40 transition-all duration-500 bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-emerald-500/10 w-full"
         >
-            <Link href={`/blogs/${post.slug}`} className="block w-full">
+            <Link href={`/blogs/${post.slug}`} className="block w-full relative z-10">
                 <div className="relative overflow-hidden aspect-[4/5] sm:aspect-[4/5] w-full">
                     <motion.div
                         className="relative w-full h-full"
@@ -61,10 +62,10 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                     </motion.div>
 
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-[1]" />
 
                     {/* Tags */}
-                    <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-10">
+                    <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-[2]">
                         {post.tags.slice(0, 2).map((tag: string) => (
                             <motion.span
                                 key={tag}
@@ -81,7 +82,7 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
 
                     {/* Hover Overlay with Icon */}
                     <motion.div
-                        className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center"
+                        className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-[3]"
                     >
                         <motion.div
                             initial={{ scale: 0.8, rotate: -90 }}
@@ -93,7 +94,7 @@ const BlogCard = ({ post, index }: { post: BlogPost; index?: number }) => {
                     </motion.div>
 
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-10">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-[4]">
                         {/* Meta */}
                         <div className="flex items-center gap-3 sm:gap-4 text-xs text-gray-300 mb-2 sm:mb-3">
                             <div className="flex items-center gap-1.5">
@@ -299,14 +300,7 @@ export default function BlogsPageClient() {
                         </div>
 
                         {/* Scroll Indicator */}
-                        <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1, repeat: Infinity, repeatType: "reverse" }}
-                            className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 text-muted-foreground text-xs md:text-sm"
-                        >
-                            <p>Scroll to explore</p>
-                        </motion.div>
+                        <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
                     </section>
 
                     {/* Search & Filter Section */}
