@@ -15,6 +15,7 @@ import Footer from "@/components/Footer"
 import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
+import {ScrollIndicator} from "@/components/ScrollIndicator";
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -222,14 +223,7 @@ export default function AllProjectsPageClient() {
         </div>
 
         {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 text-muted-foreground text-xs md:text-sm"
-        >
-          <p>Scroll to explore</p>
-        </motion.div>
+        <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
       </section>
 
       {/* Filter Section */}

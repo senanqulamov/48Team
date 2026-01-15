@@ -13,6 +13,7 @@ import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
 import { renderMarkdown } from "@/lib/markdown"
+import { ScrollIndicator } from "@/components/ScrollIndicator"
 
 interface BlogPostClientProps {
   post: BlogPost
@@ -305,6 +306,8 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                     />
                   ))}
                 </div>
+                  {/* Scroll Indicator */}
+                  <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
               </motion.div>
             </div>
           </section>

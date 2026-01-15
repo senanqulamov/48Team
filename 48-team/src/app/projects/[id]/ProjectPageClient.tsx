@@ -10,6 +10,7 @@ import Lenis from "lenis"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import ProjectGallery from "@/components/ProjectGallery"
+import {ScrollIndicator} from "@/components/ScrollIndicator";
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -277,21 +278,7 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
                 </motion.div>
 
                 {/* Scroll Indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5, duration: 1 }}
-                    className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
-                >
-                    <motion.div
-                        animate={{ y: [0, 10, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="flex flex-col items-center gap-2"
-                    >
-                        <span className="text-xs uppercase tracking-widest text-white/40">Scroll</span>
-                        <div className="w-[1px] h-12 bg-gradient-to-b from-white/40 to-transparent" />
-                    </motion.div>
-                </motion.div>
+                <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
             </section>
 
             {/* STORY SECTION - Full Width Text Block */}

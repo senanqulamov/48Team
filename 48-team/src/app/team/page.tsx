@@ -11,6 +11,7 @@ import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
 import TeamGrid from "@/components/team/TeamGrid"
 import { teamData } from "@/data/teamData"
+import {ScrollIndicator} from "@/components/ScrollIndicator";
 
 // Immediate scroll to top
 if (typeof window !== 'undefined') {
@@ -149,15 +150,8 @@ export default function TeamPage() {
               </motion.div>
             </div>
 
-            {/* Scroll Indicator */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1, repeat: Infinity, repeatType: "reverse" }}
-              className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 text-muted-foreground text-xs md:text-sm"
-            >
-              <p>Scroll to explore</p>
-            </motion.div>
+              {/* Scroll Indicator */}
+              <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
           </section>
 
           {/* Team Grid */}

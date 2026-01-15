@@ -267,7 +267,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
                         className="absolute inset-0"
                     >
                         <div className="grid grid-cols-2 gap-4 w-full h-full">
-                            {["/images/mine/me_2025_loft(3).jpg", "/images/mine/me_2025_loft(2).png", "/images/mine/me_2026.jpg"].map((image, idx) => (
+                            {["/images/mine/the48_banner.png", "/images/mine/me_2025_loft(2).png", "/images/mine/me_2026.jpg"].map((image, idx) => (
                                 <motion.div
                                     key={`placeholder-${idx}`}
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -288,7 +288,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
                                             src={image}
                                             alt={`Portfolio preview ${idx + 1}`}
                                             fill
-                                            className="object-cover"
+                                            className={`${idx === 0 ? 'object-cover object-center' : 'object-cover'}`}
                                             sizes="(max-width: 1024px) 0vw, 25vw"
                                         />
                                         {/* Overlay */}

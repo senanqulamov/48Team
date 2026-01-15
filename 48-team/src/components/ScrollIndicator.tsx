@@ -36,7 +36,7 @@ export function ScrollIndicator({
         <p className="text-sm md:text-base font-medium text-muted-foreground">
           Scroll to explore
         </p>
-        <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+        {/*<ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />*/}
       </motion.div>
     )
   }
@@ -97,33 +97,33 @@ export function ScrollIndicator({
       </motion.div>
 
       {/* Animated arrow */}
-      <motion.div
-        animate={{
-          y: [0, 8, 0],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.3,
-        }}
-      >
-        {direction === "down" ? (
-          <ArrowDown className="w-6 h-6 md:w-8 md:h-8 text-white" strokeWidth={2.5} />
-        ) : (
-          <motion.div
-            animate={{ x: [0, 8, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="rotate-[-90deg]"
-          >
-            <ArrowDown className="w-6 h-6 md:w-8 md:h-8 text-white" strokeWidth={2.5} />
-          </motion.div>
-        )}
-      </motion.div>
+      {/*<motion.div*/}
+      {/*  animate={{*/}
+      {/*    y: [0, 8, 0],*/}
+      {/*  }}*/}
+      {/*  transition={{*/}
+      {/*    duration: 1.5,*/}
+      {/*    repeat: Infinity,*/}
+      {/*    ease: "easeInOut",*/}
+      {/*    delay: 0.3,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  {direction === "down" ? (*/}
+      {/*    <ArrowDown className="w-6 h-6 md:w-8 md:h-8 text-white" strokeWidth={2.5} />*/}
+      {/*  ) : (*/}
+      {/*    <motion.div*/}
+      {/*      animate={{ x: [0, 8, 0] }}*/}
+      {/*      transition={{*/}
+      {/*        duration: 1.5,*/}
+      {/*        repeat: Infinity,*/}
+      {/*        ease: "easeInOut",*/}
+      {/*      }}*/}
+      {/*      className="rotate-[-90deg]"*/}
+      {/*    >*/}
+      {/*      <ArrowDown className="w-6 h-6 md:w-8 md:h-8 text-white" strokeWidth={2.5} />*/}
+      {/*    </motion.div>*/}
+      {/*  )}*/}
+      {/*</motion.div>*/}
 
       {/* Glowing effect */}
       <motion.div
