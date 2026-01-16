@@ -12,7 +12,7 @@ import { formatDate, type BlogPost } from "@/lib/blogs"
 import Footer from "@/components/Footer"
 import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
-import NewPageLoader from "@/components/NewPageLoader"
+import BlogTransition from "@/components/BlogTransition"
 import { renderMarkdown } from "@/lib/markdown"
 import { ScrollIndicator } from "@/components/ScrollIndicator"
 
@@ -49,7 +49,7 @@ const RelatedPostCard = ({ post }: { post: BlogPost }) => {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t" />
           </div>
         )}
 
@@ -217,12 +217,96 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
       {/* Full Screen Menu */}
       <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-      {/* Page Loader */}
-      {isLoading && <NewPageLoader onComplete={handleComplete} />}
+      {/* Blog Transition - Award-Winning 2026 Style */}
+      {isLoading && (
+        <BlogTransition
+          onComplete={handleComplete}
+          toTitle={post.title}
+        />
+      )}
 
-      <main ref={containerRef} className="bg-black text-white overflow-hidden">
+      <main ref={containerRef} className="text-white overflow-hidden">
+        {/* UNIQUE BLOG BACKGROUND - Emerald Theme (Different from cyan/teal default) */}
+        <div className="fixed inset-0 pointer-events-none" style={{ backgroundColor: "#000000", zIndex: 0 }}>
+          {/* Primary emerald grid - 3.5rem (56px) for distinction */}
+          <div
+            className="absolute inset-0 opacity-[0.08]"
+            style={{
+              backgroundImage: 'linear-gradient(to right, rgba(16,185,129,0.6) 1px, transparent 1px), linear-gradient(to bottom, rgba(16,185,129,0.6) 1px, transparent 1px)',
+              backgroundSize: '3.5rem 3.5rem'
+            }}
+          />
+
+          {/* Secondary diagonal grid overlay - unique to blogs */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 2rem, rgba(34,197,94,0.3) 2rem, rgba(34,197,94,0.3) calc(2rem + 1px))',
+            }}
+          />
+
+          {/* Hexagonal dot pattern - blog-exclusive */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(16,185,129,0.4) 1px, transparent 1px)',
+              backgroundSize: '2rem 2rem',
+              backgroundPosition: '0 0, 1rem 1rem'
+            }}
+          />
+
+          {/* Emerald gradient orbs - different positioning and colors from default */}
+          <div className="absolute top-[15%] right-[10%] w-[550px] h-[550px] rounded-full blur-[120px] animate-pulse"
+               style={{
+                 background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)',
+                 animationDuration: '14s'
+               }} />
+
+          <div className="absolute bottom-[10%] left-[8%] w-[650px] h-[650px] rounded-full blur-[120px] animate-pulse"
+               style={{
+                 background: 'radial-gradient(circle, rgba(34,197,94,0.2) 0%, transparent 70%)',
+                 animationDuration: '16s',
+                 animationDelay: '3s'
+               }} />
+
+          <div className="absolute top-[45%] left-[35%] w-[500px] h-[500px] rounded-full blur-[100px] animate-pulse"
+               style={{
+                 background: 'radial-gradient(circle, rgba(20,184,166,0.18) 0%, transparent 70%)',
+                 animationDuration: '20s',
+                 animationDelay: '6s'
+               }} />
+
+          {/* Subtle scanline effect for document feel */}
+          <div
+            className="absolute inset-0 opacity-[0.02] pointer-events-none"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(16,185,129,0.1) 3px, rgba(16,185,129,0.1) 4px)',
+            }}
+          />
+
+          {/* Floating light particles - emerald sparkles (CSS animation only, no window access) */}
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-0.5 h-0.5 bg-emerald-400/30 rounded-full shadow-sm shadow-emerald-400/20 animate-pulse"
+              style={{
+                left: `${10 + i * 6}%`,
+                top: `${20 + (i % 4) * 20}%`,
+                animationDuration: `${10 + i * 1.5}s`,
+                animationDelay: `${i * 0.6}s`,
+              }}
+            />
+          ))}
+
+          {/* Corner accent gradients */}
+          <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-gradient-to-br from-emerald-500/5 to-transparent" />
+          <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-tl from-green-500/5 to-transparent" />
+
+          {/* Subtle vignette for depth */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
+        </div>
         {/* CINEMATIC HERO - Full Viewport with Parallax */}
-        <section className="relative h-screen overflow-hidden">
+        <section className="relative h-screen overflow-hidden" style={{ zIndex: 1 }}>
           {/* Parallax Background */}
           <motion.div
             style={{ scale: heroScale, y: heroY }}
@@ -239,7 +323,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
               />
             )}
             {/* Cinematic gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-black" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-black/10" />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
             {/* Film grain texture overlay */}
@@ -261,7 +345,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
               {/* Back Button - Left */}
               <Link
                 href="/blogs"
-                className="flex items-center gap-2 px-4 py-2.5 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full hover:bg-black/60 hover:border-white/20 transition-all duration-300 text-sm"
+                className="flex items-center gap-2 px-4 py-2.5 backdrop-blur-xl border border-white/10 rounded-full hover:bg-black/60 hover:border-white/20 transition-all duration-300 text-sm"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span className="hidden sm:inline">Back to Blogs</span>
@@ -428,7 +512,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
         </section>
 
         {/* CHAPTER INTRODUCTION - Movie-style opening */}
-        <section className="reveal-section relative py-24 md:py-32 px-4 md:px-8 bg-gradient-to-b from-black via-zinc-950/50 to-black">
+        <section className="reveal-section relative py-24 md:py-32 px-4 md:px-8 bg-gradient-to-b" style={{ zIndex: 1 }}>
           <div className="absolute inset-0 opacity-30">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(16,185,129,0.03) 0%, transparent 50%)',
@@ -462,8 +546,8 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
         </section>
 
         {/* THE STORY SECTION - Enhanced with better typography */}
-        <section className="reveal-section relative min-h-screen py-16 md:py-24 px-4 md:px-8">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
+        <section className="reveal-section relative min-h-screen py-16 md:py-24 px-4 md:px-8" style={{ zIndex: 1 }}>
+          <div className="absolute inset-0 bg-gradient-to-b " />
 
           {/* Decorative side elements */}
           <div className="absolute left-0 top-1/4 w-px h-1/2 bg-gradient-to-b from-transparent via-emerald-500/20 to-transparent hidden lg:block" />
@@ -486,7 +570,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
         </section>
 
         {/* AUTHOR SPOTLIGHT - Cinema credits style */}
-        <section className="reveal-section relative py-20 md:py-32 px-4 md:px-8 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
+        <section className="reveal-section relative py-20 md:py-32 px-4 md:px-8 bg-gradient-to-b  overflow-hidden" style={{ zIndex: 1 }}>
           {/* Animated background elements */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '10s' }} />
@@ -597,7 +681,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
         </section>
 
         {/* NEXT POST - Cinematic Teaser (Full Screen) */}
-        <section className="reveal-section relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section className="reveal-section relative min-h-screen flex items-center justify-center overflow-hidden" style={{ zIndex: 1 }}>
           {/* Parallax Background */}
           <div className="absolute inset-0">
             {nextPost.coverImage && (
@@ -610,7 +694,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
               />
             )}
             <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+            <div className="absolute inset-0 bg-gradient-to-b" />
           </div>
 
           {/* Content */}
@@ -638,7 +722,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
 
             {nextPost.subtitle && (
               <p className="text-lg sm:text-xl md:text-2xl text-emerald-100/80 mb-8 font-light italic max-w-3xl mx-auto">
-                "{nextPost.subtitle}"
+                &#34;{nextPost.subtitle}&#34;
               </p>
             )}
 
@@ -666,7 +750,7 @@ export default function BlogPostClient({ post, relatedPosts, nextPost }: BlogPos
 
         {/* RELATED POSTS - Additional Stories (Optional) */}
         {relatedPosts.length > 0 && (
-          <section className="reveal-section relative py-24 md:py-32 px-4 md:px-8 bg-gradient-to-b from-black to-zinc-950">
+          <section className="reveal-section relative py-24 md:py-32 px-4 md:px-8 bg-gradient-to-b" style={{ zIndex: 1 }}>
             {/* Background decoration */}
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl" />

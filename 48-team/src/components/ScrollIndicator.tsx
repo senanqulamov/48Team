@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowDown } from "lucide-react"
 
 interface ScrollIndicatorProps {
   variant?: "default" | "minimal"
@@ -16,7 +15,6 @@ interface ScrollIndicatorProps {
 export function ScrollIndicator({
   variant = "default",
   className = "",
-  direction = "down"
 }: ScrollIndicatorProps) {
 
   if (variant === "minimal") {
