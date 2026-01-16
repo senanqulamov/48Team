@@ -276,7 +276,7 @@ export const projects: Project[] = [
             { label: "Extensibility", value: "Designed-in" }
         ],
         personalNote: "FLUXA reflects how admin systems should actually feel when used daily, not just demoed.",
-        category: "Personal Projects",
+        category: "My Projects",
         status: "Ongoing",
         color: "from-neutral-800 to-neutral-950",
         date: "2024 - Present",
@@ -998,6 +998,206 @@ export const projects: Project[] = [
             "Secure Transaction APIs",
             "Scalable Backend Services"
         ],
+    },
+    {
+        id: 25,
+        title: "Aqovo.az",
+        subtitle: "Corporate & Industry Platform",
+        client: "Aqovo",
+        yearRange: "2024 – Present",
+        shortDescription: "Corporate website and service platform for aquaculture and aqua-farming solutions.",
+        longDescription: "Aqovo.az is a modern corporate platform built to represent aquaculture expertise, services, and industry knowledge. The system includes service showcases, project portfolios, blog infrastructure, multilingual support, and structured content management optimized for performance and clarity.",
+        description: "Full-stack development of Aqovo.az with focus on performance, structure, and content scalability.",
+        blog: `<p>Aqovo.az was built as a professional digital presence for an aquaculture-focused company, emphasizing clarity, trust, and structured service presentation.</p><p>The platform includes modular service pages, project case studies, blog management, and a scalable CMS architecture. Performance optimization, SEO-friendly structure, and clean UI patterns were prioritized to ensure long-term maintainability.</p>`,
+        techTags: ["Laravel", "PHP 8+", "Blade", "MySQL", "Bootstrap"],
+        technologies: ["Laravel", "PHP 8+", "Blade", "MySQL", "Bootstrap"],
+        image: "/images/aqovo/aqovo_banner.png",
+        images: [
+            "/images/aqovo/1.png",
+            "/images/aqovo/2.png",
+            "/images/aqovo/3.png",
+            "/images/aqovo/4.png",
+            "/images/aqovo/5.png",
+            "/images/aqovo/6.png",
+            "/images/aqovo/7.png",
+            "/images/aqovo/8.png",
+            "/images/aqovo/9.png"
+        ],
+        demoUrl: "https://aqovo.az",
+        featured: false,
+        featuredOrder: 12,
+        problem: "Needed a professional, scalable platform to present aquaculture services, projects, and industry expertise.",
+        solution: "Designed and developed a modular Laravel-based platform with structured services, project listings, blog system, and multilingual-ready architecture.",
+        impact: "Improved brand credibility, clear service communication, and a scalable foundation for future digital growth.",
+        role: "Full-stack developer responsible for architecture, backend, and frontend integration.",
+        metrics: [
+            { label: "Performance", value: "Optimized" },
+            { label: "Content Structure", value: "Scalable" }
+        ],
+        personalNote: "A solid example of building a clean, industry-focused corporate platform without unnecessary complexity.",
+        category: "Client Projects",
+        status: "Ongoing",
+        color: "from-cyan-600 to-blue-800",
+        date: "2024 - Present",
+        links: {
+            demo: "https://aqovo.az",
+            github: "#"
+        },
+        features: [
+            "Service Management",
+            "Project Portfolio",
+            "Blog System",
+            "Multilingual Support",
+            "SEO-Friendly Structure"
+        ]
+    },
+    {
+        id: 26,
+        title: "SCMAI",
+        subtitle: "SAP-Aligned Supply Chain & Procurement Platform",
+        client: "INCI Holding",
+        yearRange: "2025",
+        shortDescription: "Enterprise procurement and supply chain platform aligned with SAP Ariba workflows.",
+        longDescription: "SCMAI is an enterprise-grade supply chain and procurement management platform developed for INCI Holding. The system is designed to mirror and extend SAP Ariba-style workflows while remaining fully customizable and internally controlled. Built on the FLUXA admin panel foundation, SCMAI delivers structured RFQ management, supplier portals, market-based product comparison, order workflows, SLA tracking, and compliance-focused analytics.",
+        description: "Designed and built SCMAI using the FLUXA admin foundation, delivering SAP-aligned procurement workflows for INCI Holding.",
+        blog: `
+    <p>SCMAI was developed to address the limitations of off-the-shelf procurement solutions by providing SAP-aligned workflows without SAP-level rigidity or licensing constraints.</p>
+    <p>The platform supports multi-market procurement, RFQ lifecycle management, supplier portals, quote comparison, order processing, and performance monitoring. Built on the FLUXA admin panel foundation, SCMAI emphasizes operational clarity, role separation, and enterprise-grade usability.</p>
+    <p>Special focus was placed on mirroring SAP Ariba concepts such as RFQs, supplier invitations, award flows, SLA tracking, and audit-ready activity logs while keeping the system flexible and internally owned.</p>
+  `,
+        techTags: [
+            "Laravel",
+            "PHP 8.3",
+            "FLUXA",
+            "PostgreSQL",
+            "Enterprise Workflows",
+            "SAP-Aligned Architecture"
+        ],
+        technologies: [
+            "Laravel",
+            "PHP 8.3",
+            "FLUXA Admin Panel",
+            "PostgreSQL",
+            "REST APIs",
+            "Role-Based Access Control"
+        ],
+        image: "/images/scmai/19.png",
+        images: [
+            "/images/scmai/1.png",
+            "/images/scmai/2.png",
+            "/images/scmai/3.png",
+            "/images/scmai/4.png",
+            "/images/scmai/5.png",
+            "/images/scmai/6.png",
+            "/images/scmai/7.png",
+            "/images/scmai/8.png",
+            "/images/scmai/9.png",
+            "/images/scmai/10.png",
+            "/images/scmai/11.png",
+            "/images/scmai/12.png",
+            "/images/scmai/13.png",
+            "/images/scmai/14.png",
+            "/images/scmai/15.png",
+            "/images/scmai/16.png",
+            "/images/scmai/17.png",
+            "/images/scmai/18.png",
+            "/images/scmai/19.png",
+        ],
+        demoUrl: "#",
+        featured: true,
+        featuredOrder: 1,
+        problem: "INCI Holding required SAP-aligned procurement workflows without the cost, rigidity, and complexity of full SAP Ariba adoption.",
+        solution: "Designed and implemented a custom procurement platform based on FLUXA, replicating SAP Ariba concepts such as RFQs, supplier portals, quote evaluation, order flows, and SLA tracking while maintaining full internal control.",
+        impact: "Centralized procurement operations, improved supplier visibility, faster RFQ cycles, and reduced dependency on external enterprise software vendors.",
+        role: "Founder, System Architect, Full-Stack Developer",
+        metrics: [
+            { label: "Procurement Coverage", value: "End-to-End" },
+            { label: "Workflow Alignment", value: "SAP-Compatible" }
+        ],
+        personalNote: "SCMAI is one of the clearest examples of applying enterprise UX, SAP-level workflow thinking, and clean architecture on top of a custom-built admin foundation.",
+        category: "Client Projects",
+        status: "Active Development",
+        color: "from-slate-800 to-indigo-900",
+        date: "2024 - Present",
+        links: {
+            demo: "#",
+            github: "#"
+        },
+        features: [
+            "SAP-Aligned RFQ Workflows",
+            "Supplier Portal",
+            "Multi-Market Product Comparison",
+            "Order & Award Management",
+            "SLA Tracking",
+            "Audit Logs & Activity Monitoring",
+            "Role-Based Access Control",
+            "FLUXA-Based Admin Architecture"
+        ]
+    },
+    {
+        id: 27,
+        title: "BIAR",
+        subtitle: "Technology Consulting & Business Software Solutions",
+        client: "BIAR",
+        yearRange: "2025",
+        shortDescription: "Corporate technology consulting and software solutions landing page for BIAR.",
+        longDescription: "BIAR is a corporate technology consulting brand presented through a clean, modern landing page focused on enterprise software, SAP consulting, custom business solutions, and professional training programs. The platform acts purely as a brand and communication layer, showcasing BIAR’s expertise, industry coverage, and global presence without complex application logic.",
+        description: "Designed and developed BIAR’s official landing page to present consulting services, industry solutions, and corporate presence in a clear and professional format.",
+        blog: `
+    <p>BIAR’s website was built as a focused landing page rather than a full platform, prioritizing clarity, credibility, and corporate presentation.</p>
+    <p>The structure highlights BIAR’s core service areas including SAP consulting, custom business software, artificial intelligence solutions, and business & technology training programs.</p>
+    <p>Special attention was given to visual hierarchy, industry segmentation, and clear contact pathways, ensuring the site functions as a strong first touchpoint for enterprise and institutional clients.</p>
+  `,
+        techTags: [
+            "Laravel",
+            "PHP",
+            "Corporate Landing Page",
+            "Responsive Design",
+            "UI/UX Focused"
+        ],
+        technologies: [
+            "Laravel",
+            "PHP",
+            "Blade Templates",
+            "HTML5",
+            "CSS3",
+            "JavaScript"
+        ],
+        image: "/images/biar/4.png",
+        images: [
+            "/images/biar/1.png",
+            "/images/biar/2.png",
+            "/images/biar/3.png",
+            "/images/biar/4.png",
+        ],
+        demoUrl: "https://biar.maffin.az/",
+        featured: false,
+        featuredOrder: 6,
+        problem: "BIAR required a professional digital presence to clearly communicate its consulting services, industry focus, and international footprint without overcomplicating the user experience.",
+        solution: "Designed and implemented a clean, modern landing page emphasizing services, industries served, and contact accessibility, ensuring credibility and clarity for enterprise clients.",
+        impact: "Improved brand visibility, clearer service positioning, and a stronger corporate image for enterprise and institutional engagement.",
+        role: "Designer, Frontend & Backend Developer",
+        metrics: [
+            { label: "Page Type", value: "Landing Page" },
+            { label: "Primary Goal", value: "Brand & Lead Generation" }
+        ],
+        personalNote: "BIAR demonstrates restraint and clarity — a deliberate choice to keep the platform simple, focused, and corporate rather than over-engineered.",
+        category: "Client Projects",
+        status: "Live",
+        color: "from-slate-900 to-blue-900",
+        date: "2018 - 2025",
+        links: {
+            demo: "https://biar.maffin.az/",
+            github: "#"
+        },
+        features: [
+            "Corporate Landing Page Architecture",
+            "Service & Solution Showcase",
+            "Industry Segmentation",
+            "Multi-Office Contact Presentation",
+            "Responsive Design",
+            "Clear Call-to-Action Flow"
+        ]
     }
 ]
 

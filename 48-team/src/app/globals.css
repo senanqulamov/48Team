@@ -312,3 +312,41 @@ body.low-end .shadow-xl {
 body.low-end * {
   will-change: auto !important;
 }
+
+/* Blog Content Styling */
+.blog-content {
+  @apply text-base md:text-lg leading-relaxed;
+}
+
+.blog-content p {
+  @apply mb-6 text-white/75 leading-relaxed text-lg md:text-xl;
+}
+
+.blog-content p:first-of-type {
+  @apply text-xl md:text-2xl text-white/85 font-light leading-relaxed;
+}
+
+.blog-content img {
+  @apply rounded-2xl border-2 border-emerald-500/20 shadow-2xl shadow-emerald-500/10 my-12 mx-auto;
+}
+
+.blog-content hr {
+  @apply border-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent my-16;
+}
+
+.blog-content em {
+  @apply text-emerald-100/90 italic font-light;
+}
+
+.blog-content table {
+  @apply w-full border-collapse border border-white/10 my-8;
+}
+
+.blog-content th {
+  @apply bg-emerald-500/10 text-emerald-300 border border-white/10 px-4 py-2 text-left font-semibold;
+}
+
+.blog-content td {
+  @apply border border-white/10 px-4 py-2 text-white/75;
+}
+

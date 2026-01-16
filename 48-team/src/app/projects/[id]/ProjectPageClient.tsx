@@ -548,109 +548,160 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
 
             {/* METRICS - Enhanced Impact Display */}
             {project.metrics && project.metrics.length > 0 && (
-                <section className="reveal-section relative py-16 md:py-32 px-4 md:px-8 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
+                <section className="reveal-section relative py-20 md:py-40 px-4 md:px-8 bg-black overflow-hidden">
                     {/* Animated background elements */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '10s' }} />
-                        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+                        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-3xl -translate-y-1/2 animate-pulse" style={{ animationDuration: '12s' }} />
+                        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/15 rounded-full blur-3xl translate-y-1/2 animate-pulse" style={{ animationDuration: '14s', animationDelay: '3s' }} />
                     </div>
 
-                    <div className="max-w-6xl mx-auto relative z-10">
-                        <motion.h2
+                    <div className="max-w-7xl mx-auto relative z-10">
+                        {/* Header Section */}
+                        <motion.div
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 1 }}
-                            className="text-4xl md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 text-center leading-tight"
+                            className="text-center mb-20 md:mb-32"
                         >
-                            <span className="block text-white/40 mb-2">Impact &</span>
-                            <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Results
-              </span>
-                        </motion.h2>
+                            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 md:mb-8 leading-tight">
+                                <span className="block text-white/30 mb-3 text-3xl md:text-5xl font-light tracking-tight">MEASURABLE</span>
+                                <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                        Impact & Results
+                    </span>
+                            </h2>
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1, delay: 0.3 }}
+                                className="text-base md:text-lg text-white/50 max-w-3xl mx-auto px-4 font-light tracking-wide"
+                            >
+                                Real-world outcomes that demonstrate tangible value and transformation
+                            </motion.p>
+                        </motion.div>
 
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1, delay: 0.3 }}
-                            className="text-center text-base md:text-xl text-white/50 mb-12 md:mb-20 max-w-2xl mx-auto"
-                        >
-                            Measurable outcomes that showcase real-world impact
-                        </motion.p>
-
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                        {/* Metrics Grid - Responsive 1-4 columns */}
+                        <div className={`grid gap-8 md:gap-10 ${project.metrics.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto' : project.metrics.length === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
                             {project.metrics.map((metric, index) => (
                                 <motion.div
                                     key={index}
-                                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                                    initial={{ opacity: 0, y: 60, scale: 0.95 }}
                                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                                     viewport={{ once: true, margin: "-100px" }}
                                     transition={{
-                                        duration: 0.8,
-                                        delay: index * 0.15,
+                                        duration: 0.9,
+                                        delay: index * 0.12,
                                         ease: [0.22, 1, 0.36, 1]
                                     }}
-                                    whileHover={{ y: -10, scale: 1.05 }}
+                                    whileHover={{ y: -15, scale: 1.02 }}
                                     className="group relative"
                                 >
-                                    <div className="relative p-6 md:p-8 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-primary/60 group-hover:shadow-2xl group-hover:shadow-primary/30">
-                                        {/* Animated gradient on hover */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+                                    {/* Card Container */}
+                                    <div className="relative h-full p-8 md:p-10 bg-gradient-to-br from-white/8 via-white/4 to-transparent backdrop-blur-xl border border-white/15 rounded-3xl overflow-hidden transition-all duration-500 group-hover:border-primary/40 group-hover:shadow-2xl group-hover:shadow-primary/20">
 
-                                        {/* Top accent line */}
+                                        {/* Animated gradient on hover */}
                                         <motion.div
-                                            className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent"
+                                            className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 opacity-0 group-hover:opacity-15"
+                                            initial={false}
+                                            animate={{
+                                                background: [
+                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
+                                                    "linear-gradient(135deg, rgba(6,182,212,0.15) 0%, rgba(34,211,238,0.15) 100%)",
+                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
+                                                ]
+                                            }}
+                                            transition={{ duration: 3, repeat: Infinity }}
+                                        />
+
+                                        {/* Top border accent - animated in */}
+                                        <motion.div
+                                            className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent"
                                             initial={{ scaleX: 0 }}
                                             whileInView={{ scaleX: 1 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
+                                            transition={{ duration: 0.8, delay: index * 0.12 + 0.2 }}
                                             style={{ transformOrigin: 'left' }}
                                         />
 
-                                        <div className="relative z-10 text-center">
-                                            {/* Icon or indicator */}
+                                        {/* Corner glow effect */}
+                                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                        <div className="relative z-10 flex flex-col h-full justify-between">
+                                            {/* Icon - Larger and more prominent */}
                                             <motion.div
-                                                initial={{ scale: 0 }}
-                                                whileInView={{ scale: 1 }}
+                                                initial={{ scale: 0, rotate: -180 }}
+                                                whileInView={{ scale: 1, rotate: 0 }}
                                                 viewport={{ once: true }}
-                                                transition={{ duration: 0.5, delay: index * 0.15 + 0.2, type: "spring" }}
-                                                className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 flex items-center justify-center group-hover:border-primary/60 transition-all"
+                                                transition={{ duration: 0.7, delay: index * 0.12 + 0.15, type: "spring", stiffness: 100 }}
+                                                whileHover={{ rotate: 360, scale: 1.15 }}
+                                                className="w-14 h-14 md:w-16 md:h-16 mb-8 rounded-2xl bg-gradient-to-br from-primary/25 to-accent/25 border border-primary/40 flex items-center justify-center group-hover:border-primary/70 group-hover:shadow-xl group-hover:shadow-primary/40 transition-all"
                                             >
-                                                <Award className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                                                <Award className="w-7 h-7 md:w-8 md:h-8 text-primary group-hover:text-accent transition-colors" />
                                             </motion.div>
 
-                                            {/* Metric Value - Large and Bold */}
-                                            <motion.p
-                                                className="text-4xl md:text-5xl lg:text-6xl font-black mb-3 md:mb-4 leading-none"
+                                            {/* Metric Value - Premium Typography */}
+                                            <motion.div
                                                 initial={{ opacity: 0, scale: 0.5 }}
                                                 whileInView={{ opacity: 1, scale: 1 }}
                                                 viewport={{ once: true }}
-                                                transition={{ duration: 0.6, delay: index * 0.15 + 0.4 }}
+                                                transition={{ duration: 0.7, delay: index * 0.12 + 0.3 }}
+                                                className="mb-4"
                                             >
-                        <span className="bg-gradient-to-br from-primary via-accent to-primary bg-clip-text text-transparent">
-                          {metric.value}
-                        </span>
-                                            </motion.p>
+                                                <p className="text-5xl md:text-6xl font-black leading-tight bg-gradient-to-br from-white via-primary to-accent bg-clip-text text-transparent drop-shadow-lg">
+                                                    {metric.value}
+                                                </p>
+                                            </motion.div>
 
-                                            {/* Metric Label */}
-                                            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold group-hover:text-white/80 transition-colors">
-                                                {metric.label}
-                                            </p>
-
-                                            {/* Decorative bottom line */}
+                                            {/* Metric Label - Refined Typography */}
                                             <motion.div
-                                                className="mt-4 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full opacity-50"
+                                                initial={{ opacity: 0 }}
+                                                whileInView={{ opacity: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 0.6, delay: index * 0.12 + 0.4 }}
+                                            >
+                                                <p className="text-xs md:text-sm font-semibold uppercase tracking-widest text-white/60 group-hover:text-primary/80 transition-colors mb-3">
+                                                    {metric.label}
+                                                </p>
+                                            </motion.div>
+
+                                            {/* Optional description */}
+                                            {/*{metric.description && (*/}
+                                            {/*    <motion.p*/}
+                                            {/*        initial={{ opacity: 0 }}*/}
+                                            {/*        whileInView={{ opacity: 1 }}*/}
+                                            {/*        viewport={{ once: true }}*/}
+                                            {/*        transition={{ duration: 0.6, delay: index * 0.12 + 0.45 }}*/}
+                                            {/*        className="text-xs md:text-sm text-white/45 group-hover:text-white/55 transition-colors leading-relaxed"*/}
+                                            {/*    >*/}
+                                            {/*        {metric.description}*/}
+                                            {/*    </motion.p>*/}
+                                            {/*)}*/}
+
+                                            {/* Decorative accent line at bottom */}
+                                            <motion.div
+                                                className="mt-6 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-60"
                                                 initial={{ width: 0 }}
                                                 whileInView={{ width: "100%" }}
                                                 viewport={{ once: true }}
-                                                transition={{ duration: 0.8, delay: index * 0.15 + 0.5 }}
+                                                transition={{ duration: 0.8, delay: index * 0.12 + 0.5 }}
                                             />
                                         </div>
                                     </div>
                                 </motion.div>
                             ))}
                         </div>
+
+                        {/* Optional: Bottom accent line connecting metrics */}
+                        {project.metrics.length > 1 && (
+                            <motion.div
+                                initial={{ opacity: 0, scaleX: 0 }}
+                                whileInView={{ opacity: 1, scaleX: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1.2, delay: 0.5 }}
+                                className="mt-16 md:mt-24 h-[1px] bg-gradient-to-r from-transparent via-primary/30 via-50% to-transparent"
+                            />
+                        )}
                     </div>
                 </section>
             )}

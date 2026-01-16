@@ -19,5 +19,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   const relatedPosts = getRelatedPosts(slug, 3)
 
-  return <BlogPostClient post={post} relatedPosts={relatedPosts} />
+  // Get next post (chronologically)
+  const currentIndex = blogPosts.findIndex(p => p.slug === slug)
+  const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : blogPosts[0]
+
+  return <BlogPostClient post={post} relatedPosts={relatedPosts} nextPost={nextPost} />
 }

@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { projects } from "@/lib/projects"
 import type { Project } from "@/types/project"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 /**
  * Vertical Project Timeline similar to FeaturedTimeline
@@ -192,6 +193,7 @@ const TimelineMarker = ({ year }: { year: string }) => {
 }
 
 export default function ProjectShowcaseTimeline() {
+  const isMobile = useIsMobile()
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -234,21 +236,25 @@ export default function ProjectShowcaseTimeline() {
           {/* Center vertical line */}
           <div className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent" />
 
-          {/* Animated trail */}
-          <motion.div
-            className="hidden md:block absolute left-1/2 -translate-x-1/2 w-[3px] rounded-full bg-gradient-to-b from-cyan-500 via-cyan-400 to-transparent"
-            style={{ top: 0, height: trailHeight, opacity: dotOpacity }}
-          />
+          {/* Animated trail - Disabled on mobile to prevent scroll bugs */}
+          {!isMobile && (
+            <motion.div
+              className="hidden md:block absolute left-1/2 -translate-x-1/2 w-[3px] rounded-full bg-gradient-to-b from-cyan-500 via-cyan-400 to-transparent"
+              style={{ top: 0, height: trailHeight, opacity: dotOpacity }}
+            />
+          )}
 
-          {/* Animated laptop dot */}
-          <motion.div
-            className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center"
-            style={{ top: topPct, opacity: dotOpacity, scale: dotScale }}
-          >
-            <div className="w-7 h-7 rounded-full bg-cyan-500 shadow-[0_0_0_4px_rgba(6,182,212,0.25)] flex items-center justify-center">
-              <Laptop className="w-4 h-4 text-white" />
-            </div>
-          </motion.div>
+          {/* Animated laptop dot - Disabled on mobile to prevent scroll bugs */}
+          {!isMobile && (
+            <motion.div
+              className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center justify-center"
+              style={{ top: topPct, opacity: dotOpacity, scale: dotScale }}
+            >
+              <div className="w-7 h-7 rounded-full bg-cyan-500 shadow-[0_0_0_4px_rgba(6,182,212,0.25)] flex items-center justify-center">
+                <Laptop className="w-4 h-4 text-white" />
+              </div>
+            </motion.div>
+          )}
 
           {/* Project cards */}
           <div className="space-y-10 md:space-y-16">

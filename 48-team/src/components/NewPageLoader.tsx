@@ -10,7 +10,7 @@ interface NewPageLoaderProps {
     destinationPage?: string;
 }
 
-export default function NewPageLoader({ onComplete, duration = 2500, destinationPage }: NewPageLoaderProps) {
+export default function NewPageLoader({ onComplete, duration = 1500, destinationPage }: NewPageLoaderProps) {
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
