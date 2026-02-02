@@ -11,9 +11,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { projects } from "@/lib/projects"
 import type { Project } from "@/types/project"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useGsapRevealOnScroll } from "@/hooks/useGsapRevealOnScroll"
-
-gsap.registerPlugin(ScrollTrigger)
+import { armProjectOpeningLoader } from "@/lib/project-transition"
 
 /**
  * LEGENDARY CODE MATRIX TIMELINE
@@ -89,15 +87,57 @@ const IDEWindowCard = ({ project }: IDEWindowCardProps) => {
     const [imageLoaded, setImageLoaded] = useState(false)
     const [hovered, setHovered] = useState(false)
     const [compiling, setCompiling] = useState(false)
-    const isMobile = useIsMobile()
 
     const techs = project.techTags || project.technologies || []
 
-    // Reveal-on-scroll (same feel as All Projects page cards)
-    useGsapRevealOnScroll(ref, { disabled: isMobile })
+    // Exact reveal effect from AllProjectsPageClient.tsx
+    useEffect(() => {
+        const el = ref.current
+        if (!el) return
+
+        // Kill any existing triggers tied to this element just in case of re-mounts
+        ScrollTrigger.getAll().forEach((t) => {
+            const trigger = (t as unknown as { trigger?: unknown }).trigger
+            if (trigger === el) t.kill()
+        })
+
+        gsap.fromTo(
+            el,
+            {
+                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+                opacity: 0,
+                y: 100,
+            },
+            {
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    end: "top 50%",
+                    scrub: 1,
+                },
+            }
+        )
+
+        // Timeline has images that can shift layout; refresh once.
+        const raf = requestAnimationFrame(() => ScrollTrigger.refresh())
+
+        return () => {
+            cancelAnimationFrame(raf)
+            ScrollTrigger.getAll().forEach((t) => {
+                const trigger = (t as unknown as { trigger?: unknown }).trigger
+                if (trigger === el) t.kill()
+            })
+        }
+    }, [])
 
     const handleClick = (e: React.MouseEvent) => {
         if ((e.target as HTMLElement).closest('a')) return
+        armProjectOpeningLoader({ from: "timeline" })
         setCompiling(true)
         setTimeout(() => {
             router.push(`/projects/${project.id}`)
@@ -136,10 +176,9 @@ const IDEWindowCard = ({ project }: IDEWindowCardProps) => {
                 onClick={handleClick}
             >
                 {/* IDE Window Container */}
-                <div className="relative bg-[#1e1e1e] rounded-lg overflow-hidden border border-[#3e3e3e] shadow-2xl">
-
+                <div className="relative rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500 shadow-2xl max-w-3xl mx-auto">
                     {/* Window Title Bar */}
-                    <div className="bg-[#323233] border-b border-[#3e3e3e] px-4 py-2 flex items-center justify-between">
+                    <div className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 shadow-2xl px-4 py-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <div className="flex gap-1.5">
                                 <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
@@ -175,9 +214,9 @@ const IDEWindowCard = ({ project }: IDEWindowCardProps) => {
                     {/* Main Content */}
                     <div className="relative">
                         {/* Image Preview */}
-                        <div className="relative h-[280px] bg-[#1e1e1e] overflow-hidden">
+                        <div className="relative h-[280px] overflow-hidden">
                             {!imageLoaded && (
-                                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black">
+                                <div className="absolute bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50">
                                     <motion.div
                                         className="h-full w-full bg-gradient-to-r from-transparent via-primary/10 to-transparent"
                                         animate={{ x: ["-100%", "100%"] }}
@@ -276,7 +315,7 @@ const IDEWindowCard = ({ project }: IDEWindowCardProps) => {
                         </div>
 
                         {/* Code Editor Content Section */}
-                        <div className="bg-[#1e1e1e] p-4 space-y-3 border-t border-[#3e3e3e]">
+                        <div className="bg-black/40 backdrop-blur-sm border border-white/10 hover:border-primary/50 p-4 space-y-3">
                             {/* Line numbers + content */}
                             <div className="flex gap-4 font-mono text-xs">
                                 <div className="text-[#858585] select-none space-y-1">
@@ -472,6 +511,8 @@ export default function LegendaryCodeMatrixTimeline() {
 
     return (
         <section className="w-full py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
+            {/* Hexagonal grid */}
+            <HexGrid />
 
             {/* Terminal Header */}
             <motion.div
@@ -481,7 +522,7 @@ export default function LegendaryCodeMatrixTimeline() {
                 className="text-center mb-16 md:mb-24 max-w-4xl mx-auto relative z-10"
             >
                 {/* Terminal window */}
-                <div className="bg-[#1e1e1e] rounded-lg overflow-hidden border border-[#3e3e3e] shadow-2xl max-w-3xl mx-auto">
+                <div className="rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 transition-all duration-500 shadow-2xl max-w-3xl mx-auto">
                     {/* Title bar */}
                     <div className="bg-[#323233] px-4 py-2 flex items-center gap-2 border-b border-[#3e3e3e]">
                         <div className="flex gap-1.5">

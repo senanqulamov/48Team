@@ -16,6 +16,7 @@ import MenuButton from "@/components/MenuButton"
 import FullScreenMenu from "@/components/FullScreenMenu"
 import NewPageLoader from "@/components/NewPageLoader"
 import {ScrollIndicator} from "@/components/ScrollIndicator";
+import { armProjectOpeningLoader } from "@/lib/project-transition"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -347,6 +348,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         if ((e.target as HTMLElement).closest('a')) {
             return
         }
+        armProjectOpeningLoader({ from: "all-projects" })
         setCompiling(true)
         setTimeout(() => {
             router.push(`/projects/${project.id}`)
@@ -527,3 +529,4 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         </motion.div>
     )
 }
+

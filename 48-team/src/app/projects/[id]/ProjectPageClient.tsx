@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, useScroll, useTransform } from "framer-motion"
@@ -11,6 +11,8 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import ProjectGallery from "@/components/ProjectGallery"
 import {ScrollIndicator} from "@/components/ScrollIndicator";
+import ProjectOpeningLoader from "@/components/ProjectOpeningLoader"
+import { consumeProjectOpeningLoader, armProjectOpeningLoader } from "@/lib/project-transition"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -30,6 +32,43 @@ if (typeof window !== 'undefined') {
 export default function ProjectPageClient({ project, nextProject }: ProjectPageClientProps) {
     const containerRef = useRef<HTMLDivElement>(null)
     const { scrollYProgress } = useScroll()
+
+    const [isOpening, setIsOpening] = useState(false)
+    const [pageReveal, setPageReveal] = useState<"idle" | "pixelate" | "reveal">("idle")
+    const openingRunRef = useRef(0)
+    const openingLatchUntilRef = useRef<number>(0)
+
+    useEffect(() => {
+        // React StrictMode can run effects twice in dev. If the first run consumed the flag and we
+        // turned the loader on, the second run would see null and turn it off immediately.
+        // We "latch" the loader for a short time to prevent that.
+        openingRunRef.current += 1
+
+        const meta = consumeProjectOpeningLoader(60_000)
+        if (process.env.NODE_ENV !== "production") {
+            console.log("[ProjectOpeningLoader] consume", meta)
+        }
+
+        // Total loader sequence time (typewriter + build + pixelate + reveal fade)
+        const LOADER_MS = 4200
+
+        if (!meta) {
+            if (Date.now() < openingLatchUntilRef.current) {
+                return
+            }
+            setIsOpening(false)
+            return
+        }
+
+        // Start page in pixelated mode; it will reveal when loader finishes.
+        setPageReveal("pixelate")
+
+        // Latch for the duration of the loader.
+        openingLatchUntilRef.current = Date.now() + LOADER_MS
+        setIsOpening(true)
+        const t = window.setTimeout(() => setIsOpening(false), LOADER_MS)
+        return () => window.clearTimeout(t)
+    }, [project.id])
 
     // Hero parallax effects
     const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.7])
@@ -169,324 +208,366 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
     }, [project.id])
 
     return (
-        <main ref={containerRef} className="bg-black text-white overflow-hidden">
-            {/* CINEMATIC HERO - Full Viewport with Parallax */}
-            <section className="relative h-screen overflow-hidden">
-                {/* Parallax Background */}
-                <motion.div
-                    style={{ scale: heroScale, y: heroY }}
-                    className="absolute inset-0 w-full h-full opacity-50"
-                >
-                    {project.image && (
-                        <Image
-                            src={project.image}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                            priority
-                            quality={100}
-                        />
-                    )}
-                    {/* Cinematic gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                </motion.div>
+        <>
+            <ProjectOpeningLoader
+                visible={isOpening}
+                onDoneAction={() => {
+                    // Hide loader and reveal the page with a pixelated fade-out.
+                    openingLatchUntilRef.current = 0
+                    setIsOpening(false)
+                    setPageReveal("reveal")
+                    window.setTimeout(() => setPageReveal("idle"), 900)
+                }}
+            />
 
-                {/* Navigation */}
+            <div className="relative">
+                {/* Page pixelate overlay */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className="absolute top-0 left-0 right-0 z-50 p-4 md:p-8 flex items-center justify-between"
-                >
-                    <Link
-                        href="/projects"
-                        className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full hover:bg-black/80 transition-all duration-300 text-sm md:text-base"
-                    >
-                        <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                        <span>Back</span>
-                    </Link>
+                    aria-hidden
+                    className="fixed inset-0 z-[9998] pointer-events-none"
+                    animate={{
+                        opacity: pageReveal === "pixelate" ? 1 : pageReveal === "reveal" ? 0 : 0,
+                        backgroundSize: pageReveal === "pixelate" ? "18px 18px" : "60px 60px",
+                    }}
+                    transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                    style={{
+                        backgroundImage:
+                            "linear-gradient(to right, rgba(0,0,0,0.55) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.55) 1px, transparent 1px)",
+                        mixBlendMode: "multiply",
+                        willChange: "opacity, background-size",
+                    }}
+                />
 
-                    <div className="flex items-center gap-2 md:gap-3">
-                        {project.demoUrl && (
-                            <a
-                                href={project.demoUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-2.5 md:p-3 bg-white/90 backdrop-blur-md border border-white/20 rounded-full hover:bg-white transition-all shadow-lg"
-                                title="View Demo"
-                            >
-                                <ExternalLink className="w-4 h-4 md:w-5 md:h-5 text-black" />
-                            </a>
-                        )}
-                        {project.links?.github && (
-                            <a
-                                href={project.links.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-2.5 md:p-3 bg-white/90 backdrop-blur-md border border-white/20 rounded-full hover:bg-white transition-all shadow-lg"
-                                title="View on GitHub"
-                            >
-                                <Github className="w-4 h-4 md:w-5 md:h-5 text-black" />
-                            </a>
-                        )}
-                    </div>
-                </motion.div>
-
-                {/* Hero Content - Centered */}
-                <motion.div
-                    style={{ opacity: heroOpacity }}
-                    className="absolute inset-0 flex items-center justify-center z-10 px-4"
+                <motion.main
+                    ref={containerRef}
+                    className="bg-black text-white overflow-hidden"
+                    animate={
+                        pageReveal === "pixelate"
+                            ? { filter: "blur(10px) contrast(1.15) saturate(0.9)", scale: 1.01 }
+                            : pageReveal === "reveal"
+                                ? { filter: "blur(0px) contrast(1) saturate(1)", scale: 1 }
+                                : { filter: "none", scale: 1 }
+                    }
+                    transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ willChange: "filter, transform" }}
                 >
-                    <div className="text-center max-w-6xl w-full">
+                    {/* CINEMATIC HERO - Full Viewport with Parallax */}
+                    <section className="relative h-screen overflow-hidden">
+                        {/* Parallax Background */}
                         <motion.div
-                            initial={{ opacity: 0, y: 100 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                            style={{ scale: heroScale, y: heroY }}
+                            className="absolute inset-0 w-full h-full opacity-50"
                         >
-                            {/* Category Badge */}
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full mb-4 md:mb-6">
-                                <Tag className="w-3 h-3" />
-                                <span className="text-xs uppercase tracking-widest">{project.category}</span>
-                            </div>
+                            {project.image && (
+                                <Image
+                                    src={project.image}
+                                    alt={project.title}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                    quality={100}
+                                />
+                            )}
+                            {/* Cinematic gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                        </motion.div>
 
-                            {/* Title - Large & Cinematic */}
-                            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-4 md:mb-6 leading-none px-4">
+                        {/* Navigation */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="absolute top-0 left-0 right-0 z-50 p-4 md:p-8 flex items-center justify-between"
+                        >
+                            <Link
+                                href="/projects"
+                                className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full hover:bg-black/80 transition-all duration-300 text-sm md:text-base"
+                            >
+                                <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                <span>Back</span>
+                            </Link>
+
+                            <div className="flex items-center gap-2 md:gap-3">
+                                {project.demoUrl && (
+                                    <a
+                                        href={project.demoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2.5 md:p-3 bg-white/90 backdrop-blur-md border border-white/20 rounded-full hover:bg-white transition-all shadow-lg"
+                                        title="View Demo"
+                                    >
+                                        <ExternalLink className="w-4 h-4 md:w-5 md:h-5 text-black" />
+                                    </a>
+                                )}
+                                {project.links?.github && (
+                                    <a
+                                        href={project.links.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2.5 md:p-3 bg-white/90 backdrop-blur-md border border-white/20 rounded-full hover:bg-white transition-all shadow-lg"
+                                        title="View on GitHub"
+                                    >
+                                        <Github className="w-4 h-4 md:w-5 md:h-5 text-black" />
+                                    </a>
+                                )}
+                            </div>
+                        </motion.div>
+
+                        {/* Hero Content - Centered */}
+                        <motion.div
+                            style={{ opacity: heroOpacity }}
+                            className="absolute inset-0 flex items-center justify-center z-10 px-4"
+                        >
+                            <div className="text-center max-w-6xl w-full">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 100 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                                >
+                                    {/* Category Badge */}
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full mb-4 md:mb-6">
+                                        <Tag className="w-3 h-3" />
+                                        <span className="text-xs uppercase tracking-widest">{project.category}</span>
+                                    </div>
+
+                                    {/* Title - Large & Cinematic */}
+                                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-4 md:mb-6 leading-none px-4">
                 <span className="block bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
                   {project.title}
                 </span>
-                            </h1>
+                                    </h1>
 
-                            {/* Subtitle */}
-                            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mb-6 md:mb-8 font-light max-w-3xl mx-auto px-4">
-                                {project.subtitle}
-                            </p>
+                                    {/* Subtitle */}
+                                    <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mb-6 md:mb-8 font-light max-w-3xl mx-auto px-4">
+                                        {project.subtitle}
+                                    </p>
 
-                            {/* Meta Info */}
-                            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-white/50 px-4">
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                                    <span>{project.yearRange}</span>
-                                </div>
-                                <div className="w-1 h-1 rounded-full bg-white/30" />
-                                <div className="flex items-center gap-2">
-                                    <span>{project.client}</span>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </motion.div>
-
-                {/* Scroll Indicator */}
-                <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
-            </section>
-
-            {/* STORY SECTION - Full Width Text Block */}
-            <section className="reveal-section relative min-h-screen flex items-center py-16 md:py-32 px-4 md:px-8">
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
-                <div className="relative z-10 max-w-5xl mx-auto w-full">
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, margin: "-200px" }}
-                        transition={{ duration: 1.5 }}
-                    >
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-8 md:mb-12 leading-tight">
-                            <span className="block text-white/30">The Story</span>
-                            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                Behind the Project
-              </span>
-                        </h2>
-                        <p className="text-xl sm:text-2xl md:text-3xl text-white/60 leading-relaxed font-light mb-6 md:mb-8">
-                            {project.longDescription || project.description}
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* PROBLEM & SOLUTION - Split Screen Effect */}
-            {project.problem && project.solution && (
-                <section className="reveal-section relative grid md:grid-cols-2 min-h-[80vh] md:min-h-screen">
-                    {/* Problem - Dark Side */}
-                    <div className="relative flex items-center justify-center p-8 md:p-12 lg:p-16 bg-zinc-950">
-                        <div className="max-w-xl w-full">
-                            <motion.div
-                                initial={{ opacity: 0, x: -50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 1 }}
-                            >
-                                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 md:mb-8 text-red-400">
-                                    The Challenge
-                                </h3>
-                                <p className="text-lg md:text-xl text-white/60 leading-relaxed">
-                                    {project.problem}
-                                </p>
-                            </motion.div>
-                        </div>
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.1),transparent)]" />
-                    </div>
-
-                    {/* Solution - Light Side */}
-                    <div className="relative flex items-center justify-center p-8 md:p-12 lg:p-16 bg-black">
-                        <div className="max-w-xl w-full">
-                            <motion.div
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 1 }}
-                            >
-                                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 md:mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                    The Solution
-                                </h3>
-                                <p className="text-lg md:text-xl text-white/60 leading-relaxed">
-                                    {project.solution}
-                                </p>
-                            </motion.div>
-                        </div>
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1),transparent)]" />
-                    </div>
-                </section>
-            )}
-
-            {/* FEATURES - Enhanced Cards */}
-            {project.features && project.features.length > 0 && (
-                <section className="reveal-section relative py-32 px-8 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
-                    {/* Animated background elements */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
-                        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
-                    </div>
-
-                    <div className="max-w-7xl mx-auto relative z-10">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 1 }}
-                            className="text-5xl md:text-7xl font-black mb-20 text-center"
-                        >
-                            <span className="block text-white/30 mb-4">Powerful</span>
-                            <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Features
-              </span>
-                        </motion.h2>
-
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {project.features.map((feature, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, scale: 0.8, rotateX: -15 }}
-                                    whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-                                    viewport={{ once: true, margin: "-100px" }}
-                                    transition={{
-                                        duration: 0.8,
-                                        delay: index * 0.15,
-                                        ease: [0.22, 1, 0.36, 1]
-                                    }}
-                                    className="group relative"
-                                >
-                                    <div className="relative p-8 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/20">
-                                        {/* Animated gradient background on hover */}
-                                        <motion.div
-                                            className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-accent/0 opacity-0 group-hover:opacity-100"
-                                            initial={false}
-                                            animate={{
-                                                background: [
-                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(6,182,212,0) 100%)",
-                                                    "linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(34,211,238,0.1) 100%)",
-                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(6,182,212,0) 100%)",
-                                                ]
-                                            }}
-                                            transition={{ duration: 3, repeat: Infinity }}
-                                        />
-
-                                        {/* Corner accent */}
-                                        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                        <div className="relative z-10">
-                                            <motion.div
-                                                whileHover={{ rotate: 360, scale: 1.2 }}
-                                                transition={{ duration: 0.6 }}
-                                                className="inline-block"
-                                            >
-                                                <Award className="w-12 h-12 text-primary mb-6" />
-                                            </motion.div>
-                                            <h4 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors duration-300">
-                                                {feature}
-                                            </h4>
-                                            {/* Decorative line */}
-                                            <motion.div
-                                                className="h-1 bg-gradient-to-r from-primary to-accent rounded-full"
-                                                initial={{ width: 0 }}
-                                                whileInView={{ width: "100%" }}
-                                                viewport={{ once: true }}
-                                                transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
-                                            />
+                                    {/* Meta Info */}
+                                    <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-white/50 px-4">
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                            <span>{project.yearRange}</span>
+                                        </div>
+                                        <div className="w-1 h-1 rounded-full bg-white/30" />
+                                        <div className="flex items-center gap-2">
+                                            <span>{project.client}</span>
                                         </div>
                                     </div>
                                 </motion.div>
-                            ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Scroll Indicator */}
+                        <ScrollIndicator className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2" />
+                    </section>
+
+                    {/* STORY SECTION - Full Width Text Block */}
+                    <section className="reveal-section relative min-h-screen flex items-center py-16 md:py-32 px-4 md:px-8">
+                        <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
+                        <div className="relative z-10 max-w-5xl mx-auto w-full">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true, margin: "-200px" }}
+                                transition={{ duration: 1.5 }}
+                            >
+                                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-8 md:mb-12 leading-tight">
+                                    <span className="block text-white/30">The Story</span>
+                                    <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                Behind the Project
+              </span>
+                                </h2>
+                                <p className="text-xl sm:text-2xl md:text-3xl text-white/60 leading-relaxed font-light mb-6 md:mb-8">
+                                    {project.longDescription || project.description}
+                                </p>
+                            </motion.div>
                         </div>
-                    </div>
-                </section>
-            )}
+                    </section>
 
-            {/* TECH STACK - With Proper Icons & Fixed Typography */}
-            {project.technologies && project.technologies.length > 0 && (
-                <section className="reveal-section relative py-16 md:py-32 px-4 md:px-8 bg-black overflow-hidden">
-                    {/* Animated grid background */}
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0" style={{
-                            backgroundImage: 'linear-gradient(to right, rgba(6,182,212,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,182,212,0.3) 1px, transparent 1px)',
-                            backgroundSize: '80px 80px'
-                        }} />
-                    </div>
+                    {/* PROBLEM & SOLUTION - Split Screen Effect */}
+                    {project.problem && project.solution && (
+                        <section className="reveal-section relative grid md:grid-cols-2 min-h-[80vh] md:min-h-screen">
+                            {/* Problem - Dark Side */}
+                            <div className="relative flex items-center justify-center p-8 md:p-12 lg:p-16 bg-zinc-950">
+                                <div className="max-w-xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -50 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, margin: "-100px" }}
+                                        transition={{ duration: 1 }}
+                                    >
+                                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 md:mb-8 text-red-400">
+                                            The Challenge
+                                        </h3>
+                                        <p className="text-lg md:text-xl text-white/60 leading-relaxed">
+                                            {project.problem}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.1),transparent)]" />
+                            </div>
 
-                    <div className="max-w-7xl mx-auto relative z-10">
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 1 }}
-                            className="text-center mb-12 md:mb-20"
-                        >
-                            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 leading-tight">
+                            {/* Solution - Light Side */}
+                            <div className="relative flex items-center justify-center p-8 md:p-12 lg:p-16 bg-black">
+                                <div className="max-w-xl w-full">
+                                    <motion.div
+                                        initial={{ opacity: 0, x: 50 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, margin: "-100px" }}
+                                        transition={{ duration: 1 }}
+                                    >
+                                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 md:mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                                            The Solution
+                                        </h3>
+                                        <p className="text-lg md:text-xl text-white/60 leading-relaxed">
+                                            {project.solution}
+                                        </p>
+                                    </motion.div>
+                                </div>
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1),transparent)]" />
+                            </div>
+                        </section>
+                    )}
+
+                    {/* FEATURES - Enhanced Cards */}
+                    {project.features && project.features.length > 0 && (
+                        <section className="reveal-section relative py-32 px-8 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
+                            {/* Animated background elements */}
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
+                                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+                            </div>
+
+                            <div className="max-w-7xl mx-auto relative z-10">
+                                <motion.h2
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 1 }}
+                                    className="text-5xl md:text-7xl font-black mb-20 text-center"
+                                >
+                                    <span className="block text-white/30 mb-4">Powerful</span>
+                                    <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Features
+              </span>
+                                </motion.h2>
+
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {project.features.map((feature, index) => (
+                                        <motion.div
+                                            key={index}
+                                            initial={{ opacity: 0, scale: 0.8, rotateX: -15 }}
+                                            whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                                            viewport={{ once: true, margin: "-100px" }}
+                                            transition={{
+                                                duration: 0.8,
+                                                delay: index * 0.15,
+                                                ease: [0.22, 1, 0.36, 1]
+                                            }}
+                                            className="group relative"
+                                        >
+                                            <div className="relative p-8 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/20">
+                                                {/* Animated gradient background on hover */}
+                                                <motion.div
+                                                    className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-accent/0 opacity-0 group-hover:opacity-100"
+                                                    initial={false}
+                                                    animate={{
+                                                        background: [
+                                                            "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(6,182,212,0) 100%)",
+                                                            "linear-gradient(135deg, rgba(6,182,212,0.1) 0%, rgba(34,211,238,0.1) 100%)",
+                                                            "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(6,182,212,0) 100%)",
+                                                        ]
+                                                    }}
+                                                    transition={{ duration: 3, repeat: Infinity }}
+                                                />
+
+                                                {/* Corner accent */}
+                                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                                <div className="relative z-10">
+                                                    <motion.div
+                                                        whileHover={{ rotate: 360, scale: 1.2 }}
+                                                        transition={{ duration: 0.6 }}
+                                                        className="inline-block"
+                                                    >
+                                                        <Award className="w-12 h-12 text-primary mb-6" />
+                                                    </motion.div>
+                                                    <h4 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors duration-300">
+                                                        {feature}
+                                                    </h4>
+                                                    {/* Decorative line */}
+                                                    <motion.div
+                                                        className="h-1 bg-gradient-to-r from-primary to-accent rounded-full"
+                                                        initial={{ width: 0 }}
+                                                        whileInView={{ width: "100%" }}
+                                                        viewport={{ once: true }}
+                                                        transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* TECH STACK - With Proper Icons & Fixed Typography */}
+                    {project.technologies && project.technologies.length > 0 && (
+                        <section className="reveal-section relative py-16 md:py-32 px-4 md:px-8 bg-black overflow-hidden">
+                            {/* Animated grid background */}
+                            <div className="absolute inset-0 opacity-10">
+                                <div className="absolute inset-0" style={{
+                                    backgroundImage: 'linear-gradient(to right, rgba(6,182,212,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(6,182,212,0.3) 1px, transparent 1px)',
+                                    backgroundSize: '80px 80px'
+                            }} />
+                            </div>
+
+                            <div className="max-w-7xl mx-auto relative z-10">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 1 }}
+                                    className="text-center mb-12 md:mb-20"
+                                >
+                                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 leading-tight">
                 <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
                   Technology Stack
                 </span>
-                            </h2>
-                            <p className="text-base md:text-xl text-white/50 max-w-2xl mx-auto px-4">
-                                Built with cutting-edge tools and frameworks
-                            </p>
-                        </motion.div>
+                                    </h2>
+                                    <p className="text-base md:text-xl text-white/50 max-w-2xl mx-auto px-4">
+                                        Built with cutting-edge tools and frameworks
+                                    </p>
+                                </motion.div>
 
-                        {/* Premium tech cards grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                            {project.technologies.map((tech, index) => (
-                                <motion.div
-                                    key={tech}
-                                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                                    viewport={{ once: true, margin: "-100px" }}
-                                    transition={{
-                                        duration: 0.6,
-                                        delay: index * 0.08,
-                                        ease: [0.22, 1, 0.36, 1]
-                                    }}
-                                    whileHover={{ scale: 1.05, y: -5 }}
-                                    className="group relative"
-                                >
-                                    <div className="relative h-full p-4 md:p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden transition-all duration-500 group-hover:border-primary/60 group-hover:shadow-2xl group-hover:shadow-primary/20">
-                                        {/* Animated gradient overlay */}
+                                {/* Premium tech cards grid */}
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                                    {project.technologies.map((tech, index) => (
                                         <motion.div
-                                            className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 opacity-0 group-hover:opacity-100"
-                                            initial={false}
-                                            animate={{
-                                                background: [
-                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
-                                                    "linear-gradient(135deg, rgba(6,182,212,0.2) 0%, rgba(34,211,238,0.2) 100%)",
-                                                    "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
+                                            key={tech}
+                                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                            viewport={{ once: true, margin: "-100px" }}
+                                            transition={{
+                                                duration: 0.6,
+                                                delay: index * 0.08,
+                                                ease: [0.22, 1, 0.36, 1]
+                                            }}
+                                            whileHover={{ scale: 1.05, y: -5 }}
+                                            className="group relative"
+                                        >
+                                            <div className="relative h-full p-4 md:p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden transition-all duration-500 group-hover:border-primary/60 group-hover:shadow-2xl group-hover:shadow-primary/20">
+                                                {/* Animated gradient overlay */}
+                                                <motion.div
+                                                    className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 opacity-0 group-hover:opacity-100"
+                                                    initial={false}
+                                                    animate={{
+                                                        background: [
+                                                            "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
+                                                            "linear-gradient(135deg, rgba(6,182,212,0.2) 0%, rgba(34,211,238,0.2) 100%)",
+                                                            "linear-gradient(135deg, rgba(6,182,212,0) 0%, rgba(34,211,238,0) 100%)",
                                                 ]
                                             }}
                                             transition={{ duration: 2, repeat: Infinity }}
@@ -523,6 +604,7 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
                                     </div>
                                 </motion.div>
                             ))}
+
                         </div>
 
                         {/* Decorative elements */}
@@ -690,6 +772,7 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
                                     </div>
                                 </motion.div>
                             ))}
+
                         </div>
 
                         {/* Optional: Bottom accent line connecting metrics */}
@@ -744,6 +827,7 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
 
                     <Link
                         href={`/projects/${nextProject.id}`}
+                        onClick={() => armProjectOpeningLoader({ from: "project-next" })}
                         className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold hover:scale-105 transition-all duration-300 group"
                     >
                         <span>Explore Project</span>
@@ -751,6 +835,8 @@ export default function ProjectPageClient({ project, nextProject }: ProjectPageC
                     </Link>
                 </motion.div>
             </section>
-        </main>
+        </motion.main>
+            </div>
+        </>
     )
 }
