@@ -8,7 +8,7 @@ import Lenis from "lenis"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { motion } from "framer-motion"
-import { ArrowLeft, ExternalLink, Github, Calendar, Sparkles } from "lucide-react"
+import { ArrowLeft, ExternalLink, GitBranch, Calendar, Sparkles } from "lucide-react"
 import { projects } from "@/lib/projects"
 import type { Project } from "@/types/project"
 import Footer from "@/components/Footer"
@@ -340,13 +340,17 @@ interface ProjectCardProps {
 // In the ProjectCard component, update the motion.div wrapper:
 function ProjectCard({ project, index }: ProjectCardProps) {
     const router = useRouter()
+    const [compiling, setCompiling] = useState(false)
 
     const handleCardClick = (e: React.MouseEvent) => {
         // Only navigate if clicking on the card itself, not on links
         if ((e.target as HTMLElement).closest('a')) {
             return
         }
-        router.push(`/projects/${project.id}`)
+        setCompiling(true)
+        setTimeout(() => {
+            router.push(`/projects/${project.id}`)
+        }, 2500)
     }
 
     return (
@@ -444,7 +448,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                                 whileTap={{ scale: 0.95 }}
                                 className="p-2.5 bg-white/90 backdrop-blur-sm rounded-lg hover:bg-white transition-colors shadow-lg z-10"
                             >
-                                <Github className="w-4 h-4 text-black" />
+                                <GitBranch className="w-4 h-4 text-black" />
                             </motion.a>
                         )}
                     </motion.div>
@@ -491,6 +495,34 @@ function ProjectCard({ project, index }: ProjectCardProps) {
                         </div>
                     )}
                 </div>
+
+                {/* Compiling Overlay */}
+                {compiling && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-2xl"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-center space-y-4"
+                        >
+                            <div className="font-mono text-sm text-primary">
+                                $ npm run build:project
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                    className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full"
+                                />
+                                <span className="text-xs text-gray-400 font-mono">Compiling...</span>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
             </div>
         </motion.div>
     )
