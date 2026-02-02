@@ -25,14 +25,15 @@ const ProjectCard = ({ project, side, index }: ProjectCardProps) => {
   const isInView = useInView(ref, { once: true, margin: "-50px" })
   const [imageLoaded, setImageLoaded] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const isMobile = useIsMobile()
 
   const techs = project.techTags || project.technologies || []
 
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, x: side === "left" ? -50 : 50 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: side === "left" ? -50 : 50 }}
+      initial={{ opacity: 0, x: isMobile ? 0 : (side === "left" ? -50 : 50) }}
+      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isMobile ? 0 : (side === "left" ? -50 : 50) }}
       transition={{
         duration: 0.6,
         delay: index * 0.1,
